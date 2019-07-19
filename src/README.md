@@ -1,5 +1,28 @@
+# react-antd-super-form
 
-# SuperForm
+## Install
+
+```bash
+npm install --save react-antd-super-form
+```
+
+## Usage
+
+```jsx
+import React, { Component } from 'react';
+import SuperForm, { Table, List, Form, Modal } from 'react-antd-super-form';
+
+class Example extends Component {
+  render () {
+    return (
+      <SuperForm
+        // ...
+      />
+    )
+  }
+}
+```
+
 
 ### 封装原则
 0. 0 样式
@@ -383,3 +406,7 @@ import {Modal} from './SuperForm';
 >
 </Modal>
 ```
+
+## License
+
+MIT © [bitores](https://github.com/bitores)

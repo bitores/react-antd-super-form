@@ -7,29 +7,28 @@ import less from 'rollup-plugin-less';
 import url from 'rollup-plugin-url'
 import svgr from '@svgr/rollup'
 
-import pkg from './package.json'
+import pkg from './src/package.json'
 
 export default {
   input: 'src/index.js',
   output: [
     {
-      file: pkg.main,
+      file: `src/${pkg.main}`,
       format: 'cjs',
       sourcemap: true
     },
     {
-      file: pkg.module,
+      file: `src/${pkg.module}`,
       format: 'es',
       sourcemap: true
     }
   ],
   plugins: [
     external(),
-
     postcss({
       modules: true
     }),
-    // less(),
+
     url(),
     svgr(),
     babel({

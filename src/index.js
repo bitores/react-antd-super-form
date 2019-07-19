@@ -5,7 +5,7 @@ import Table from './Table';
 import List from './List';
 import Modal from './Modal';
 
-import styles from './style.css';
+import styles from './style.less';
 import withSearch from './hoc/search';
 
 export {

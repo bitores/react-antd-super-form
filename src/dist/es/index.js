@@ -1,6 +1,3 @@
-import React, { Component } from 'react';
-import 'antd/es/form/style';
-import _Form2 from 'antd/es/form';
 import 'antd/es/upload/style';
 import _Upload from 'antd/es/upload';
 import 'antd/es/checkbox/style';
@@ -21,6 +18,9 @@ import 'antd/es/input-number/style';
 import _InputNumber from 'antd/es/input-number';
 import 'antd/es/input/style';
 import _Input from 'antd/es/input';
+import React, { Component } from 'react';
+import 'antd/es/form/style';
+import _Form2 from 'antd/es/form';
 import 'antd/es/table/style';
 import _Table from 'antd/es/table';
 import 'antd/es/list/style';
@@ -180,7 +180,7 @@ var createFormItem = (function (obj, form) {
   var props = injectEvent(other, form);
 
   var t = type.toLocaleLowerCase();
-  var Component = AntdElements[t];
+  var Component$$1 = AntdElements[t];
 
   var formElement = null;
   switch (t) {
@@ -206,7 +206,7 @@ var createFormItem = (function (obj, form) {
         }
 
         formElement = React.createElement(
-          Component,
+          Component$$1,
           _extends({ type: buttonType }, pr),
           text
         );
@@ -221,7 +221,7 @@ var createFormItem = (function (obj, form) {
     case 'datepicker':
     case 'rangepicker':
       {
-        formElement = React.createElement(Component, props);
+        formElement = React.createElement(Component$$1, props);
       }
       break;
 
@@ -243,7 +243,7 @@ var createFormItem = (function (obj, form) {
             _pr = objectWithoutProperties(props, ['children']);
 
         formElement = React.createElement(
-          Component,
+          Component$$1,
           _pr,
           children()
         );
@@ -258,11 +258,11 @@ var createFormItem = (function (obj, form) {
             _pr2 = objectWithoutProperties(props, ['options']);
 
         formElement = React.createElement(
-          Component,
+          Component$$1,
           _pr2,
           transToArray(options).map(function (item) {
             return React.createElement(
-              Component.Option,
+              Component$$1.Option,
               { key: item.key || item.value, value: item.value },
               item.label
             );
@@ -279,11 +279,11 @@ var createFormItem = (function (obj, form) {
             _pr3 = objectWithoutProperties(props, ['options']);
 
         formElement = React.createElement(
-          Component.Group,
+          Component$$1.Group,
           _pr3,
           transToArray(_options).map(function (item) {
             return React.createElement(
-              Component,
+              Component$$1,
               { key: item.key || item.value, value: item.value },
               item.label
             );
@@ -299,11 +299,11 @@ var createFormItem = (function (obj, form) {
             _pr4 = objectWithoutProperties(props, ['options']);
 
         formElement = React.createElement(
-          Component.Group,
+          Component$$1.Group,
           _pr4,
           transToArray(_options2).map(function (item) {
             return React.createElement(
-              Component.Button,
+              Component$$1.Button,
               { key: item.key || item.value, value: item.value },
               item.label
             );
@@ -423,7 +423,7 @@ var _Form = function (_Component) {
 
 var Form = _Form2.create()(_Form);
 
-var withPagination = (function (Component) {
+var withPagination = (function (Component$$1) {
   return function (_React$Component) {
     inherits(_class, _React$Component);
 
@@ -618,7 +618,7 @@ var withPagination = (function (Component) {
             }
           }, config);
         }
-        return React.createElement(Component, _extends({}, props, { dataSource: _list, pagination: _pagination }));
+        return React.createElement(Component$$1, _extends({}, props, { dataSource: _list, pagination: _pagination }));
       }
     }]);
     return _class;
@@ -759,11 +759,11 @@ function styleInject(css, ref) {
   }
 }
 
-var css = "\n.style_form__1pGl9, .style_table__39DpF {\n  background: #fff;\n  padding: 20px;\n  border-radius: 5px;\n  margin-bottom: 10px;\n}";
-var styles = { "form": "style_form__1pGl9", "table": "style_table__39DpF" };
+var css = ".style_form__115ZV,\n.style_table__2ELRL {\n  background: #fff;\n  padding: 20px;\n  border-radius: 5px;\n  margin-bottom: 10px;\n}\n";
+var styles = { "form": "style_form__115ZV", "table": "style_table__2ELRL" };
 styleInject(css);
 
-var withSearch = (function (Component) {
+var withSearch = (function (Component$$1) {
   return function (_React$Component) {
     inherits(_class, _React$Component);
 
@@ -836,7 +836,7 @@ var withSearch = (function (Component) {
           }
         });
 
-        return React.createElement(Component, _extends({ ref: 'hoc' }, props));
+        return React.createElement(Component$$1, _extends({ ref: 'hoc' }, props));
       }
     }]);
     return _class;
@@ -890,5 +890,5 @@ var SuperForm = function (_Component) {
 var index = withSearch(SuperForm);
 
 export default index;
-export { Form, List, _class as Modal, Table };
-//# sourceMappingURL=index.es.js.map
+export { Form, Table, List, _class as Modal };
+//# sourceMappingURL=index.js.map

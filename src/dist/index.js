@@ -4,10 +4,6 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
 
-var React = require('react');
-var React__default = _interopDefault(React);
-require('antd/es/form/style');
-var _Form2 = _interopDefault(require('antd/es/form'));
 require('antd/es/upload/style');
 var _Upload = _interopDefault(require('antd/es/upload'));
 require('antd/es/checkbox/style');
@@ -28,6 +24,10 @@ require('antd/es/input-number/style');
 var _InputNumber = _interopDefault(require('antd/es/input-number'));
 require('antd/es/input/style');
 var _Input = _interopDefault(require('antd/es/input'));
+var React = require('react');
+var React__default = _interopDefault(React);
+require('antd/es/form/style');
+var _Form2 = _interopDefault(require('antd/es/form'));
 require('antd/es/table/style');
 var _Table = _interopDefault(require('antd/es/table'));
 require('antd/es/list/style');
@@ -746,28 +746,28 @@ function styleInject(css, ref) {
   if (!css || typeof document === 'undefined') { return; }
 
   var head = document.head || document.getElementsByTagName('head')[0];
-  var style = document.createElement('style');
-  style.type = 'text/css';
+  var style$$1 = document.createElement('style');
+  style$$1.type = 'text/css';
 
   if (insertAt === 'top') {
     if (head.firstChild) {
-      head.insertBefore(style, head.firstChild);
+      head.insertBefore(style$$1, head.firstChild);
     } else {
-      head.appendChild(style);
+      head.appendChild(style$$1);
     }
   } else {
-    head.appendChild(style);
+    head.appendChild(style$$1);
   }
 
-  if (style.styleSheet) {
-    style.styleSheet.cssText = css;
+  if (style$$1.styleSheet) {
+    style$$1.styleSheet.cssText = css;
   } else {
-    style.appendChild(document.createTextNode(css));
+    style$$1.appendChild(document.createTextNode(css));
   }
 }
 
-var css = "\n.style_form__1pGl9, .style_table__39DpF {\n  background: #fff;\n  padding: 20px;\n  border-radius: 5px;\n  margin-bottom: 10px;\n}";
-var styles = { "form": "style_form__1pGl9", "table": "style_table__39DpF" };
+var css = ".style_form__115ZV,\n.style_table__2ELRL {\n  background: #fff;\n  padding: 20px;\n  border-radius: 5px;\n  margin-bottom: 10px;\n}\n";
+var styles = { "form": "style_form__115ZV", "table": "style_table__2ELRL" };
 styleInject(css);
 
 var withSearch = (function (Component) {
@@ -897,8 +897,8 @@ var SuperForm = function (_Component) {
 var index = withSearch(SuperForm);
 
 exports.Form = Form;
+exports.Table = Table;
 exports.List = List;
 exports.Modal = _class;
-exports.Table = Table;
 exports.default = index;
 //# sourceMappingURL=index.js.map

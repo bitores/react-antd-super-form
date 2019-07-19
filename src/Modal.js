@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Modal } from 'antd';
-import { Form } from './';
+import Form from './Form';
 
 
 export default class extends Component {

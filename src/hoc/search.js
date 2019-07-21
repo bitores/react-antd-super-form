@@ -53,7 +53,7 @@ export default (Component) => {
         ...this.props,
         // 新增了 两个函数, 一个是获取参数数据, 一个是进行请求
         params: () => this._getSearchParams(),
-        onSearch: (form) => this._search(form.getFieldsValue())
+        autoSearchEvent: (form) => this._search(form.getFieldsValue())
       }
 
       return <Component ref="hoc" {...props} />

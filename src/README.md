@@ -74,7 +74,7 @@ data = [
   {
     visible: true, // 默认 true,  组件是否渲染
     label: 'xxx', // FormItem label 标签, 非必填
-    type: 'select', // ['br','button', 'input','inputnumber','select','radio','radiobutton','slider','textarea','checkbox','datepicker','rangepicker','switch','upload','xxx',]
+    type: 'select', // ['br','span', 'group', 'button', 'input','inputnumber','select','radio','radiobutton','slider','textarea','checkbox','datepicker','rangepicker', 'monthpicker', 'timepicker', 'switch','upload','cascader','steps']
 
     unbind: false, // 非输入组件 建议必填, 
     key: 'xxx', // 输入组件必填, 非输入组件可不填, 建议必填: key 值中 如果包含有逗号则此参数在提交时会被过滤
@@ -537,11 +537,124 @@ import {Form} from './SuperForm';
           </Row>)
         }
       },
+      // {
+      //   key: 'ke--',
+      //   type: 'autocomplete',
+      //   label: '自动完成',
+      //   dataSource: [],
+      //   style: { width: 200 },
+      //   onSelect: () => { },
+      //   onSearch: () => { },
+      //   placeholder: "input here"
+      // },
+      {
+        key: 'jj',
+        type: 'rate',
+        label: '评价',
+        character: '好',
+        allowHalf: true,
+        config: {
+          initialValue: 2.5
+        }
+      },
+      {
+        type: 'steps',
+        label: '步骤',
+        progressDot: true,
+        current: 1,
+        options: [
+          {
+            title: 'Finished',
+            description: 'This is a description.'
+          },
+          {
+            title: 'In Progress',
+            description: 'This is a description.'
+          },
+          {
+            title: 'Waiting',
+            description: 'This is a description.'
+          },
+        ]
+      },
+      {
+        type: 'radiobutton',
+        label: '测试',
+        key: 'aa',
+        options: [
+          {
+            label: 'A',
+            value: 1
+          },
+          {
+            label: 'B',
+            value: 2
+          },
+        ]
+      },
+      {
+        label: '时间',
+        type: 'group',
+        unbind: true,
+        formItemLayout: { style: { marginBottom: 0, width: 800 } },
+        children: [
+          {
+            // label: 'Start',
+            type: 'datepicker',
+            key: 'startTime',
+            validateStatus: "error",
+            help: "Please select the correct date",
+            formItemLayout: { style: { display: 'inline-block', width: 150 } },
+          },
+          {
+            type: 'span',
+            label: '至',
+            style: {
+              display: 'inline-block',
+              width: 40,
+              textAlign: 'center'
+            }
+          },
+          {
+            // label: 'End',
+            type: 'datepicker',
+            key: 'endTime',
+            formItemLayout: { style: { display: 'inline-block', width: 150 } },
+            onChange: () => {
+
+            }
+          },
+        ]
+      },
       {
         label: '图片上传',
         type: 'upload',
         key: 'searKey',
-        children: () => {
+        listType: 'picture',
+        config: {
+          // initialValue: ['https://fanyi.bdstatic.com/static/translation/img/header/logo_40c4f13.svg'],
+          initialValue: [
+            {
+              uid: '-1',
+              name: 'xxx.png',
+              status: 'done',
+              url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
+              thumbUrl: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
+            },
+          ],
+          valuePropName: "fileList",
+          getValueFromEvent: e => {
+            if (Array.isArray(e)) {
+              return e;
+            }
+            return e && e.fileList;
+          },
+          rules: [{
+            required: true,
+            message: '请上传'
+          }],
+        },
+        innerHTML: () => {
           return (<div style={{
             width: 100,
             height: 100,
@@ -572,14 +685,14 @@ import {Form} from './SuperForm';
         key: 'agreement',
         config: {
           valuePropName: 'checked',
-          rules: [{
-            required: true,
-            message: 'Please input the captcha you got!'
-          }],
         },
-        render: (form) => {
-          return <Checkbox>I have read the <a href="">agreement</a></Checkbox>
+        type: 'checkbox',
+        innerHTML: () => {
+          return <span>I have read the <a href="">agreement</a></span>
         }
+        // render: (form) => {
+        //   return <Checkbox></Checkbox>
+        // }
       },
       {
         formItemLayout: {
@@ -599,6 +712,9 @@ import {Form} from './SuperForm';
         buttonType: 'primary',
         text: 'Register',
         onClick: () => {
+          form.validateFields((errors, values) => {
+            // ...
+          });
           console.log(form.getFieldsValue())
         }
       },

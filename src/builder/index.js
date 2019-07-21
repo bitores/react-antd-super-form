@@ -39,17 +39,17 @@ export default (obj, form) => {
   let formElement = null;
   switch (t) {
     case 'button': {
-      let { onSearch, buttonType, text, ...pr } = props;
-      if (onSearch) {
+      let { autoSearchEvent, buttonType, text, ...pr } = props;
+      if (autoSearchEvent) {
         if (props.onClick) {
           let old = props.onClick;
           pr.onClick = (e, form) => {
             old(e, form)
-            onSearch(form);
+            autoSearchEvent(form);
           }
         } else {
           pr.onClick = () => {
-            onSearch(form);
+            autoSearchEvent(form);
           }
         }
       }
@@ -66,33 +66,39 @@ export default (obj, form) => {
     case 'slider':
     case 'datepicker':
     case 'rangepicker':
-    case 'cascader': {
+    case 'monthpicker':
+    case 'timepicker':
+    case 'cascader':
+    case 'autocomplete':
+    case 'rate': {
       formElement = <Component {...props} />
     }
       break;
 
-    case 'upload':
-      {
-        let {
-          children = () => {
-            return (<div style={uploadStyle}>
-              <Icon type={this.state.loading ? 'loading' : 'plus'} />
-              <div className="ant-upload-text">上传</div>
-            </div>)
-          }
-          , ...pr
-        } = props;
+    // case '':
+    //   case 'upload':
+    // {
+    //   let {
+    //     innerHTML = () => {
+    //       return (<div style={uploadStyle}>
+    //         <Icon type={this.state.loading ? 'loading' : 'plus'} />
+    //         <div className="ant-upload-text">上传</div>
+    //       </div>)
+    //     }
+    //     , ...pr
+    //   } = props;
 
-        formElement = <Component {...pr} >
-          {
-            children()
-          }
-        </Component>
-      }
+    //   formElement = <Component {...pr} >
+    //     {
+    //       innerHTML && innerHTML()
+    //     }
+    //   </Component>
+    // }
 
-      break;
+    // break;
 
     case 'select':
+    case 'mentions':
       {
         const { options = [], ...pr } = props;
 
@@ -108,6 +114,16 @@ export default (obj, form) => {
 
     case 'checkbox':
     case 'radio':
+    case 'upload':
+      {
+        const { innerHTML, ...pr } = props;
+
+        formElement = <Component {...pr}>{innerHTML && innerHTML()}</Component>
+      }
+      break;
+
+    case 'checkboxgroup':
+    case 'radiogroup':
       {
         const { options = [], ...pr } = props;
 
@@ -121,7 +137,7 @@ export default (obj, form) => {
       }
 
       break;
-    case 'radio.button':
+    case 'radiobutton':
       {
         const { options = [], ...pr } = props;
 
@@ -132,6 +148,20 @@ export default (obj, form) => {
             );
           })}
         </Component.Group>)
+      }
+      break;
+
+    case 'steps':
+      {
+        const { options = [], ...pr } = props;
+
+        formElement = (<Component {...pr} >
+          {transToArray(options).map((item, ind) => {
+            return (
+              <Component.Step key={item.key || item.title} {...item}></Component.Step>
+            );
+          })}
+        </Component>)
       }
       break;
 

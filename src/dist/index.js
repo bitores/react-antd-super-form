@@ -4,24 +4,34 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
 
-require('antd/es/cascader/style');
-var _Cascader = _interopDefault(require('antd/es/cascader'));
 require('antd/es/upload/style');
 var _Upload = _interopDefault(require('antd/es/upload'));
+require('antd/es/steps/style');
+var _Steps = _interopDefault(require('antd/es/steps'));
 require('antd/es/checkbox/style');
 var _Checkbox = _interopDefault(require('antd/es/checkbox'));
 require('antd/es/radio/style');
 var _Radio = _interopDefault(require('antd/es/radio'));
+require('antd/es/mentions/style');
+var _Mentions = _interopDefault(require('antd/es/mentions'));
 require('antd/es/select/style');
 var _Select = _interopDefault(require('antd/es/select'));
 require('antd/es/button/style');
 var _Button = _interopDefault(require('antd/es/button'));
+require('antd/es/time-picker/style');
+var _TimePicker = _interopDefault(require('antd/es/time-picker'));
 require('antd/es/date-picker/style');
 var _DatePicker = _interopDefault(require('antd/es/date-picker'));
 require('antd/es/switch/style');
 var _Switch = _interopDefault(require('antd/es/switch'));
 require('antd/es/slider/style');
 var _Slider = _interopDefault(require('antd/es/slider'));
+require('antd/es/rate/style');
+var _Rate = _interopDefault(require('antd/es/rate'));
+require('antd/es/auto-complete/style');
+var _AutoComplete = _interopDefault(require('antd/es/auto-complete'));
+require('antd/es/cascader/style');
+var _Cascader = _interopDefault(require('antd/es/cascader'));
 require('antd/es/input-number/style');
 var _InputNumber = _interopDefault(require('antd/es/input-number'));
 require('antd/es/input/style');
@@ -111,7 +121,7 @@ var possibleConstructorReturn = function (self, call) {
   return call && (typeof call === "object" || typeof call === "function") ? call : self;
 };
 
-var events = ['onClick', 'onChange', 'onBlur', 'onFocus', 'onOk', 'onPressEnter'];
+var events = ['onClick', 'onChange', 'onBlur', 'onFocus', 'onHoverChange', 'onKeyDown', 'onSelect', 'onOk', 'onPressEnter'];
 
 var injectEvent = (function (obj, form) {
   var newObj = _extends({}, obj);
@@ -133,30 +143,41 @@ var injectEvent = (function (obj, form) {
 
 var AntdElements = {
   // 类一
-  'input': _Input,
-  'number': _InputNumber,
+  input: _Input,
+  inputnumber: _InputNumber,
   'textarea': _Input.TextArea,
   'password': _Input.Password,
+  cascader: _Cascader,
+  autocomplete: _AutoComplete,
+  rate: _Rate,
   slider: _Slider,
   switch: _Switch,
   datepicker: _DatePicker,
   rangepicker: _DatePicker.RangePicker,
+  monthpicker: _DatePicker.MonthPicker,
+  timepicker: _TimePicker,
 
   // 类二
   button: _Button,
 
   // 类三
   select: _Select,
+  mentions: _Mentions,
   radio: _Radio,
-  'radio.button': _Radio,
+  radiogroup: _Radio,
+  radiobutton: _Radio,
   checkbox: _Checkbox,
+  checkboxgroup: _Checkbox,
+
+  //
+  steps: _Steps,
 
   // 类四
-  upload: _Upload,
-  cascader: _Cascader
-};
+  upload: _Upload
 
-var _this = undefined;
+  //
+
+};
 
 var toString = Object.prototype.toString;
 var transToArray = function transToArray(obj) {
@@ -169,16 +190,6 @@ var transToArray = function transToArray(obj) {
   }
 
   throw new Error('need obj or array');
-};
-
-var uploadStyle = {
-  width: 100,
-  height: 100,
-  display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'center',
-  alignItems: 'center',
-  border: '1px dashed darkgray'
 };
 
 var createFormItem = (function (obj, form) {
@@ -196,21 +207,21 @@ var createFormItem = (function (obj, form) {
   switch (t) {
     case 'button':
       {
-        var onSearch = props.onSearch,
+        var autoSearchEvent = props.autoSearchEvent,
             buttonType = props.buttonType,
             text = props.text,
-            pr = objectWithoutProperties(props, ['onSearch', 'buttonType', 'text']);
+            pr = objectWithoutProperties(props, ['autoSearchEvent', 'buttonType', 'text']);
 
-        if (onSearch) {
+        if (autoSearchEvent) {
           if (props.onClick) {
             var old = props.onClick;
             pr.onClick = function (e, form) {
               old(e, form);
-              onSearch(form);
+              autoSearchEvent(form);
             };
           } else {
             pr.onClick = function () {
-              onSearch(form);
+              autoSearchEvent(form);
             };
           }
         }
@@ -231,47 +242,48 @@ var createFormItem = (function (obj, form) {
     case 'slider':
     case 'datepicker':
     case 'rangepicker':
+    case 'monthpicker':
+    case 'timepicker':
     case 'cascader':
+    case 'autocomplete':
+    case 'rate':
       {
         formElement = React__default.createElement(Component, props);
       }
       break;
 
-    case 'upload':
+    // case '':
+    //   case 'upload':
+    // {
+    //   let {
+    //     innerHTML = () => {
+    //       return (<div style={uploadStyle}>
+    //         <Icon type={this.state.loading ? 'loading' : 'plus'} />
+    //         <div className="ant-upload-text">上传</div>
+    //       </div>)
+    //     }
+    //     , ...pr
+    //   } = props;
+
+    //   formElement = <Component {...pr} >
+    //     {
+    //       innerHTML && innerHTML()
+    //     }
+    //   </Component>
+    // }
+
+    // break;
+
+    case 'select':
+    case 'mentions':
       {
-        var _props$children = props.children,
-            children = _props$children === undefined ? function () {
-          return React__default.createElement(
-            'div',
-            { style: uploadStyle },
-            React__default.createElement(Icon, { type: _this.state.loading ? 'loading' : 'plus' }),
-            React__default.createElement(
-              'div',
-              { className: 'ant-upload-text' },
-              '\u4E0A\u4F20'
-            )
-          );
-        } : _props$children,
-            _pr = objectWithoutProperties(props, ['children']);
+        var _props$options = props.options,
+            options = _props$options === undefined ? [] : _props$options,
+            _pr = objectWithoutProperties(props, ['options']);
 
         formElement = React__default.createElement(
           Component,
           _pr,
-          children()
-        );
-      }
-
-      break;
-
-    case 'select':
-      {
-        var _props$options = props.options,
-            options = _props$options === undefined ? [] : _props$options,
-            _pr2 = objectWithoutProperties(props, ['options']);
-
-        formElement = React__default.createElement(
-          Component,
-          _pr2,
           transToArray(options).map(function (item) {
             return React__default.createElement(
               Component.Option,
@@ -285,6 +297,21 @@ var createFormItem = (function (obj, form) {
 
     case 'checkbox':
     case 'radio':
+    case 'upload':
+      {
+        var innerHTML = props.innerHTML,
+            _pr2 = objectWithoutProperties(props, ['innerHTML']);
+
+        formElement = React__default.createElement(
+          Component,
+          _pr2,
+          innerHTML && innerHTML()
+        );
+      }
+      break;
+
+    case 'checkboxgroup':
+    case 'radiogroup':
       {
         var _props$options2 = props.options,
             _options = _props$options2 === undefined ? [] : _props$options2,
@@ -304,7 +331,7 @@ var createFormItem = (function (obj, form) {
       }
 
       break;
-    case 'radio.button':
+    case 'radiobutton':
       {
         var _props$options3 = props.options,
             _options2 = _props$options3 === undefined ? [] : _props$options3,
@@ -319,6 +346,22 @@ var createFormItem = (function (obj, form) {
               { key: item.key || item.value, value: item.value },
               item.label
             );
+          })
+        );
+      }
+      break;
+
+    case 'steps':
+      {
+        var _props$options4 = props.options,
+            _options3 = _props$options4 === undefined ? [] : _props$options4,
+            _pr5 = objectWithoutProperties(props, ['options']);
+
+        formElement = React__default.createElement(
+          Component,
+          _pr5,
+          transToArray(_options3).map(function (item, ind) {
+            return React__default.createElement(Component.Step, _extends({ key: item.key || item.title }, item));
           })
         );
       }
@@ -353,11 +396,10 @@ var _Form = function (_Component) {
     }
   }, {
     key: '_renderElement',
-    value: function _renderElement(form, getFieldDecorator, onSearch) {
+    value: function _renderElement(form, getFieldDecorator, autoSearchEvent) {
       var _this2 = this;
 
       var data = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : [];
-      var cls = arguments[4];
 
       return data.map(function (item, index) {
         var label = item.label,
@@ -386,8 +428,14 @@ var _Form = function (_Component) {
           return;
         } else if (type === 'br') {
           return React__default.createElement('br', { key: index });
+        } else if (type === 'span') {
+          return React__default.createElement(
+            'span',
+            _extends({ key: index }, props),
+            label
+          );
         } else if (type === 'group') {
-          ret = _this2._renderElement(form, getFieldDecorator, onSearch, item.children, 'group');
+          ret = _this2._renderElement(form, getFieldDecorator, autoSearchEvent, item.children, 'group');
         } else if (render) {
           var renderItem = render(form, _Form2.Item) || React__default.createElement('input', { placeholder: 'default: render need return' });
           ret = unbind === true ? renderItem : getFieldDecorator(key, _this2._transFuncToObj(config, form))(renderItem);
@@ -396,29 +444,23 @@ var _Form = function (_Component) {
           var _item = _extends({
             type: type
           }, props);
-          if (bindSearch) _item.onSearch = onSearch;
+          if (bindSearch) _item.autoSearchEvent = autoSearchEvent;
           var _renderItem = createFormItem(_item, form);
           ret = type === 'button' ? _renderItem : getFieldDecorator(key, _this2._transFuncToObj(config, form))(_renderItem);
         }
 
-        if (cls === 'group') {
-          return React__default.createElement(
-            'span',
-            { style: { paddingRight: 10 }, key: '1_' + index },
-            ret
-          );
-        }
+        // if (cls === 'group') {
+        //   return (<span style={{ paddingRight: 10 }} key={`1_${index}`}>{ret}</span>)
+        // }
 
-        var itemForm = type === 'group' ? React__default.createElement(
-          'div',
-          null,
-          ret
-        ) : ret;
+        // let itemForm = type === 'group' ? <div>{ret}</div> : ret;
+
+        // let itemForm = ret;
 
         return React__default.createElement(
           _Form2.Item,
           _extends({ label: label, key: index, extra: extra, hasFeedback: hasFeedback }, formItemLayout),
-          renderFix ? renderFix(itemForm) : itemForm
+          renderFix ? renderFix(ret) : ret
         );
       });
     }
@@ -432,7 +474,7 @@ var _Form = function (_Component) {
           layout = _props$layout === undefined ? "horizontal" : _props$layout,
           _props$data = _props.data,
           data = _props$data === undefined ? [] : _props$data,
-          onSearch = _props.onSearch;
+          autoSearchEvent = _props.autoSearchEvent;
       var getFieldDecorator = form.getFieldDecorator;
 
 
@@ -444,7 +486,7 @@ var _Form = function (_Component) {
       return React__default.createElement(
         _Form2,
         _extends({ layout: layout }, _formLayout),
-        this._renderElement(form, getFieldDecorator, onSearch, this._transFuncToObj(data, form))
+        this._renderElement(form, getFieldDecorator, autoSearchEvent, this._transFuncToObj(data, form))
       );
     }
   }]);
@@ -861,7 +903,7 @@ var withSearch = (function (Component) {
           params: function params() {
             return _this3._getSearchParams();
           },
-          onSearch: function onSearch(form) {
+          autoSearchEvent: function autoSearchEvent(form) {
             return _this3._search(form.getFieldsValue());
           }
         });
@@ -893,9 +935,9 @@ var SuperForm = function (_Component) {
           _props$type = _props.type,
           type = _props$type === undefined ? 'table' : _props$type,
           search = _props.search,
-          onSearch = _props.onSearch,
+          autoSearchEvent = _props.autoSearchEvent,
           table = _props.table,
-          props = objectWithoutProperties(_props, ['type', 'search', 'onSearch', 'table']);
+          props = objectWithoutProperties(_props, ['type', 'search', 'autoSearchEvent', 'table']);
 
 
       return React__default.createElement(
@@ -904,7 +946,7 @@ var SuperForm = function (_Component) {
         React__default.createElement(
           'div',
           { className: styles.form },
-          React__default.createElement(Form, _extends({}, search, { onSearch: onSearch }))
+          React__default.createElement(Form, _extends({}, search, { autoSearchEvent: autoSearchEvent }))
         ),
         React__default.createElement(
           'div',

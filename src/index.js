@@ -24,14 +24,14 @@ class SuperForm extends Component {
   render() {
     const {
       type = 'table',   // 类型
-      search, onSearch, // search form 配置, onSearch 为自动传入事件
+      search, autoSearchEvent, // search form 配置, onSearch 为自动传入事件
       table, ...props  // table or list 配置
     } = this.props;
 
     return (
       <div>
         <div className={styles.form}>
-          <Form {...search} onSearch={onSearch} />
+          <Form {...search} autoSearchEvent={autoSearchEvent} />
         </div>
         <div className={styles.table}>
           {

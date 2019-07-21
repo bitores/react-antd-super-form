@@ -14,7 +14,7 @@ class _Form extends Component {
     }
   }
 
-  _renderElement(form, getFieldDecorator, onSearch, data = [], cls) {
+  _renderElement(form, getFieldDecorator, autoSearchEvent, data = [], cls) {
     return data.map((item, index) => {
       const {
         // 元素非固有属性 - 过滤
@@ -45,8 +45,10 @@ class _Form extends Component {
         return;
       } else if (type === 'br') {
         return <br key={index} />
+      } else if (type === 'span') {
+        return <span key={index} {...props} >{label}</span>
       } else if (type === 'group') {
-        ret = this._renderElement(form, getFieldDecorator, onSearch, item.children, 'group')
+        ret = this._renderElement(form, getFieldDecorator, autoSearchEvent, item.children, 'group')
       } else if (render) {
         let renderItem = render(form, Form.Item) || <input placeholder="default: render need return"></input>;
         ret = unbind === true ? renderItem : getFieldDecorator(key, this._transFuncToObj(config, form))(renderItem)
@@ -56,20 +58,22 @@ class _Form extends Component {
           type,
           ...props
         }
-        if (bindSearch) _item.onSearch = onSearch;
+        if (bindSearch) _item.autoSearchEvent = autoSearchEvent;
         let renderItem = createFormItem(_item, form);
         ret = type === 'button' ? renderItem : getFieldDecorator(key, this._transFuncToObj(config, form))(renderItem)
       }
 
-      if (cls === 'group') {
-        return (<span style={{ paddingRight: 10 }} key={`1_${index}`}>{ret}</span>)
-      }
+      // if (cls === 'group') {
+      //   return (<span style={{ paddingRight: 10 }} key={`1_${index}`}>{ret}</span>)
+      // }
 
-      let itemForm = type === 'group' ? <div>{ret}</div> : ret;
+      // let itemForm = type === 'group' ? <div>{ret}</div> : ret;
+
+      // let itemForm = ret;
 
       return (<Form.Item label={label} key={index} extra={extra} hasFeedback={hasFeedback} {...formItemLayout}>
         {
-          renderFix ? renderFix(itemForm) : itemForm
+          renderFix ? renderFix(ret) : ret
         }
       </Form.Item>)
 
@@ -77,7 +81,7 @@ class _Form extends Component {
   }
 
   render() {
-    const { form, formLayout, layout = "horizontal", data = [], onSearch } = this.props;
+    const { form, formLayout, layout = "horizontal", data = [], autoSearchEvent } = this.props;
     const { getFieldDecorator } = form;
 
     let _formLayout = formLayout || layout === 'horizontal' ? {
@@ -87,7 +91,7 @@ class _Form extends Component {
 
     return (<Form layout={layout} {..._formLayout}>
       {
-        this._renderElement(form, getFieldDecorator, onSearch, this._transFuncToObj(data, form))
+        this._renderElement(form, getFieldDecorator, autoSearchEvent, this._transFuncToObj(data, form))
       }
     </Form>)
   }

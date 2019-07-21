@@ -4,6 +4,8 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
 
+require('antd/es/cascader/style');
+var _Cascader = _interopDefault(require('antd/es/cascader'));
 require('antd/es/upload/style');
 var _Upload = _interopDefault(require('antd/es/upload'));
 require('antd/es/checkbox/style');
@@ -109,7 +111,7 @@ var possibleConstructorReturn = function (self, call) {
   return call && (typeof call === "object" || typeof call === "function") ? call : self;
 };
 
-var events = ['onClick', 'onChange', 'onOk', 'onPressEnter'];
+var events = ['onClick', 'onChange', 'onBlur', 'onFocus', 'onOk', 'onPressEnter'];
 
 var injectEvent = (function (obj, form) {
   var newObj = _extends({}, obj);
@@ -131,26 +133,27 @@ var injectEvent = (function (obj, form) {
 
 var AntdElements = {
   // 类一
-  input: _Input,
-  number: _InputNumber,
+  'input': _Input,
+  'number': _InputNumber,
+  'textarea': _Input.TextArea,
+  'password': _Input.Password,
   slider: _Slider,
   switch: _Switch,
-  textarea: _Input.TextArea,
   datepicker: _DatePicker,
   rangepicker: _DatePicker.RangePicker,
 
   // 类二
   button: _Button,
-  searchbutton: _Button,
 
   // 类三
   select: _Select,
   radio: _Radio,
-  radiobutton: _Radio,
+  'radio.button': _Radio,
   checkbox: _Checkbox,
 
   // 类四
-  upload: _Upload
+  upload: _Upload,
+  cascader: _Cascader
 };
 
 var _this = undefined;
@@ -221,12 +224,14 @@ var createFormItem = (function (obj, form) {
 
       break;
     case 'input':
-    case 'inputnumber':
+    case 'inputnumber': // InputNumber
+    case 'password': // Input.Number
+    case 'textarea': // Input.TextArea
     case 'switch':
     case 'slider':
-    case 'textarea':
     case 'datepicker':
     case 'rangepicker':
+    case 'cascader':
       {
         formElement = React__default.createElement(Component, props);
       }
@@ -299,7 +304,7 @@ var createFormItem = (function (obj, form) {
       }
 
       break;
-    case 'radiobutton':
+    case 'radio.button':
       {
         var _props$options3 = props.options,
             _options2 = _props$options3 === undefined ? [] : _props$options3,
@@ -335,6 +340,18 @@ var _Form = function (_Component) {
   }
 
   createClass(_Form, [{
+    key: '_transFuncToObj',
+    value: function _transFuncToObj() {
+      var func = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+      var form = arguments[1];
+
+      if (Object.prototype.toString.call(func) === '[object Function]') {
+        return func(form);
+      } else {
+        return func;
+      }
+    }
+  }, {
     key: '_renderElement',
     value: function _renderElement(form, getFieldDecorator, onSearch) {
       var _this2 = this;
@@ -357,8 +374,12 @@ var _Form = function (_Component) {
             type = item.type,
             _item$formItemLayout = item.formItemLayout,
             formItemLayout = _item$formItemLayout === undefined ? {} : _item$formItemLayout,
+            renderFix = item.renderFix,
             _item$extra = item.extra,
-            props = objectWithoutProperties(item, ['label', 'unbind', 'visible', 'key', 'config', 'render', 'bindSearch', 'type', 'formItemLayout', 'extra']);
+            extra = _item$extra === undefined ? null : _item$extra,
+            _item$hasFeedback = item.hasFeedback,
+            hasFeedback = _item$hasFeedback === undefined ? false : _item$hasFeedback,
+            props = objectWithoutProperties(item, ['label', 'unbind', 'visible', 'key', 'config', 'render', 'bindSearch', 'type', 'formItemLayout', 'renderFix', 'extra', 'hasFeedback']);
 
         var ret = null;
         if (visible === false) {
@@ -368,8 +389,8 @@ var _Form = function (_Component) {
         } else if (type === 'group') {
           ret = _this2._renderElement(form, getFieldDecorator, onSearch, item.children, 'group');
         } else if (render) {
-          var renderItem = render(form) || React__default.createElement('input', { placeholder: 'default: render need return' });
-          ret = unbind === true ? renderItem : getFieldDecorator(key, config)(renderItem);
+          var renderItem = render(form, _Form2.Item) || React__default.createElement('input', { placeholder: 'default: render need return' });
+          ret = unbind === true ? renderItem : getFieldDecorator(key, _this2._transFuncToObj(config, form))(renderItem);
         } else {
 
           var _item = _extends({
@@ -377,7 +398,7 @@ var _Form = function (_Component) {
           }, props);
           if (bindSearch) _item.onSearch = onSearch;
           var _renderItem = createFormItem(_item, form);
-          ret = type === 'button' ? _renderItem : getFieldDecorator(key, config)(_renderItem);
+          ret = type === 'button' ? _renderItem : getFieldDecorator(key, _this2._transFuncToObj(config, form))(_renderItem);
         }
 
         if (cls === 'group') {
@@ -388,14 +409,16 @@ var _Form = function (_Component) {
           );
         }
 
+        var itemForm = type === 'group' ? React__default.createElement(
+          'div',
+          null,
+          ret
+        ) : ret;
+
         return React__default.createElement(
           _Form2.Item,
-          _extends({ label: label, key: index }, formItemLayout),
-          type === 'group' ? React__default.createElement(
-            'div',
-            null,
-            ret
-          ) : ret
+          _extends({ label: label, key: index, extra: extra, hasFeedback: hasFeedback }, formItemLayout),
+          renderFix ? renderFix(itemForm) : itemForm
         );
       });
     }
@@ -421,7 +444,7 @@ var _Form = function (_Component) {
       return React__default.createElement(
         _Form2,
         _extends({ layout: layout }, _formLayout),
-        this._renderElement(form, getFieldDecorator, onSearch, data)
+        this._renderElement(form, getFieldDecorator, onSearch, this._transFuncToObj(data, form))
       );
     }
   }]);

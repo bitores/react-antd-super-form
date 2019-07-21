@@ -1,4 +1,4 @@
-const events = ['onClick', 'onChange', 'onOk', 'onPressEnter'];
+const events = ['onClick', 'onChange', 'onBlur', 'onFocus', 'onOk', 'onPressEnter'];
 
 export default (obj, form) => {
   const newObj = {

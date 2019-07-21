@@ -17,7 +17,15 @@ class Example extends Component {
     return (
       <SuperForm
         // ...
+        search={{}}
+        table={{}}
       />
+      <Form 
+       // ...
+       data={[]}
+       data={(form)=>[]}
+      />
+
     )
   }
 }
@@ -28,7 +36,7 @@ class Example extends Component {
 0. 0 样式
 1. 尽量维持原 antd 组件属性命名,部分属性作变更(如, Button中type 因冲突变为 buttonType)
 2. 增加其它 Form.Item 元素 相应属性配置
-3. 优先级: visible > br > render > type 
+3. 优先级: visible > br >  group > render > type 
 4. 事件注入,所有列表中的事件中新增加一个 form 参数, 如 onClick(e) => onClick(e, form) 完成对表单的控制
 5. 通过设置 input hidden 隐藏域来新增属性
 6. 通过属性中添加 ',' 英文逗号来屏蔽 此属性
@@ -68,13 +76,14 @@ data = [
     label: 'xxx', // FormItem label 标签, 非必填
     type: 'select', // ['br','button', 'input','inputnumber','select','radio','radiobutton','slider','textarea','checkbox','datepicker','rangepicker','switch','upload','xxx',]
 
-    unbind: true, // 非输入组件 建议必填
+    unbind: false, // 非输入组件 建议必填, 
     key: 'xxx', // 输入组件必填, 非输入组件可不填, 建议必填: key 值中 如果包含有逗号则此参数在提交时会被过滤
     config: { // for 
       initialValue: 1
     },
 
     render: (form)=>{},
+    renderFix: (item)=> item,
 
     style: {
       width: 100
@@ -328,56 +337,205 @@ params={() => {
 ></SearchList>
 ```
 
+### Form
+![](./examples/assets/form.jpg)
 
-### NormalForm
 ```jsx
-import {Modal} from './SuperForm';
-...
-// render
-<Modal
-  ref="testDialog"
-  onCancel={() => console.log('...')}
-  afterClose={() => console.log('after...')}
-  onOk={(e, form, show) => {
-    console.log(e, form.getFieldsValue());
-    show(false)
+import {Form} from './SuperForm';
+// ...
+<Form
+  formLayout={{
+    labelCol: {
+      xs: { span: 24 },
+      sm: { span: 8 },
+    },
+    wrapperCol: {
+      xs: { span: 24 },
+      sm: { span: 16 },
+    },
   }}
-  footer={[
-    <Button key='A' onClick={() => {
-      console.log('A', this.refs.testDialog.getFieldsValue())
-    }}>A</Button>,
-    <Button key='B' onClick={() => {
-      console.log('B')
-    }}>B</Button>,
-  ]}
-  form={{
-    layout: 'inline',
-    data: [
+  data={(form) => {
+    const { getFieldDecorator } = form;
+    return [
       {
-        label: '订单搜索',
-        type: 'select',
-        key: 'seartType',
-        placeholder: '请选择',
+        label: 'E-mail',
+        type: 'input',
+        key: 'email',
         config: {
-          initialValue: 1
+          rules: [
+            {
+              type: 'email',
+              message: 'The input is not valid E-mail!',
+            },
+            {
+              required: true,
+              message: 'Please input your E-mail!',
+            },
+          ],
         },
-        options: [
-          { label: '订单号', value: 1 },
-          { label: '手机号', value: 2 },
-          { label: '用户名', value: 3 },
-        ],
-        style: {
-          width: 100
-        },
-        onChange: (a, b, form) => {
-          console.log(a, b, form)
-          form.setFieldsValue({
-            'searKey': a
-          })
-        }
       },
       {
-        type: 'br'
+        label: 'Password',
+        type: 'password',
+        key: 'password',
+        hasFeedback: true,
+        config: (form) => {
+          return {
+            rules: [
+              {
+                required: true,
+                message: '密码不能为空',
+              }, {
+                min: 4,
+                message: '密码不能少于4个字符',
+              }, {
+                max: 6,
+                message: '密码不能大于6个字符',
+              },
+              {
+                validator: (rule, value, callback) => {
+                  console.log(form)
+                  if (value && this.state.confirmDirty) {
+                    form.validateFields(['confirm'], { force: true });
+                  }
+                  callback();
+                }
+              },
+            ],
+          }
+
+        },
+      },
+      {
+        label: 'Confirm Password',
+        type: 'password',
+        key: 'confirm',
+        hasFeedback: true,
+        onBlur: (e) => {
+          const { value } = e.target;
+          this.setState({ confirmDirty: this.state.confirmDirty || !!value });
+        },
+        config: (form) => {
+          return {
+            rules: [
+              {
+                required: true,
+                message: 'Please confirm your password!',
+              },
+              {
+                validator: (rule, value, callback) => {
+                  if (value && value !== form.getFieldValue('password')) {
+                    callback('Two passwords that you enter is inconsistent!');
+                  } else {
+                    callback();
+                  }
+                },
+              },
+            ],
+          }
+
+        },
+      },
+      {
+        label: <span>
+          Nickname&nbsp;
+    <Tooltip title="What do you want others to call you?">
+            <Icon type="question-circle-o" />
+          </Tooltip>
+        </span>,
+        type: 'input',
+        key: 'nickname',
+        config: {
+          rules: [{
+            required: true,
+            message: 'Please input your nickname!',
+            whitespace: true
+          }],
+        },
+      },
+      {
+        label: 'Habitual Residence',
+        key: 'residence',
+        type: 'cascader',
+        config: {
+          initialValue: ['zhejiang', 'hangzhou', 'xihu'],
+          rules: [
+            { type: 'array', required: true, message: 'Please select your habitual residence!' },
+          ],
+        },
+        options: [
+          {
+            value: 'zhejiang',
+            label: 'Zhejiang',
+            children: [
+              {
+                value: 'hangzhou',
+                label: 'Hangzhou',
+                children: [
+                  {
+                    value: 'xihu',
+                    label: 'West Lake',
+                  },
+                ],
+              },
+            ],
+          },
+          {
+            value: 'jiangsu',
+            label: 'Jiangsu',
+            children: [
+              {
+                value: 'nanjing',
+                label: 'Nanjing',
+                children: [
+                  {
+                    value: 'zhonghuamen',
+                    label: 'Zhong Hua Men',
+                  },
+                ],
+              },
+            ],
+          },
+        ]
+      },
+      {
+        label: 'Phone Number',
+        type: 'input',
+        key: 'phone',
+        config: {
+          rules: [{ required: true, message: 'Please input your phone number!' }],
+        },
+        addonBefore: getFieldDecorator('prefix', {
+          initialValue: '86',
+        })(
+          <Select style={{ width: 70 }}>
+            <Select.Option value="86">+86</Select.Option>
+            <Select.Option value="87">+87</Select.Option>
+          </Select>,
+        )
+
+      },
+      {
+        label: 'Captcha',
+        key: 'captcha',
+        type: 'input',
+        config: {
+          rules: [{
+            required: true,
+            message: 'Please input the captcha you got!'
+          }],
+        },
+        extra: "We must make sure that your are a human.",
+        renderFix: (item) => {
+          return (<Row gutter={8}>
+            <Col span={12}>
+              {item}
+            </Col>
+            <Col span={12}>
+              <Button>Get captcha</Button>
+            </Col>
+          </Row>)
+        }
       },
       {
         label: '图片上传',
@@ -399,8 +557,109 @@ import {Modal} from './SuperForm';
         }
       },
       {
-        type: 'br'
+        formItemLayout: {
+          wrapperCol: {
+            xs: {
+              span: 24,
+              offset: 0,
+            },
+            sm: {
+              span: 16,
+              offset: 8,
+            },
+          },
+        },
+        key: 'agreement',
+        config: {
+          valuePropName: 'checked',
+          rules: [{
+            required: true,
+            message: 'Please input the captcha you got!'
+          }],
+        },
+        render: (form) => {
+          return <Checkbox>I have read the <a href="">agreement</a></Checkbox>
+        }
       },
+      {
+        formItemLayout: {
+          wrapperCol: {
+            xs: {
+              span: 24,
+              offset: 0,
+            },
+            sm: {
+              span: 16,
+              offset: 8,
+            },
+          },
+        },
+        // key: 'agreement',
+        type: 'button',
+        buttonType: 'primary',
+        text: 'Register',
+        onClick: () => {
+          console.log(form.getFieldsValue())
+        }
+      },
+    ]
+  }
+  }
+/>
+```
+
+### Modal
+```jsx
+import {Modal} from './SuperForm';
+// ...
+<Modal
+  ref="testDialog"
+  onCancel={() => console.log('...')}
+  afterClose={() => console.log('after...')}
+  width={800}
+  onOk={(e, form, show) => {
+    console.log(e, form.getFieldsValue());
+    show(false)
+  }}
+  footer={[
+    <Button key='A' onClick={() => {
+      console.log('A', this.refs.testDialog.getFieldsValue())
+    }}>A</Button>,
+    <Button key='B' onClick={() => {
+      console.log('B')
+    }}>B</Button>,
+  ]}
+  form={{
+    // layout: 'inline',
+    formLayout: {
+      labelCol: {
+        xs: { span: 24 },
+        sm: { span: 8 },
+      },
+      wrapperCol: {
+        xs: { span: 24 },
+        sm: { span: 16 },
+      },
+    },
+    data: [
+      {
+        label: 'E-mail',
+        type: 'input',
+        key: 'email',
+        config: {
+          rules: [
+            {
+              type: 'email',
+              message: 'The input is not valid E-mail!',
+            },
+            {
+              required: true,
+              message: 'Please input your E-mail!',
+            },
+          ],
+        },
+      },
+      
     ]
   }}
 >

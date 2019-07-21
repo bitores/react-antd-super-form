@@ -7,6 +7,7 @@ import {
   Slider,
   Button,
   Upload,
+  Cascader,
   Icon,
   Rate,
   Checkbox,
@@ -15,24 +16,25 @@ import {
 
 export default {
   // 类一
-  input: Input,
-  number: InputNumber,
+  'input': Input,
+  'number': InputNumber,
+  'textarea': Input.TextArea,
+  'password': Input.Password,
   slider: Slider,
   switch: Switch,
-  textarea: Input.TextArea,
   datepicker: DatePicker,
   rangepicker: DatePicker.RangePicker,
 
   // 类二
   button: Button,
-  searchbutton: Button,
 
   // 类三
   select: Select,
   radio: Radio,
-  radiobutton: Radio,
+  'radio.button': Radio,
   checkbox: Checkbox,
 
   // 类四
-  upload: Upload
+  upload: Upload,
+  cascader: Cascader
 }

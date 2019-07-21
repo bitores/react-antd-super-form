@@ -5,6 +5,15 @@ import createFormItem from './builder';
 
 class _Form extends Component {
 
+
+  _transFuncToObj(func = {}, form) {
+    if (Object.prototype.toString.call(func) === '[object Function]') {
+      return func(form)
+    } else {
+      return func;
+    }
+  }
+
   _renderElement(form, getFieldDecorator, onSearch, data = [], cls) {
     return data.map((item, index) => {
       const {
@@ -23,8 +32,11 @@ class _Form extends Component {
         type,
         // form form Item ele
         formItemLayout = {},
-        // for extra
+        // cb
+        renderFix,
+        // for Form.Item
         extra = null,
+        hasFeedback = false,
         // 元素固有属性
         ...props
       } = item;
@@ -36,8 +48,8 @@ class _Form extends Component {
       } else if (type === 'group') {
         ret = this._renderElement(form, getFieldDecorator, onSearch, item.children, 'group')
       } else if (render) {
-        let renderItem = render(form) || <input placeholder="default: render need return"></input>;
-        ret = unbind === true ? renderItem : getFieldDecorator(key, config)(renderItem)
+        let renderItem = render(form, Form.Item) || <input placeholder="default: render need return"></input>;
+        ret = unbind === true ? renderItem : getFieldDecorator(key, this._transFuncToObj(config, form))(renderItem)
       } else {
 
         let _item = {
@@ -46,16 +58,18 @@ class _Form extends Component {
         }
         if (bindSearch) _item.onSearch = onSearch;
         let renderItem = createFormItem(_item, form);
-        ret = type === 'button' ? renderItem : getFieldDecorator(key, config)(renderItem)
+        ret = type === 'button' ? renderItem : getFieldDecorator(key, this._transFuncToObj(config, form))(renderItem)
       }
 
       if (cls === 'group') {
         return (<span style={{ paddingRight: 10 }} key={`1_${index}`}>{ret}</span>)
       }
 
-      return (<Form.Item label={label} key={index} {...formItemLayout}>
+      let itemForm = type === 'group' ? <div>{ret}</div> : ret;
+
+      return (<Form.Item label={label} key={index} extra={extra} hasFeedback={hasFeedback} {...formItemLayout}>
         {
-          type === 'group' ? <div>{ret}</div> : ret
+          renderFix ? renderFix(itemForm) : itemForm
         }
       </Form.Item>)
 
@@ -73,7 +87,7 @@ class _Form extends Component {
 
     return (<Form layout={layout} {..._formLayout}>
       {
-        this._renderElement(form, getFieldDecorator, onSearch, data)
+        this._renderElement(form, getFieldDecorator, onSearch, this._transFuncToObj(data, form))
       }
     </Form>)
   }

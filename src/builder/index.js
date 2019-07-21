@@ -59,12 +59,14 @@ export default (obj, form) => {
 
       break;
     case 'input':
-    case 'inputnumber':
+    case 'inputnumber': // InputNumber
+    case 'password': // Input.Number
+    case 'textarea': // Input.TextArea
     case 'switch':
     case 'slider':
-    case 'textarea':
     case 'datepicker':
-    case 'rangepicker': {
+    case 'rangepicker':
+    case 'cascader': {
       formElement = <Component {...props} />
     }
       break;
@@ -119,7 +121,7 @@ export default (obj, form) => {
       }
 
       break;
-    case 'radiobutton':
+    case 'radio.button':
       {
         const { options = [], ...pr } = props;
 

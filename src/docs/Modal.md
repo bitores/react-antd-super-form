@@ -23,3 +23,58 @@ import {Modal} from 'react-antd-super-form'
 this.refs.testDialog.show(true|false)
 ```
 
+### Modal
+```jsx
+<Modal
+  ref="testDialog"
+  onCancel={() => console.log('...')}
+  afterClose={() => console.log('after...')}
+  width={800}
+  onOk={(e, form, show) => {
+    console.log(e, form.getFieldsValue());
+    show(false)
+  }}
+  footer={[
+    <Button key='A' onClick={() => {
+      console.log('A', this.refs.testDialog.getFieldsValue())
+    }}>A</Button>,
+    <Button key='B' onClick={() => {
+      console.log('B')
+    }}>B</Button>,
+  ]}
+  form={{
+    // layout: 'inline',
+    formLayout: {
+      labelCol: {
+        xs: { span: 24 },
+        sm: { span: 8 },
+      },
+      wrapperCol: {
+        xs: { span: 24 },
+        sm: { span: 16 },
+      },
+    },
+    data: [
+      {
+        label: 'E-mail',
+        type: 'input',
+        key: 'email',
+        config: {
+          rules: [
+            {
+              type: 'email',
+              message: 'The input is not valid E-mail!',
+            },
+            {
+              required: true,
+              message: 'Please input your E-mail!',
+            },
+          ],
+        },
+      },
+      
+    ]
+  }}
+>
+</Modal>
+```

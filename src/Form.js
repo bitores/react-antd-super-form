@@ -17,27 +17,31 @@ class _Form extends Component {
   _renderElement(form, getFieldDecorator, autoSearchEvent, data = [], cls) {
     return data.map((item, index) => {
       const {
-        // 元素非固有属性 - 过滤
-        label,
-        // - for getFieldDecorator
-        unbind,
-        // for all
+        // 组件是否渲染
         visible = true,
-        key = `random_key_${Math.random()}`,
-        config = {},
-        // - for 元素
-        render,
-        bindSearch = false,
-        // - for 元素
-        type,
-        // form form Item ele
-        formItemLayout = {},
-        // cb
-        renderFix,
-        // for Form.Item
+
+        // Form.Item 属性
+        label,
         extra = null,
         hasFeedback = false,
-        // 元素固有属性
+        formItemLayout = {},
+
+        // getFieldDecorator 参数
+        unbind,
+        key = `random_key_${Math.random()}`,
+        config = {},
+
+        // 自定义组件渲染(即不包含在已有组件列表中)
+        render,
+        // 在一些特殊布局中使用
+        renderFix,
+
+        // button 是否绑定 搜索事件
+        bindSearch = false,
+
+        // 组件类型
+        type,
+        // 组件固有属性
         ...props
       } = item;
       let ret = null;

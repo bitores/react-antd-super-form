@@ -402,26 +402,26 @@ var _Form = function (_Component) {
       var data = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : [];
 
       return data.map(function (item, index) {
-        var label = item.label,
-            unbind = item.unbind,
-            _item$visible = item.visible,
+        var _item$visible = item.visible,
             visible = _item$visible === undefined ? true : _item$visible,
+            label = item.label,
+            _item$extra = item.extra,
+            extra = _item$extra === undefined ? null : _item$extra,
+            _item$hasFeedback = item.hasFeedback,
+            hasFeedback = _item$hasFeedback === undefined ? false : _item$hasFeedback,
+            _item$formItemLayout = item.formItemLayout,
+            formItemLayout = _item$formItemLayout === undefined ? {} : _item$formItemLayout,
+            unbind = item.unbind,
             _item$key = item.key,
             key = _item$key === undefined ? 'random_key_' + Math.random() : _item$key,
             _item$config = item.config,
             config = _item$config === undefined ? {} : _item$config,
             render = item.render,
+            renderFix = item.renderFix,
             _item$bindSearch = item.bindSearch,
             bindSearch = _item$bindSearch === undefined ? false : _item$bindSearch,
             type = item.type,
-            _item$formItemLayout = item.formItemLayout,
-            formItemLayout = _item$formItemLayout === undefined ? {} : _item$formItemLayout,
-            renderFix = item.renderFix,
-            _item$extra = item.extra,
-            extra = _item$extra === undefined ? null : _item$extra,
-            _item$hasFeedback = item.hasFeedback,
-            hasFeedback = _item$hasFeedback === undefined ? false : _item$hasFeedback,
-            props = objectWithoutProperties(item, ['label', 'unbind', 'visible', 'key', 'config', 'render', 'bindSearch', 'type', 'formItemLayout', 'renderFix', 'extra', 'hasFeedback']);
+            props = objectWithoutProperties(item, ['visible', 'label', 'extra', 'hasFeedback', 'formItemLayout', 'unbind', 'key', 'config', 'render', 'renderFix', 'bindSearch', 'type']);
 
         var ret = null;
         if (visible === false) {

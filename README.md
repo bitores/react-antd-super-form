@@ -31,10 +31,10 @@ class Example extends Component {
 }
 ```
 
-[详细使用文档](./src/README.md)
-[SuperPage 使用文档](./src/docs/SuperPage.md)
-[Form 使用文档](./src/docs/Form.md)
-[Table&List 使用文档](./src/docs/Table|List.md)
+- [详细使用文档](./src/README.md)
+- [SuperPage 使用文档](./src/docs/SuperPage.md)
+- [Form 使用文档](./src/docs/Form.md)
+- [Table&List 使用文档](./src/docs/Table|List.md)
 
 
 visible

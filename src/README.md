@@ -31,9 +31,9 @@ class Example extends Component {
 }
 ```
 
-[SuperPage 使用文档](./docs/SuperPage.md)
-[Form 使用文档](./docs/Form.md)
-[Table&List 使用文档](./docs/Table|List.md)
+- [SuperPage 使用文档](./docs/SuperPage.md)
+- [Form 使用文档](./docs/Form.md)
+- [Table&List 使用文档](./docs/Table|List.md)
 
 
 ### 封装原则

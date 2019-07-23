@@ -14,7 +14,7 @@ class _Form extends Component {
     }
   }
 
-  _renderElement(form, getFieldDecorator, autoSearchEvent, data = [], cls) {
+  _renderElement(form, getFieldDecorator, autoSearchEvent, data = []) {
     return data.map((item, index) => {
       const {
         // 组件是否渲染
@@ -52,7 +52,7 @@ class _Form extends Component {
       } else if (type === 'span') {
         return <span key={index} {...props} >{label}</span>
       } else if (type === 'group') {
-        ret = this._renderElement(form, getFieldDecorator, autoSearchEvent, item.children, 'group')
+        ret = this._renderElement(form, getFieldDecorator, autoSearchEvent, item.children)
       } else if (render) {
         let renderItem = render(form, Form.Item) || <input placeholder="default: render need return"></input>;
         ret = unbind === true ? renderItem : getFieldDecorator(key, this._transFuncToObj(config, form))(renderItem)
@@ -67,14 +67,6 @@ class _Form extends Component {
         ret = type === 'button' ? renderItem : getFieldDecorator(key, this._transFuncToObj(config, form))(renderItem)
       }
 
-      // if (cls === 'group') {
-      //   return (<span style={{ paddingRight: 10 }} key={`1_${index}`}>{ret}</span>)
-      // }
-
-      // let itemForm = type === 'group' ? <div>{ret}</div> : ret;
-
-      // let itemForm = ret;
-
       return (<Form.Item label={label} key={index} extra={extra} hasFeedback={hasFeedback} {...formItemLayout}>
         {
           renderFix ? renderFix(ret) : ret
@@ -88,10 +80,10 @@ class _Form extends Component {
     const { form, formLayout, layout = "horizontal", data = [], autoSearchEvent } = this.props;
     const { getFieldDecorator } = form;
 
-    let _formLayout = formLayout || layout === 'horizontal' ? {
+    let _formLayout = formLayout || (layout === 'horizontal' ? {
       labelCol: { span: 6 },
       wrapperCol: { span: 14 },
-    } : null
+    } : {})
 
     return (<Form layout={layout} {..._formLayout}>
       {

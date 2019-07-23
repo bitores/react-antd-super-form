@@ -31,9 +31,9 @@ class Example extends Component {
 }
 ```
 
-- [SuperPage 使用文档](./docs/SuperPage.md)
-- [Form 使用文档](./docs/Form.md)
-- [Table&List 使用文档](./docs/Table|List.md)
+- [SuperPage 使用文档](https://github.com/bitores/react-antd-super-form/blob/master/src/docs/SuperPage.md)
+- [Form 使用文档](https://github.com/bitores/react-antd-super-form/blob/master/src/docs/Form.md)
+- [Table&List 使用文档](https://github.com/bitores/react-antd-super-form/blob/master/src/docs/Table|List.md)
 
 
 ### 封装原则
@@ -52,11 +52,11 @@ class Example extends Component {
 type="table|list" //default table
 search={
   {
-    layout: 'horizontal'|'vertical'|'inline'
+    layout: 'horizontal'|'vertical'|'inline',
     formLayout: {
       labelCol: { span: 2 },
       wrapperCol: { span: 14 },
-    }
+    },
     data:[]
   }
 }

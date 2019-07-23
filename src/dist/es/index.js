@@ -428,7 +428,7 @@ var _Form = function (_Component) {
             label
           );
         } else if (type === 'group') {
-          ret = _this2._renderElement(form, getFieldDecorator, autoSearchEvent, item.children, 'group');
+          ret = _this2._renderElement(form, getFieldDecorator, autoSearchEvent, item.children);
         } else if (render) {
           var renderItem = render(form, _Form2.Item) || React.createElement('input', { placeholder: 'default: render need return' });
           ret = unbind === true ? renderItem : getFieldDecorator(key, _this2._transFuncToObj(config, form))(renderItem);
@@ -441,14 +441,6 @@ var _Form = function (_Component) {
           var _renderItem = createFormItem(_item, form);
           ret = type === 'button' ? _renderItem : getFieldDecorator(key, _this2._transFuncToObj(config, form))(_renderItem);
         }
-
-        // if (cls === 'group') {
-        //   return (<span style={{ paddingRight: 10 }} key={`1_${index}`}>{ret}</span>)
-        // }
-
-        // let itemForm = type === 'group' ? <div>{ret}</div> : ret;
-
-        // let itemForm = ret;
 
         return React.createElement(
           _Form2.Item,
@@ -471,10 +463,10 @@ var _Form = function (_Component) {
       var getFieldDecorator = form.getFieldDecorator;
 
 
-      var _formLayout = formLayout || layout === 'horizontal' ? {
+      var _formLayout = formLayout || (layout === 'horizontal' ? {
         labelCol: { span: 6 },
         wrapperCol: { span: 14 }
-      } : null;
+      } : {});
 
       return React.createElement(
         _Form2,
@@ -780,7 +772,7 @@ var _class = function (_Component) {
             return _this2._afterClose(_afterClose2);
           },
           onOk: function onOk(e) {
-            _onOk(e, _this2.refs.form, function (f) {
+            _onOk(e, _this2.form, function (f) {
               return _this2.show(f);
             });
           }

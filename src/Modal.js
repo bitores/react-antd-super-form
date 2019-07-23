@@ -57,12 +57,14 @@ export default class extends Component {
       ...pr
     } = this.props;
 
+
+
     return (
       <Modal
         visible={isVisible}
         onCancel={() => this._onCancel(onCancel)}
         afterClose={() => this._afterClose(afterClose)}
-        onOk={(e) => { onOk(e, this.refs.form, (f) => this.show(f)) }}
+        onOk={(e) => { onOk(e, this.form, (f) => this.show(f)) }}
         {...pr}
       >
         <Form

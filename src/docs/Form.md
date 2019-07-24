@@ -50,7 +50,11 @@ import {Form} from 'react-antd-super-form';
   // button 是否绑定 搜索事件
   bindSearch = false,
 
-  // 组件类型 "br|span|group|button|input|inputnumber|select|radio|radiobutton|slider|textarea|checkbox|datepicker|rangepicker|monthpicker|timepicker|switch|upload|cascader|steps"
+  // 组件类型 "br|span|hidden|group|button|input|inputnumber|select|radio|radiobutton|slider|textarea|checkbox|datepicker|rangepicker|monthpicker|timepicker|switch|upload|cascader|steps"
+  // br 可用来布局使用, 换行
+  // span 建议用来 分组组件中 控制 中间位置
+  // hidden 是input 隐藏域, 对样式做了处理,也可自行处理, type:input, hidden: true
+  // group 处理分组
   type, 
   // 组件固有属性
   ...props

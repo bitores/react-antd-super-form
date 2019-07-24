@@ -51,6 +51,16 @@ class _Form extends Component {
         return <br key={index} />
       } else if (type === 'span') {
         return <span key={index} {...props} >{label}</span>
+      } else if (type === 'hidden') {
+        return (<Form.Item key={index} style={{ display: 'none' }}>
+          {
+            getFieldDecorator(key, this._transFuncToObj(config, form))(createFormItem({
+              type: 'input',
+              hidden: true,
+            }, form))
+
+          }
+        </Form.Item>)
       } else if (type === 'group') {
         ret = this._renderElement(form, getFieldDecorator, autoSearchEvent, item.children)
       } else if (render) {

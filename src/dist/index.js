@@ -434,6 +434,15 @@ var _Form = function (_Component) {
             _extends({ key: index }, props),
             label
           );
+        } else if (type === 'hidden') {
+          return React__default.createElement(
+            _Form2.Item,
+            { key: index, style: { display: 'none' } },
+            getFieldDecorator(key, _this2._transFuncToObj(config, form))(createFormItem({
+              type: 'input',
+              hidden: true
+            }, form))
+          );
         } else if (type === 'group') {
           ret = _this2._renderElement(form, getFieldDecorator, autoSearchEvent, item.children);
         } else if (render) {
@@ -594,6 +603,14 @@ var withPagination = (function (Component) {
             _pageSize = _state._pageSize;
         var _props3 = this.props,
             action = _props3.action,
+            _props3$valueMap = _props3.valueMap,
+            valueMap = _props3$valueMap === undefined ? function (res) {
+          return {
+            status: true,
+            list: res.entry,
+            total: res.totalRecordSize
+          };
+        } : _props3$valueMap,
             _props3$actionError = _props3.actionError,
             actionError = _props3$actionError === undefined ? function (msg) {
           return console.error(msg);
@@ -616,10 +633,15 @@ var withPagination = (function (Component) {
         }
 
         request.then(function (res) {
-          if (res.status) {
+          var _valueMap = valueMap(res),
+              list = _valueMap.list,
+              total = _valueMap.total,
+              status = _valueMap.status;
+
+          if (status) {
             _this5.setState({
-              _list: res.entry,
-              _total: res.totalRecordSize
+              _list: list,
+              _total: total
             });
           } else {
             actionError(res.message);
@@ -643,8 +665,9 @@ var withPagination = (function (Component) {
             pagination = _props4$pagination === undefined ? true : _props4$pagination,
             action = _props4.action,
             params = _props4.params,
+            valueMap = _props4.valueMap,
             isInit = _props4.isInit,
-            props = objectWithoutProperties(_props4, ['pagination', 'action', 'params', 'isInit']);
+            props = objectWithoutProperties(_props4, ['pagination', 'action', 'params', 'valueMap', 'isInit']);
         // 追加 pagination 配置
 
         var _pagination = null;
@@ -870,7 +893,6 @@ var withSearch = (function (Component) {
       key: 'refresh',
       value: function refresh() {
         this.refs.hoc.refresh();
-        console.log('from hoc search');
       }
     }, {
       key: 'resetFields',

@@ -221,6 +221,33 @@ export default class extends Component {
             //   placeholder: "input here"
             // },
             {
+              label: '下单时间',
+              type: 'rangepicker',
+              key: ',time', //
+              placeholder: ['开始时间', '结束时间'],
+              suffixIcon: <Icon type="clock-circle" />,
+              showTime: true,
+              separator: '至',
+              style: {
+                width: 400
+              },
+              onChange: (dates, datesString, form) => {
+                form.setFieldsValue({
+                  startTime: datesString[0],
+                  endTime: datesString[1]
+                })
+              }
+            },
+            // 新增两个隐藏域来处理
+            {
+              type: 'hidden',
+              key: 'startTime',
+            },
+            {
+              type: 'hidden',
+              key: 'endTime',
+            },
+            {
               key: 'jj',
               type: 'rate',
               label: '评价',

@@ -33,7 +33,6 @@ export default (Component) => {
     // 由子类进行实现或重写
     refresh() {
       this.refs.hoc.refresh()
-      console.log('from hoc search')
     }
 
     resetFields() {

@@ -64,6 +64,14 @@ table={
   {
     isInit: false,
     action: func,
+    // 接口数据 返回值 res 与 组件内字段完成 映射, list 为数据数组, total 为 数据量, status 为接口是否正常
+    valueMap : (res) => {
+        return {
+          status: true,
+          list: res.entry,
+          total: res.totalRecordSize
+        }
+      },
     // params  // 在superform 中 params 自动绑定, 单独使用 table 组件, 可以手动传入 params form 参数
     // pagination // 分页配置
     // ...
@@ -132,11 +140,20 @@ pagination={{
 }}
 isInit={true}
 action={api.queryGoodsDetail}
-params={() => {
+// 接口数据 返回值 res 与 组件内字段完成 映射, list 为数据数组, total 为 数据量, status 为接口是否正常
+valueMap : (res) => {
   return {
-    contentId: this.state.productId,
+    status: true,
+    list: res.entry,
+    total: res.totalRecordSize
   }
-}}
+},
+// 所有附加参数可以通过隐藏域完成
+// params={() => {
+//   return {
+//     contentId: this.state.productId,
+//   }
+// }}
 
 
 ```

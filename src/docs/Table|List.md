@@ -16,13 +16,17 @@ import {Table, List} from 'react-antd-super-form';
   // 数据请求的处理函数
   action={func},
   // 接口数据 返回值 res 与 组件内字段完成 映射, list 为数据数组, total 为 数据量, status 为接口是否正常
-    valueMap = {(res) => {
-        return {
-          status: true,
-          list: res.entry,
-          total: res.totalRecordSize
-        }
-      }},
+  valueMap = {(res) => {
+    return {
+      status: true,
+      list: res.entry,
+      total: res.totalRecordSize
+    }
+  }},
+  pageName = {},
+  pageSizeName = {},
+  // 附加参数
+  extraParams = {()=>{}},
   // antd Table 固有属性
   {...prop}
 />

@@ -64,6 +64,21 @@ var createClass = function () {
   };
 }();
 
+var defineProperty = function (obj, key, value) {
+  if (key in obj) {
+    Object.defineProperty(obj, key, {
+      value: value,
+      enumerable: true,
+      configurable: true,
+      writable: true
+    });
+  } else {
+    obj[key] = value;
+  }
+
+  return obj;
+};
+
 var _extends = Object.assign || function (target) {
   for (var i = 1; i < arguments.length; i++) {
     var source = arguments[i];
@@ -601,13 +616,18 @@ var withPagination = (function (Component$$1) {
     }, {
       key: '_loadData',
       value: function _loadData() {
-        var _this5 = this;
+        var _babelHelpers$extends,
+            _this5 = this;
 
         var _state = this.state,
             _current = _state._current,
             _pageSize = _state._pageSize;
         var _props2 = this.props,
             action = _props2.action,
+            _props2$pageName = _props2.pageName,
+            pageName = _props2$pageName === undefined ? "page" : _props2$pageName,
+            _props2$pageSizeName = _props2.pageSizeName,
+            pageSizeName = _props2$pageSizeName === undefined ? "pageSize" : _props2$pageSizeName,
             _props2$valueMap = _props2.valueMap,
             valueMap = _props2$valueMap === undefined ? function (res) {
           return {
@@ -623,12 +643,13 @@ var withPagination = (function (Component$$1) {
             _props2$params = _props2.params,
             params = _props2$params === undefined ? function () {
           return {};
-        } : _props2$params;
+        } : _props2$params,
+            _props2$extraParams = _props2.extraParams,
+            extraParams = _props2$extraParams === undefined ? function () {
+          return {};
+        } : _props2$extraParams;
 
-        var values = _extends({}, this._filter(params()), {
-          page: _current,
-          pageSize: _pageSize
-        });
+        var values = _extends({}, this._filter(params()), extraParams(), (_babelHelpers$extends = {}, defineProperty(_babelHelpers$extends, pageName, _current), defineProperty(_babelHelpers$extends, pageSizeName, _pageSize), _babelHelpers$extends));
 
         var request = null;
         if (action) {
@@ -670,9 +691,12 @@ var withPagination = (function (Component$$1) {
             pagination = _props3$pagination === undefined ? true : _props3$pagination,
             action = _props3.action,
             params = _props3.params,
+            extraParams = _props3.extraParams,
+            pageName = _props3.pageName,
+            pageSizeName = _props3.pageSizeName,
             valueMap = _props3.valueMap,
             isInit = _props3.isInit,
-            props = objectWithoutProperties(_props3, ['pagination', 'action', 'params', 'valueMap', 'isInit']);
+            props = objectWithoutProperties(_props3, ['pagination', 'action', 'params', 'extraParams', 'pageName', 'pageSizeName', 'valueMap', 'isInit']);
         // 追加 pagination 配置
 
         var _pagination = null;

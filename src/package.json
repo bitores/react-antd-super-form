@@ -1,6 +1,6 @@
 {
   "name": "react-antd-super-form",
-  "version": "1.0.13",
+  "version": "1.0.14",
   "description": "Super Form  Creator , base on React & Antd",
   "main": "./dist/index.js",
   "module": "./dist/es/index.js",
@@ -12,6 +12,14 @@
     "react": "^16.4.1",
     "react-dom": "^16.4.1"
   },
+  "Keywords": [
+    "react",
+    "antd",
+    "form",
+    "super-form",
+    "react-antd",
+    "antd-react"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/bitores/react-antd-super-form.git"

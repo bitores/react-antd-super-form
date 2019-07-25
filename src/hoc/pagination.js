@@ -73,17 +73,23 @@ export default (Component) => {
 
     _loadData() {
       const { _current, _pageSize } = this.state;
-      const { action, valueMap = (res) => {
-        return {
-          status: true,
-          list: res.entry,
-          total: res.totalRecordSize
-        }
-      }, actionError = (msg) => console.error(msg), params = () => { return {} } } = this.props;
+      const { action, pageName = "page", pageSizeName = "pageSize",
+        valueMap = (res) => {
+          return {
+            status: true,
+            list: res.entry,
+            total: res.totalRecordSize
+          }
+        },
+        actionError = (msg) => console.error(msg),
+        params = () => { return {} },
+        extraParams = () => { return {} }
+      } = this.props;
       const values = {
         ...this._filter(params()),
-        page: _current,
-        pageSize: _pageSize
+        ...extraParams(),
+        [pageName]: _current,
+        [pageSizeName]: _pageSize
       }
 
       let request = null;
@@ -109,7 +115,7 @@ export default (Component) => {
 
     render() {
       const { _list = [], _total, _current, _pageSize } = this.state;
-      const { pagination = true, action, params, valueMap, isInit, ...props } = this.props;
+      const { pagination = true, action, params, extraParams, pageName, pageSizeName, valueMap, isInit, ...props } = this.props;
       // 追加 pagination 配置
       let _pagination = null;
       if (pagination === false) {

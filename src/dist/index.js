@@ -500,10 +500,10 @@ var withPagination = (function (Component) {
   return function (_React$Component) {
     inherits(_class, _React$Component);
 
-    function _class() {
+    function _class(props) {
       classCallCheck(this, _class);
 
-      var _this = possibleConstructorReturn(this, (_class.__proto__ || Object.getPrototypeOf(_class)).call(this));
+      var _this = possibleConstructorReturn(this, (_class.__proto__ || Object.getPrototypeOf(_class)).call(this, props));
 
       _this.state = {
         _list: [],
@@ -514,15 +514,17 @@ var withPagination = (function (Component) {
       return _this;
     }
 
+    // 在生命周期中 使用 props 时要注意其有效性
+
+
     createClass(_class, [{
-      key: 'componentWillMount',
-      value: function componentWillMount() {
+      key: '_init',
+      value: function _init(props) {
         var _this2 = this;
 
-        var _props = this.props,
-            _props$pagination = _props.pagination,
+        var _props$pagination = props.pagination,
             pagination = _props$pagination === undefined ? false : _props$pagination,
-            _props$isInit = _props.isInit,
+            _props$isInit = props.isInit,
             isInit = _props$isInit === undefined ? false : _props$isInit;
         var _pagination$current = pagination.current,
             current = _pagination$current === undefined ? 1 : _pagination$current,
@@ -539,6 +541,16 @@ var withPagination = (function (Component) {
           // 初始化 是否要求加载数据
           isInit && _this2._loadData();
         });
+      }
+    }, {
+      key: 'componentWillReceiveProps',
+      value: function componentWillReceiveProps(props) {
+        this._init(props);
+      }
+    }, {
+      key: 'componentWillMount',
+      value: function componentWillMount() {
+        this._init(this.props);
       }
     }, {
       key: '_pageChange',
@@ -561,11 +573,11 @@ var withPagination = (function (Component) {
       value: function reset() {
         var _this4 = this;
 
-        var _props2 = this.props,
-            _props2$current = _props2.current,
-            current = _props2$current === undefined ? 1 : _props2$current,
-            _props2$pageSize = _props2.pageSize,
-            pageSize = _props2$pageSize === undefined ? 10 : _props2$pageSize;
+        var _props = this.props,
+            _props$current = _props.current,
+            current = _props$current === undefined ? 1 : _props$current,
+            _props$pageSize = _props.pageSize,
+            pageSize = _props$pageSize === undefined ? 10 : _props$pageSize;
 
         this.setState({
           _list: [],
@@ -601,24 +613,24 @@ var withPagination = (function (Component) {
         var _state = this.state,
             _current = _state._current,
             _pageSize = _state._pageSize;
-        var _props3 = this.props,
-            action = _props3.action,
-            _props3$valueMap = _props3.valueMap,
-            valueMap = _props3$valueMap === undefined ? function (res) {
+        var _props2 = this.props,
+            action = _props2.action,
+            _props2$valueMap = _props2.valueMap,
+            valueMap = _props2$valueMap === undefined ? function (res) {
           return {
             status: true,
             list: res.entry,
             total: res.totalRecordSize
           };
-        } : _props3$valueMap,
-            _props3$actionError = _props3.actionError,
-            actionError = _props3$actionError === undefined ? function (msg) {
+        } : _props2$valueMap,
+            _props2$actionError = _props2.actionError,
+            actionError = _props2$actionError === undefined ? function (msg) {
           return console.error(msg);
-        } : _props3$actionError,
-            _props3$params = _props3.params,
-            params = _props3$params === undefined ? function () {
+        } : _props2$actionError,
+            _props2$params = _props2.params,
+            params = _props2$params === undefined ? function () {
           return {};
-        } : _props3$params;
+        } : _props2$params;
 
         var values = _extends({}, this._filter(params()), {
           page: _current,
@@ -660,14 +672,14 @@ var withPagination = (function (Component) {
             _current = _state2._current,
             _pageSize = _state2._pageSize;
 
-        var _props4 = this.props,
-            _props4$pagination = _props4.pagination,
-            pagination = _props4$pagination === undefined ? true : _props4$pagination,
-            action = _props4.action,
-            params = _props4.params,
-            valueMap = _props4.valueMap,
-            isInit = _props4.isInit,
-            props = objectWithoutProperties(_props4, ['pagination', 'action', 'params', 'valueMap', 'isInit']);
+        var _props3 = this.props,
+            _props3$pagination = _props3.pagination,
+            pagination = _props3$pagination === undefined ? true : _props3$pagination,
+            action = _props3.action,
+            params = _props3.params,
+            valueMap = _props3.valueMap,
+            isInit = _props3.isInit,
+            props = objectWithoutProperties(_props3, ['pagination', 'action', 'params', 'valueMap', 'isInit']);
         // 追加 pagination 配置
 
         var _pagination = null;
@@ -854,14 +866,16 @@ var withSearch = (function (Component) {
   return function (_React$Component) {
     inherits(_class, _React$Component);
 
-    function _class() {
+    function _class(props) {
       classCallCheck(this, _class);
 
-      var _this = possibleConstructorReturn(this, (_class.__proto__ || Object.getPrototypeOf(_class)).call(this));
+      var _this = possibleConstructorReturn(this, (_class.__proto__ || Object.getPrototypeOf(_class)).call(this, props));
 
       _this.state = {
         formValues: {}
       };
+
+      _this.hoc = React__default.createRef();
       return _this;
     }
 
@@ -892,7 +906,7 @@ var withSearch = (function (Component) {
     }, {
       key: 'refresh',
       value: function refresh() {
-        this.refs.hoc.refresh();
+        this.hoc.current.refresh();
       }
     }, {
       key: 'resetFields',
@@ -922,7 +936,7 @@ var withSearch = (function (Component) {
           }
         });
 
-        return React__default.createElement(Component, _extends({ ref: 'hoc' }, props));
+        return React__default.createElement(Component, _extends({ ref: this.hoc }, props));
       }
     }]);
     return _class;
@@ -932,15 +946,19 @@ var withSearch = (function (Component) {
 var SuperForm = function (_Component) {
   inherits(SuperForm, _Component);
 
-  function SuperForm() {
+  function SuperForm(props) {
     classCallCheck(this, SuperForm);
-    return possibleConstructorReturn(this, (SuperForm.__proto__ || Object.getPrototypeOf(SuperForm)).apply(this, arguments));
+
+    var _this = possibleConstructorReturn(this, (SuperForm.__proto__ || Object.getPrototypeOf(SuperForm)).call(this, props));
+
+    _this.list = React__default.createRef();
+    return _this;
   }
 
   createClass(SuperForm, [{
     key: 'refresh',
     value: function refresh() {
-      this.refs.list.refresh();
+      this.list.current.refresh();
     }
   }, {
     key: 'render',
@@ -965,7 +983,7 @@ var SuperForm = function (_Component) {
         React__default.createElement(
           'div',
           { className: styles.table },
-          type === 'table' ? React__default.createElement(Table, _extends({ ref: 'list' }, table, props)) : React__default.createElement(List, _extends({ ref: 'list' }, table, props))
+          type === 'table' ? React__default.createElement(Table, _extends({ ref: this.list }, table, props)) : React__default.createElement(List, _extends({ ref: this.list }, table, props))
         )
       );
     }

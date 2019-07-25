@@ -3,11 +3,13 @@ import React from 'react';
 export default (Component) => {
   return class extends React.Component {
 
-    constructor() {
-      super();
+    constructor(props) {
+      super(props);
       this.state = {
         formValues: {},
       }
+
+      this.hoc = React.createRef();
     }
 
     _search(fieldsValue) {
@@ -32,7 +34,7 @@ export default (Component) => {
     }
     // 由子类进行实现或重写
     refresh() {
-      this.refs.hoc.refresh()
+      this.hoc.current.refresh()
     }
 
     resetFields() {
@@ -55,7 +57,7 @@ export default (Component) => {
         autoSearchEvent: (form) => this._search(form.getFieldsValue())
       }
 
-      return <Component ref="hoc" {...props} />
+      return <Component ref={this.hoc} {...props} />
     }
   }
 }

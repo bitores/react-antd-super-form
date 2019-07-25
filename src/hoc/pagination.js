@@ -3,8 +3,8 @@ import React from 'react';
 
 export default (Component) => {
   return class extends React.Component {
-    constructor() {
-      super();
+    constructor(props) {
+      super(props);
       this.state = {
         _list: [],
         _total: 0,
@@ -13,8 +13,9 @@ export default (Component) => {
       }
     }
 
-    componentWillMount() {
-      const { pagination = false, isInit = false } = this.props;
+    // 在生命周期中 使用 props 时要注意其有效性
+    _init(props) {
+      const { pagination = false, isInit = false } = props;
       const { current = 1, pageSize = 10, onShowSizeChange } = pagination;
       this.setState({
         _list: [],
@@ -25,6 +26,15 @@ export default (Component) => {
         // 初始化 是否要求加载数据
         isInit && this._loadData();
       })
+    }
+
+    componentWillReceiveProps(props) {
+      this._init(props)
+
+    }
+
+    componentWillMount() {
+      this._init(this.props)
     }
 
     _pageChange(_current = 1, _pageSize = 10) {

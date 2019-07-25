@@ -16,9 +16,13 @@ export {
 }
 
 class SuperForm extends Component {
+  constructor(props) {
+    super(props)
+    this.list = React.createRef();
+  }
 
   refresh() {
-    this.refs.list.refresh();
+    this.list.current.refresh();
   }
 
   render() {
@@ -35,7 +39,7 @@ class SuperForm extends Component {
         </div>
         <div className={styles.table}>
           {
-            type === 'table' ? <Table ref="list" {...table} {...props} /> : <List ref="list" {...table} {...props} />
+            type === 'table' ? <Table ref={this.list} {...table} {...props} /> : <List ref={this.list} {...table} {...props} />
           }
         </div>
 

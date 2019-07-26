@@ -15,11 +15,11 @@ export default (Component) => {
 
     // 在生命周期中 使用 props 时要注意其有效性
     _init(props) {
-      const { pagination = false, isInit = false } = props;
+      const { pagination = false, isInit = false, dataSource = [], total = 0 } = props;
       const { current = 1, pageSize = 10, onShowSizeChange } = pagination;
       this.setState({
-        _list: [],
-        _total: 0,
+        _list: dataSource, // 初始化数据,可来自外部
+        _total: total,
         _current: current,
         _pageSize: pageSize
       }, () => {
@@ -46,11 +46,12 @@ export default (Component) => {
       })
     }
 
+    // 好像没用到
     reset() {
-      const { current = 1, pageSize = 10 } = this.props;
+      const { current = 1, pageSize = 10, dataSource = [], total = 0 } = this.props;
       this.setState({
-        _list: [],
-        _total: 0,
+        _list: dataSource,
+        _total: total,
         _current: current,
         _pageSize: pageSize
       }, () => {
@@ -77,7 +78,7 @@ export default (Component) => {
         valueMap = (res) => {
           return {
             status: true,
-            list: res.entry,
+            dataSource: res.entry,
             total: res.totalRecordSize
           }
         },
@@ -101,10 +102,10 @@ export default (Component) => {
       }
 
       request.then(res => {
-        const { list, total, status } = valueMap(res);
+        const { dataSource, total, status } = valueMap(res);
         if (status) {
           this.setState({
-            _list: list,
+            _list: dataSource,
             _total: total
           })
         } else {

@@ -533,7 +533,11 @@ var withPagination = (function (Component$$1) {
         var _props$pagination = props.pagination,
             pagination = _props$pagination === undefined ? false : _props$pagination,
             _props$isInit = props.isInit,
-            isInit = _props$isInit === undefined ? false : _props$isInit;
+            isInit = _props$isInit === undefined ? false : _props$isInit,
+            _props$dataSource = props.dataSource,
+            dataSource = _props$dataSource === undefined ? [] : _props$dataSource,
+            _props$total = props.total,
+            total = _props$total === undefined ? 0 : _props$total;
         var _pagination$current = pagination.current,
             current = _pagination$current === undefined ? 1 : _pagination$current,
             _pagination$pageSize = pagination.pageSize,
@@ -541,8 +545,8 @@ var withPagination = (function (Component$$1) {
             onShowSizeChange = pagination.onShowSizeChange;
 
         this.setState({
-          _list: [],
-          _total: 0,
+          _list: dataSource, // 初始化数据,可来自外部
+          _total: total,
           _current: current,
           _pageSize: pageSize
         }, function () {
@@ -576,6 +580,9 @@ var withPagination = (function (Component$$1) {
           _this3._loadData();
         });
       }
+
+      // 好像没用到
+
     }, {
       key: 'reset',
       value: function reset() {
@@ -585,11 +592,15 @@ var withPagination = (function (Component$$1) {
             _props$current = _props.current,
             current = _props$current === undefined ? 1 : _props$current,
             _props$pageSize = _props.pageSize,
-            pageSize = _props$pageSize === undefined ? 10 : _props$pageSize;
+            pageSize = _props$pageSize === undefined ? 10 : _props$pageSize,
+            _props$dataSource2 = _props.dataSource,
+            dataSource = _props$dataSource2 === undefined ? [] : _props$dataSource2,
+            _props$total2 = _props.total,
+            total = _props$total2 === undefined ? 0 : _props$total2;
 
         this.setState({
-          _list: [],
-          _total: 0,
+          _list: dataSource,
+          _total: total,
           _current: current,
           _pageSize: pageSize
         }, function () {
@@ -632,7 +643,7 @@ var withPagination = (function (Component$$1) {
             valueMap = _props2$valueMap === undefined ? function (res) {
           return {
             status: true,
-            list: res.entry,
+            dataSource: res.entry,
             total: res.totalRecordSize
           };
         } : _props2$valueMap,
@@ -660,13 +671,13 @@ var withPagination = (function (Component$$1) {
 
         request.then(function (res) {
           var _valueMap = valueMap(res),
-              list = _valueMap.list,
+              dataSource = _valueMap.dataSource,
               total = _valueMap.total,
               status = _valueMap.status;
 
           if (status) {
             _this5.setState({
-              _list: list,
+              _list: dataSource,
               _total: total
             });
           } else {

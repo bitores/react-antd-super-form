@@ -18,5 +18,5 @@ hoc
 ./List.js
 ./Table.js
 ./Modal.js
-./utils.jsx
+./utils.js
 ./style.less

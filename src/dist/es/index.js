@@ -382,6 +382,25 @@ var createFormItem = (function (obj, form) {
   return formElement;
 });
 
+var filter = function filter(fieldsValue) {
+  var ret = {};
+  var formValues = {};
+  var values = _extends({}, fieldsValue);
+  // 移除空的字段
+  Object.keys(values).forEach(function (key) {
+    var val = values[key];
+    if (Object.prototype.toString.call(val) !== "[object Undefined]" && val !== '') {
+      formValues[key] = val;
+    }
+  });
+
+  Object.keys(formValues).map(function (key) {
+    if (!key.includes(',')) ret[key] = formValues[key];
+  });
+
+  return ret;
+};
+
 var _Form = function (_Component) {
   inherits(_Form, _Component);
 
@@ -396,31 +415,10 @@ var _Form = function (_Component) {
       var form = this.props.form;
 
       var fieldsValue = form.getFieldsValue();
-      var formValues = {};
-      var values = _extends({}, fieldsValue);
-      // 移除空的字段
-      Object.keys(values).forEach(function (key) {
-        var val = values[key];
-        if (Object.prototype.toString.call(val) !== "[object Undefined]" && val !== '') {
-          formValues[key] = val;
-        }
-      });
 
-      formValues = this._filter(formValues);
+      var formValues = filter(fieldsValue);
 
       return formValues;
-    }
-  }, {
-    key: '_filter',
-    value: function _filter() {
-      var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-
-      var ret = {};
-      Object.keys(params).map(function (key) {
-        if (!key.includes(',')) ret[key] = params[key];
-      });
-
-      return ret;
     }
   }, {
     key: '_transFuncToObj',
@@ -644,16 +642,6 @@ var withPagination = (function (Component$$1) {
       value: function refresh() {
         this._loadData();
       }
-
-      // _filter(params = {}) {
-      //   const ret = {};
-      //   Object.keys(params).map(key => {
-      //     if (!key.includes(',')) ret[key] = params[key]
-      //   })
-
-      //   return ret;
-      // }
-
     }, {
       key: "_loadData",
       value: function _loadData() {
@@ -942,17 +930,7 @@ var withSearch = (function (Component$$1) {
       value: function _search(fieldsValue) {
         var _this2 = this;
 
-        var formValues = {};
-        var values = _extends({}, fieldsValue);
-        // 移除空的字段
-        Object.keys(values).forEach(function (key) {
-          var val = values[key];
-          if (Object.prototype.toString.call(val) !== "[object Undefined]" && val !== '') {
-            formValues[key] = val;
-          }
-        });
-        // 屏蔽某些字段
-        formValues = this._filter(formValues);
+        var formValues = filter(fieldsValue);
 
         this.setState({
           formValues: formValues
@@ -975,18 +953,6 @@ var withSearch = (function (Component$$1) {
         this.setState({
           formValues: {}
         });
-      }
-    }, {
-      key: '_filter',
-      value: function _filter() {
-        var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-
-        var ret = {};
-        Object.keys(params).map(function (key) {
-          if (!key.includes(',')) ret[key] = params[key];
-        });
-
-        return ret;
       }
     }, {
       key: '_getSearchParams',

@@ -1,5 +1,5 @@
 import React from 'react';
-import { filter } from './utils';
+import { filter } from '../utils';
 
 
 export default (Component) => {

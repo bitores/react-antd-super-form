@@ -62,19 +62,30 @@ search={
 }
 table={
   {
-    isInit: false,
-    action: func,
+    // 扩展属性
+    // 是否开始时进行 action 进行调用
+    isInit:true|false,
+    // 数据请求的处理函数
+    action:func,
     // 接口数据 返回值 res 与 组件内字段完成 映射, list 为数据数组, total 为 数据量, status 为接口是否正常
-    valueMap : (res) => {
-        return {
-          status: true,
-          list: res.entry,
-          total: res.totalRecordSize
-        }
-      },
-    // params  // 在superform 中 params 自动绑定, 单独使用 table 组件, 可以手动传入 params form 参数
-    // pagination // 分页配置
-    // ...
+    valueMap:(res) => {
+      return {
+        status: res.status,
+        dataSource: res.entry,
+        total: res.totalRecordSize
+      }
+    },
+    // 分页请求字段重命名[可选]
+    pageName:'',
+    pageSizeName:'',
+    // 附加参数
+    extraParams : ()=>{},
+    // 初始化数据量[可选]
+    total: 0,
+    // 初始化数据[可选]
+    dataSource:[],
+    // antd Table 固有属性
+    ...prop
   }
 }
 />
@@ -138,23 +149,30 @@ rowKey={"id"}
 pagination={{
 
 }}
-isInit={true}
-action={api.queryGoodsDetail}
+// 扩展属性
+// 是否开始时进行 action 进行调用
+isInit={true|false}
+// 数据请求的处理函数
+action={func}
 // 接口数据 返回值 res 与 组件内字段完成 映射, list 为数据数组, total 为 数据量, status 为接口是否正常
-valueMap : (res) => {
+valueMap = {(res) => {
   return {
-    status: true,
-    list: res.entry,
+    status: res.status,
+    dataSource: res.entry,
     total: res.totalRecordSize
   }
-},
-// 所有附加参数可以通过隐藏域完成
-// params={() => {
-//   return {
-//     contentId: this.state.productId,
-//   }
-// }}
-
+}}
+// 分页请求字段重命名[可选]
+pageName = {}
+pageSizeName = {}
+// 附加参数
+extraParams = {()=>{}}
+// 初始化数据量[可选]
+total={0}
+// 初始化数据[可选]
+dataSource={[]}
+// antd Table 固有属性
+{...prop}
 
 ```
 

@@ -10,7 +10,10 @@ import {Table, List} from 'react-antd-super-form';
 ### 字段配置
 ```jsx
 <Table
+
   // 扩展属性
+  // 是否使用 antd 中 List or Table
+  type="list|table"
   // 是否开始时进行 action 进行调用
   isInit={true|false}
   // 数据请求的处理函数
@@ -19,7 +22,7 @@ import {Table, List} from 'react-antd-super-form';
   valueMap = {(res) => {
     return {
       status: res.status,
-      list: res.entry,
+      dataSource: res.entry,
       total: res.totalRecordSize
     }
   }}

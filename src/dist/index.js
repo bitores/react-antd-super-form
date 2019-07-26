@@ -731,8 +731,9 @@ var withPagination = (function (Component) {
             pageName = _props3.pageName,
             pageSizeName = _props3.pageSizeName,
             valueMap = _props3.valueMap,
+            actionError = _props3.actionError,
             isInit = _props3.isInit,
-            props = objectWithoutProperties(_props3, ["pagination", "action", "params", "extraParams", "pageName", "pageSizeName", "valueMap", "isInit"]);
+            props = objectWithoutProperties(_props3, ["pagination", "action", "params", "extraParams", "pageName", "pageSizeName", "valueMap", "actionError", "isInit"]);
         // 追加 pagination 配置
 
         var _pagination = null;

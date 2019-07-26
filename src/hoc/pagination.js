@@ -107,7 +107,7 @@ export default (Component) => {
 
     render() {
       const { _list = [], _total, _current, _pageSize } = this.state;
-      const { pagination = true, action, params, extraParams, pageName, pageSizeName, valueMap, isInit, ...props } = this.props;
+      const { pagination = true, action, params, extraParams, pageName, pageSizeName, valueMap, actionError, isInit, ...props } = this.props;
       // 追加 pagination 配置
       let _pagination = null;
       if (pagination === false) {

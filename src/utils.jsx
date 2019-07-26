@@ -1,4 +1,5 @@
 const filter = function (fieldsValue) {
+  const ret = {};
   let formValues = {};
   const values = {
     ...fieldsValue
@@ -10,8 +11,13 @@ const filter = function (fieldsValue) {
       formValues[key] = val;
     }
   });
-  return formValues;
-}
 
+
+  Object.keys(formValues).map(key => {
+    if (!key.includes(',')) ret[key] = formValues[key]
+  })
+
+  return ret;
+}
 
 export { filter };

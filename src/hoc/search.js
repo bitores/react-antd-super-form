@@ -1,4 +1,6 @@
 import React from 'react';
+import { filter } from './utils';
+
 
 export default (Component) => {
   return class extends React.Component {
@@ -13,17 +15,7 @@ export default (Component) => {
     }
 
     _search(fieldsValue) {
-      let formValues = {};
-      const values = {
-        ...fieldsValue
-      };
-      // 移除空的字段
-      Object.keys(values).forEach(key => {
-        let val = values[key];
-        if (Object.prototype.toString.call(val) !== "[object Undefined]" && val !== '') {
-          formValues[key] = val;
-        }
-      });
+      let formValues = filter(fieldsValue);
 
       this.setState({
         formValues
@@ -61,7 +53,3 @@ export default (Component) => {
     }
   }
 }
-
-
-// 1. 搜索过后, 表单状态才进行了保存, 后期可直接获取
-// 2. 想要获取表单数据, 必须进行一次搜索

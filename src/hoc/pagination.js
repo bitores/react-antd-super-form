@@ -63,15 +63,6 @@ export default (Component) => {
       this._loadData();
     }
 
-    _filter(params = {}) {
-      const ret = {};
-      Object.keys(params).map(key => {
-        if (!key.includes(',')) ret[key] = params[key]
-      })
-
-      return ret;
-    }
-
     _loadData() {
       const { _current, _pageSize } = this.state;
       const { action, pageName = "page", pageSizeName = "pageSize",
@@ -87,7 +78,7 @@ export default (Component) => {
         extraParams = () => { return {} }
       } = this.props;
       const values = {
-        ...this._filter(params()),
+        ...params(),
         ...extraParams(),
         [pageName]: _current,
         [pageSizeName]: _pageSize

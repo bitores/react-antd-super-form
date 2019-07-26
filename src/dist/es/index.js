@@ -391,13 +391,45 @@ var _Form = function (_Component) {
   }
 
   createClass(_Form, [{
+    key: 'getFieldsValue',
+    value: function getFieldsValue() {
+      var form = this.props.form;
+
+      var fieldsValue = form.getFieldsValue();
+      var formValues = {};
+      var values = _extends({}, fieldsValue);
+      // 移除空的字段
+      Object.keys(values).forEach(function (key) {
+        var val = values[key];
+        if (Object.prototype.toString.call(val) !== "[object Undefined]" && val !== '') {
+          formValues[key] = val;
+        }
+      });
+
+      formValues = this._filter(formValues);
+
+      return formValues;
+    }
+  }, {
+    key: '_filter',
+    value: function _filter() {
+      var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+      var ret = {};
+      Object.keys(params).map(function (key) {
+        if (!key.includes(',')) ret[key] = params[key];
+      });
+
+      return ret;
+    }
+  }, {
     key: '_transFuncToObj',
     value: function _transFuncToObj() {
       var func = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
       var form = arguments[1];
 
       if (Object.prototype.toString.call(func) === '[object Function]') {
-        return func(form);
+        return func(form, this);
       } else {
         return func;
       }
@@ -463,7 +495,7 @@ var _Form = function (_Component) {
           }, props);
           if (bindSearch) _item.autoSearchEvent = autoSearchEvent;
           var _renderItem = createFormItem(_item, form);
-          ret = type === 'button' ? _renderItem : getFieldDecorator(key, _this2._transFuncToObj(config, form))(_renderItem);
+          ret = type === 'button' ? _renderItem : getFieldDecorator(key, _this2._transFuncToObj(config, form, _this2))(_renderItem);
         }
 
         return React.createElement(
@@ -526,7 +558,7 @@ var withPagination = (function (Component$$1) {
 
 
     createClass(_class, [{
-      key: '_init',
+      key: "_init",
       value: function _init(props) {
         var _this2 = this;
 
@@ -555,17 +587,17 @@ var withPagination = (function (Component$$1) {
         });
       }
     }, {
-      key: 'componentWillReceiveProps',
+      key: "componentWillReceiveProps",
       value: function componentWillReceiveProps(props) {
         this._init(props);
       }
     }, {
-      key: 'componentWillMount',
+      key: "componentWillMount",
       value: function componentWillMount() {
         this._init(this.props);
       }
     }, {
-      key: '_pageChange',
+      key: "_pageChange",
       value: function _pageChange() {
         var _this3 = this;
 
@@ -584,7 +616,7 @@ var withPagination = (function (Component$$1) {
       // 好像没用到
 
     }, {
-      key: 'reset',
+      key: "reset",
       value: function reset() {
         var _this4 = this;
 
@@ -608,24 +640,22 @@ var withPagination = (function (Component$$1) {
         });
       }
     }, {
-      key: 'refresh',
+      key: "refresh",
       value: function refresh() {
         this._loadData();
       }
-    }, {
-      key: '_filter',
-      value: function _filter() {
-        var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
-        var ret = {};
-        Object.keys(params).map(function (key) {
-          if (!key.includes(',')) ret[key] = params[key];
-        });
+      // _filter(params = {}) {
+      //   const ret = {};
+      //   Object.keys(params).map(key => {
+      //     if (!key.includes(',')) ret[key] = params[key]
+      //   })
 
-        return ret;
-      }
+      //   return ret;
+      // }
+
     }, {
-      key: '_loadData',
+      key: "_loadData",
       value: function _loadData() {
         var _babelHelpers$extends,
             _this5 = this;
@@ -660,7 +690,7 @@ var withPagination = (function (Component$$1) {
           return {};
         } : _props2$extraParams;
 
-        var values = _extends({}, this._filter(params()), extraParams(), (_babelHelpers$extends = {}, defineProperty(_babelHelpers$extends, pageName, _current), defineProperty(_babelHelpers$extends, pageSizeName, _pageSize), _babelHelpers$extends));
+        var values = _extends({}, params(), extraParams(), (_babelHelpers$extends = {}, defineProperty(_babelHelpers$extends, pageName, _current), defineProperty(_babelHelpers$extends, pageSizeName, _pageSize), _babelHelpers$extends));
 
         var request = null;
         if (action) {
@@ -686,7 +716,7 @@ var withPagination = (function (Component$$1) {
         });
       }
     }, {
-      key: 'render',
+      key: "render",
       value: function render() {
         var _this6 = this;
 
@@ -707,7 +737,7 @@ var withPagination = (function (Component$$1) {
             pageSizeName = _props3.pageSizeName,
             valueMap = _props3.valueMap,
             isInit = _props3.isInit,
-            props = objectWithoutProperties(_props3, ['pagination', 'action', 'params', 'extraParams', 'pageName', 'pageSizeName', 'valueMap', 'isInit']);
+            props = objectWithoutProperties(_props3, ["pagination", "action", "params", "extraParams", "pageName", "pageSizeName", "valueMap", "isInit"]);
         // 追加 pagination 配置
 
         var _pagination = null;
@@ -723,11 +753,11 @@ var withPagination = (function (Component$$1) {
               _onChange = _pagination$onChange === undefined ? function () {} : _pagination$onChange,
               _pagination$showTotal = pagination.showTotal,
               showTotal = _pagination$showTotal === undefined ? function (total, range) {
-            return range[0] + '-' + range[1] + ' \u6761, \u5171 ' + total + ' \u6761';
+            return range[0] + "-" + range[1] + " \u6761, \u5171 " + total + " \u6761";
           } : _pagination$showTotal,
               _pagination$onShowSiz = pagination.onShowSizeChange,
               _onShowSizeChange = _pagination$onShowSiz === undefined ? function () {} : _pagination$onShowSiz,
-              config = objectWithoutProperties(pagination, ['total', 'current', 'pageSize', 'showSizeChanger', 'onChange', 'showTotal', 'onShowSizeChange']);
+              config = objectWithoutProperties(pagination, ["total", "current", "pageSize", "showSizeChanger", "onChange", "showTotal", "onShowSizeChange"]);
 
           _pagination = _extends({
             total: _total,
@@ -921,6 +951,8 @@ var withSearch = (function (Component$$1) {
             formValues[key] = val;
           }
         });
+        // 屏蔽某些字段
+        formValues = this._filter(formValues);
 
         this.setState({
           formValues: formValues
@@ -943,6 +975,18 @@ var withSearch = (function (Component$$1) {
         this.setState({
           formValues: {}
         });
+      }
+    }, {
+      key: '_filter',
+      value: function _filter() {
+        var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+        var ret = {};
+        Object.keys(params).map(function (key) {
+          if (!key.includes(',')) ret[key] = params[key];
+        });
+
+        return ret;
       }
     }, {
       key: '_getSearchParams',

@@ -1,14 +1,23 @@
 import React, { Component } from 'react';
 import { message, Form } from 'antd';
 import createFormItem from './builder';
+import { filter } from './utils';
 
 
 class _Form extends Component {
 
+  getFieldsValue() {
+    const { form } = this.props;
+    let fieldsValue = form.getFieldsValue();
+
+    let formValues = filter(fieldsValue);
+
+    return formValues;
+  }
 
   _transFuncToObj(func = {}, form) {
     if (Object.prototype.toString.call(func) === '[object Function]') {
-      return func(form)
+      return func(form, this)
     } else {
       return func;
     }
@@ -74,7 +83,7 @@ class _Form extends Component {
         }
         if (bindSearch) _item.autoSearchEvent = autoSearchEvent;
         let renderItem = createFormItem(_item, form);
-        ret = type === 'button' ? renderItem : getFieldDecorator(key, this._transFuncToObj(config, form))(renderItem)
+        ret = type === 'button' ? renderItem : getFieldDecorator(key, this._transFuncToObj(config, form, this))(renderItem)
       }
 
       return (<Form.Item label={label} key={index} extra={extra} hasFeedback={hasFeedback} {...formItemLayout}>

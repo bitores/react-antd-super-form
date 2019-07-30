@@ -33,6 +33,7 @@ export default {
   datepicker: DatePicker,
   rangepicker: DatePicker.RangePicker,
   monthpicker: DatePicker.MonthPicker,
+  weekpicker: DatePicker.WeekPicker,
   timepicker: TimePicker,
 
   // 类二
@@ -41,19 +42,16 @@ export default {
   // 类三
   select: Select,
   mentions: Mentions,
-  radio: Radio,
-  radiogroup: Radio,
+  radio: Radio.Group,
+  radiogroup: Radio.Group,
   radiobutton: Radio,
-  checkbox: Checkbox,
-  checkboxgroup: Checkbox,
+  checkbox: Checkbox.Group,
+  checkboxgroup: Checkbox.Group,
 
   //
   steps: Steps,
 
   // 类四
   upload: Upload,
-
-
-  //
-
+  uploaddragger: Upload.Dragger,
 }

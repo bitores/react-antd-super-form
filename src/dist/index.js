@@ -170,6 +170,7 @@ var AntdElements = {
   datepicker: _DatePicker,
   rangepicker: _DatePicker.RangePicker,
   monthpicker: _DatePicker.MonthPicker,
+  weekpicker: _DatePicker.WeekPicker,
   timepicker: _TimePicker,
 
   // 类二
@@ -178,20 +179,18 @@ var AntdElements = {
   // 类三
   select: _Select,
   mentions: _Mentions,
-  radio: _Radio,
-  radiogroup: _Radio,
+  radio: _Radio.Group,
+  radiogroup: _Radio.Group,
   radiobutton: _Radio,
-  checkbox: _Checkbox,
-  checkboxgroup: _Checkbox,
+  checkbox: _Checkbox.Group,
+  checkboxgroup: _Checkbox.Group,
 
   //
   steps: _Steps,
 
   // 类四
-  upload: _Upload
-
-  //
-
+  upload: _Upload,
+  uploaddragger: _Upload.Dragger
 };
 
 var toString = Object.prototype.toString;
@@ -258,6 +257,7 @@ var createFormItem = (function (obj, form) {
     case 'datepicker':
     case 'rangepicker':
     case 'monthpicker':
+    case 'weekpicker':
     case 'timepicker':
     case 'cascader':
     case 'autocomplete':
@@ -267,39 +267,30 @@ var createFormItem = (function (obj, form) {
       }
       break;
 
-    // case '':
-    //   case 'upload':
-    // {
-    //   let {
-    //     innerHTML = () => {
-    //       return (<div style={uploadStyle}>
-    //         <Icon type={this.state.loading ? 'loading' : 'plus'} />
-    //         <div className="ant-upload-text">上传</div>
-    //       </div>)
-    //     }
-    //     , ...pr
-    //   } = props;
-
-    //   formElement = <Component {...pr} >
-    //     {
-    //       innerHTML && innerHTML()
-    //     }
-    //   </Component>
-    // }
-
-    // break;
-
-    case 'select':
-    case 'mentions':
+    case 'checkbox':
+    case 'radio':
+    case 'checkboxgroup':
+    case 'radiogroup':
       {
         var _props$options = props.options,
             options = _props$options === undefined ? [] : _props$options,
             _pr = objectWithoutProperties(props, ['options']);
 
+        formElement = React__default.createElement(Component, _extends({ options: transToArray(options) }, _pr));
+      }
+      break;
+
+    case 'select':
+    case 'mentions':
+      {
+        var _props$options2 = props.options,
+            _options = _props$options2 === undefined ? [] : _props$options2,
+            _pr2 = objectWithoutProperties(props, ['options']);
+
         formElement = React__default.createElement(
           Component,
-          _pr,
-          transToArray(options).map(function (item) {
+          _pr2,
+          transToArray(_options).map(function (item) {
             return React__default.createElement(
               Component.Option,
               { key: item.key || item.value, value: item.value },
@@ -310,42 +301,20 @@ var createFormItem = (function (obj, form) {
       }
       break;
 
-    case 'checkbox':
-    case 'radio':
+    case 'uploaddragger':
     case 'upload':
       {
         var innerHTML = props.innerHTML,
-            _pr2 = objectWithoutProperties(props, ['innerHTML']);
+            _pr3 = objectWithoutProperties(props, ['innerHTML']);
 
         formElement = React__default.createElement(
           Component,
-          _pr2,
+          _pr3,
           innerHTML && innerHTML()
         );
       }
       break;
 
-    case 'checkboxgroup':
-    case 'radiogroup':
-      {
-        var _props$options2 = props.options,
-            _options = _props$options2 === undefined ? [] : _props$options2,
-            _pr3 = objectWithoutProperties(props, ['options']);
-
-        formElement = React__default.createElement(
-          Component.Group,
-          _pr3,
-          transToArray(_options).map(function (item) {
-            return React__default.createElement(
-              Component,
-              { key: item.key || item.value, value: item.value },
-              item.label
-            );
-          })
-        );
-      }
-
-      break;
     case 'radiobutton':
       {
         var _props$options3 = props.options,

@@ -67,6 +67,7 @@ export default (obj, form) => {
     case 'datepicker':
     case 'rangepicker':
     case 'monthpicker':
+    case 'weekpicker':
     case 'timepicker':
     case 'cascader':
     case 'autocomplete':
@@ -75,99 +76,66 @@ export default (obj, form) => {
     }
       break;
 
-    // case '':
-    //   case 'upload':
-    // {
-    //   let {
-    //     innerHTML = () => {
-    //       return (<div style={uploadStyle}>
-    //         <Icon type={this.state.loading ? 'loading' : 'plus'} />
-    //         <div className="ant-upload-text">上传</div>
-    //       </div>)
-    //     }
-    //     , ...pr
-    //   } = props;
-
-    //   formElement = <Component {...pr} >
-    //     {
-    //       innerHTML && innerHTML()
-    //     }
-    //   </Component>
-    // }
-
-    // break;
-
-    case 'select':
-    case 'mentions':
-      {
-        const { options = [], ...pr } = props;
-
-        formElement = (<Component {...pr} >
-          {transToArray(options).map(item => {
-            return (
-              <Component.Option key={item.key || item.value} value={item.value}>{item.label}</Component.Option>
-            );
-          })}
-        </Component>)
-      }
-      break;
-
     case 'checkbox':
     case 'radio':
-    case 'upload':
-      {
-        const { innerHTML, ...pr } = props;
-
-        formElement = <Component {...pr}>{innerHTML && innerHTML()}</Component>
-      }
-      break;
-
     case 'checkboxgroup':
-    case 'radiogroup':
-      {
-        const { options = [], ...pr } = props;
-
-        formElement = (<Component.Group {...pr} >
-          {transToArray(options).map(item => {
-            return (
-              <Component key={item.key || item.value} value={item.value}>{item.label}</Component>
-            );
-          })}
-        </Component.Group>)
-      }
-
-      break;
-    case 'radiobutton':
-      {
-        const { options = [], ...pr } = props;
-
-        formElement = (<Component.Group {...pr} >
-          {transToArray(options).map(item => {
-            return (
-              <Component.Button key={item.key || item.value} value={item.value}>{item.label}</Component.Button>
-            );
-          })}
-        </Component.Group>)
-      }
+    case 'radiogroup': {
+      const { options = [], ...pr } = props;
+      formElement = <Component options={transToArray(options)} {...pr} />
+    }
       break;
 
-    case 'steps':
-      {
-        const { options = [], ...pr } = props;
+    case 'select':
+    case 'mentions': {
+      const { options = [], ...pr } = props;
 
-        formElement = (<Component {...pr} >
-          {transToArray(options).map((item, ind) => {
-            return (
-              <Component.Step key={item.key || item.title} {...item}></Component.Step>
-            );
-          })}
-        </Component>)
-      }
+      formElement = (<Component {...pr} >
+        {transToArray(options).map(item => {
+          return (
+            <Component.Option key={item.key || item.value} value={item.value}>{item.label}</Component.Option>
+          );
+        })}
+      </Component>)
+    }
+      break;
+
+    case 'uploaddragger':
+    case 'upload': {
+      const { innerHTML, ...pr } = props;
+
+      formElement = <Component {...pr}>{innerHTML && innerHTML()}</Component>
+    }
       break;
 
 
-    default:
-      formElement = <input placeholder="default element" />;
+    case 'radiobutton': {
+      const { options = [], ...pr } = props;
+
+      formElement = (<Component.Group {...pr} >
+        {transToArray(options).map(item => {
+          return (
+            <Component.Button key={item.key || item.value} value={item.value}>{item.label}</Component.Button>
+          );
+        })}
+      </Component.Group>)
+    }
+      break;
+
+    case 'steps': {
+      const { options = [], ...pr } = props;
+
+      formElement = (<Component {...pr} >
+        {transToArray(options).map((item, ind) => {
+          return (
+            <Component.Step key={item.key || item.title} {...item}></Component.Step>
+          );
+        })}
+      </Component>)
+    }
+      break;
+
+
+    default: formElement = <input placeholder="default element" />;
   }
 
   return formElement;

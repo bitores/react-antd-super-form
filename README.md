@@ -36,19 +36,6 @@ class Example extends Component {
 - [Form 使用文档](./src/docs/Form.md)
 - [Table&List 使用文档](./src/docs/Table|List.md)
 
-
-visible
-
-Form.Item 属性
-
-label
-extra
-formItemLayout
-
-
-
-
-
 ## License
 
 MIT © [bitores](https://github.com/bitores)

@@ -29,15 +29,19 @@ class SuperForm extends Component {
     const {
       type = 'table',   // 类型
       search, autoSearchEvent, // search form 配置, onSearch 为自动传入事件
-      table, ...props  // table or list 配置
+      table,  // table or list 配置
+      // 样式
+      formStyle = {},
+      tableStyle = {},
+      ...props,
     } = this.props;
 
     return (
       <div>
-        <div className={styles.form}>
+        <div className={styles.form} style={formStyle}>
           <Form {...search} autoSearchEvent={autoSearchEvent} />
         </div>
-        <div className={styles.table}>
+        <div className={styles.table} style={tableStyle}>
           {
             type === 'table' ? <Table ref={this.list} {...table} {...props} /> : <List ref={this.list} {...table} {...props} />
           }

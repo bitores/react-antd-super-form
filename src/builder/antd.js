@@ -19,6 +19,8 @@ import {
   Steps
 } from 'antd';
 
+import Func from './Func';
+
 export default {
   // 类一
   input: Input,
@@ -54,4 +56,7 @@ export default {
   // 类四
   upload: Upload,
   uploaddragger: Upload.Dragger,
+
+  // 自定义
+  func: Func,
 }

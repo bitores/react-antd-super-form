@@ -135,6 +135,12 @@ export default (obj, form) => {
       break;
 
 
+    case 'func': {
+      formElement = <Component {...props} />
+    }
+      break;
+
+
     default: formElement = <input placeholder="default element" />;
   }
 

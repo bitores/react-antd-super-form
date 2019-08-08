@@ -4,6 +4,8 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
 
+var React = require('react');
+var React__default = _interopDefault(React);
 require('antd/es/upload/style');
 var _Upload = _interopDefault(require('antd/es/upload'));
 require('antd/es/steps/style');
@@ -36,8 +38,6 @@ require('antd/es/input-number/style');
 var _InputNumber = _interopDefault(require('antd/es/input-number'));
 require('antd/es/input/style');
 var _Input = _interopDefault(require('antd/es/input'));
-var React = require('react');
-var React__default = _interopDefault(React);
 require('antd/es/form/style');
 var _Form2 = _interopDefault(require('antd/es/form'));
 require('antd/es/table/style');
@@ -156,6 +156,39 @@ var injectEvent = (function (obj, form) {
   return newObj;
 });
 
+var _class = function (_Component) {
+  inherits(_class, _Component);
+
+  function _class() {
+    var _ref;
+
+    var _temp, _this, _ret;
+
+    classCallCheck(this, _class);
+
+    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    return _ret = (_temp = (_this = possibleConstructorReturn(this, (_ref = _class.__proto__ || Object.getPrototypeOf(_class)).call.apply(_ref, [this].concat(args))), _this), _this.value = function () {
+      return 'xxx';
+    }, _this.onChange = function () {
+      console.log('set value');
+      _this.setState({
+        value: 'xxx'
+      });
+    }, _temp), possibleConstructorReturn(_this, _ret);
+  }
+
+  createClass(_class, [{
+    key: 'render',
+    value: function render() {
+      return React__default.createElement('div', { style: { display: 'none' } });
+    }
+  }]);
+  return _class;
+}(React.Component);
+
 var AntdElements = {
   // 类一
   input: _Input,
@@ -190,7 +223,10 @@ var AntdElements = {
 
   // 类四
   upload: _Upload,
-  uploaddragger: _Upload.Dragger
+  uploaddragger: _Upload.Dragger,
+
+  // 自定义
+  func: _class
 };
 
 var toString = Object.prototype.toString;
@@ -348,6 +384,12 @@ var createFormItem = (function (obj, form) {
             return React__default.createElement(Component.Step, _extends({ key: item.key || item.title }, item));
           })
         );
+      }
+      break;
+
+    case 'func':
+      {
+        formElement = React__default.createElement(Component, props);
       }
       break;
 
@@ -751,7 +793,7 @@ var Table = withPagination(_Table);
 
 var List = withPagination(_List);
 
-var _class = function (_Component) {
+var _class$1 = function (_Component) {
   inherits(_class, _Component);
 
   function _class() {
@@ -984,7 +1026,11 @@ var SuperForm = function (_Component) {
           search = _props.search,
           autoSearchEvent = _props.autoSearchEvent,
           table = _props.table,
-          props = objectWithoutProperties(_props, ['type', 'search', 'autoSearchEvent', 'table']);
+          _props$formStyle = _props.formStyle,
+          formStyle = _props$formStyle === undefined ? {} : _props$formStyle,
+          _props$tableStyle = _props.tableStyle,
+          tableStyle = _props$tableStyle === undefined ? {} : _props$tableStyle,
+          props = objectWithoutProperties(_props, ['type', 'search', 'autoSearchEvent', 'table', 'formStyle', 'tableStyle']);
 
 
       return React__default.createElement(
@@ -992,12 +1038,12 @@ var SuperForm = function (_Component) {
         null,
         React__default.createElement(
           'div',
-          { className: styles.form },
+          { className: styles.form, style: formStyle },
           React__default.createElement(Form, _extends({}, search, { autoSearchEvent: autoSearchEvent }))
         ),
         React__default.createElement(
           'div',
-          { className: styles.table },
+          { className: styles.table, style: tableStyle },
           type === 'table' ? React__default.createElement(Table, _extends({ ref: this.list }, table, props)) : React__default.createElement(List, _extends({ ref: this.list }, table, props))
         )
       );
@@ -1011,6 +1057,6 @@ var index = withSearch(SuperForm);
 exports.Form = Form;
 exports.Table = Table;
 exports.List = List;
-exports.Modal = _class;
+exports.Modal = _class$1;
 exports.default = index;
 //# sourceMappingURL=index.js.map

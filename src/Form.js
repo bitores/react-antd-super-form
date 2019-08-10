@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { message, Form } from 'antd';
 import createFormItem from './builder';
 import { filter } from './utils';
 
 
-class _Form extends Component {
+class _Form extends React.PureComponent {
 
   getFieldsValue() {
     const { form } = this.props;

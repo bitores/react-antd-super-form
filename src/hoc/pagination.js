@@ -2,7 +2,7 @@ import React from 'react';
 
 
 export default (Component) => {
-  return class extends React.Component {
+  return class extends React.PureComponent {
     constructor(props) {
       super(props);
       this.state = {
@@ -26,11 +26,6 @@ export default (Component) => {
         // 初始化 是否要求加载数据
         isInit && this._loadData();
       })
-    }
-
-    componentWillReceiveProps(props) {
-      this._init(props)
-
     }
 
     componentWillMount() {

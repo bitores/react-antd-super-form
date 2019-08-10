@@ -419,8 +419,8 @@ var filter = function filter(fieldsValue) {
   return ret;
 };
 
-var _Form = function (_Component) {
-  inherits(_Form, _Component);
+var _Form = function (_React$PureComponent) {
+  inherits(_Form, _React$PureComponent);
 
   function _Form() {
     classCallCheck(this, _Form);
@@ -548,13 +548,13 @@ var _Form = function (_Component) {
     }
   }]);
   return _Form;
-}(React.Component);
+}(React__default.PureComponent);
 
 var Form = _Form2.create()(_Form);
 
 var withPagination = (function (Component) {
-  return function (_React$Component) {
-    inherits(_class, _React$Component);
+  return function (_React$PureComponent) {
+    inherits(_class, _React$PureComponent);
 
     function _class(props) {
       classCallCheck(this, _class);
@@ -601,11 +601,6 @@ var withPagination = (function (Component) {
           // 初始化 是否要求加载数据
           isInit && _this2._loadData();
         });
-      }
-    }, {
-      key: "componentWillReceiveProps",
-      value: function componentWillReceiveProps(props) {
-        this._init(props);
       }
     }, {
       key: "componentWillMount",
@@ -786,15 +781,15 @@ var withPagination = (function (Component) {
       }
     }]);
     return _class;
-  }(React__default.Component);
+  }(React__default.PureComponent);
 });
 
 var Table = withPagination(_Table);
 
 var List = withPagination(_List);
 
-var _class$1 = function (_Component) {
-  inherits(_class, _Component);
+var _class$1 = function (_React$PureComponent) {
+  inherits(_class, _React$PureComponent);
 
   function _class() {
     classCallCheck(this, _class);
@@ -804,7 +799,6 @@ var _class$1 = function (_Component) {
     _this.state = {
       isVisible: false
     };
-
     return _this;
   }
 
@@ -829,7 +823,6 @@ var _class$1 = function (_Component) {
   }, {
     key: 'getFieldsValue',
     value: function getFieldsValue() {
-      // return this.refs.form.getFieldsValue();
       return this.form.getFieldsValue();
     }
   }, {
@@ -858,31 +851,37 @@ var _class$1 = function (_Component) {
           children = _props.children,
           visible = _props.visible,
           _props$onCancel = _props.onCancel,
-          _onCancel2 = _props$onCancel === undefined ? function () {} : _props$onCancel,
+          onCancel = _props$onCancel === undefined ? function () {} : _props$onCancel,
           _props$afterClose = _props.afterClose,
           _afterClose2 = _props$afterClose === undefined ? function () {} : _props$afterClose,
           _props$onOk = _props.onOk,
-          _onOk = _props$onOk === undefined ? function () {} : _props$onOk,
+          onOk = _props$onOk === undefined ? function (e, form, show) {} : _props$onOk,
+          _props$footer = _props.footer,
+          footer = _props$footer === undefined ? function (cancel, ok) {} : _props$footer,
           search = _props.search,
           _props$form = _props.form,
           form = _props$form === undefined ? {} : _props$form,
-          pr = objectWithoutProperties(_props, ['children', 'visible', 'onCancel', 'afterClose', 'onOk', 'search', 'form']);
+          pr = objectWithoutProperties(_props, ['children', 'visible', 'onCancel', 'afterClose', 'onOk', 'footer', 'search', 'form']);
+
+      var _onCancel = function _onCancel() {
+        return _this2._onCancel(onCancel);
+      },
+          _onOk = function _onOk(e) {
+        onOk(e, _this2.form, function (f) {
+          return _this2.show(f);
+        });
+      };
 
       return React__default.createElement(
         _Modal,
         _extends({
           visible: isVisible,
-          onCancel: function onCancel() {
-            return _this2._onCancel(_onCancel2);
-          },
+          onCancel: _onCancel,
           afterClose: function afterClose() {
             return _this2._afterClose(_afterClose2);
           },
-          onOk: function onOk(e) {
-            _onOk(e, _this2.form, function (f) {
-              return _this2.show(f);
-            });
-          }
+          onOk: _onOk,
+          footer: footer(_onCancel, _onOk)
         }, pr),
         React__default.createElement(Form
         // ref="form"
@@ -894,7 +893,7 @@ var _class$1 = function (_Component) {
     }
   }]);
   return _class;
-}(React.Component);
+}(React__default.PureComponent);
 
 function styleInject(css, ref) {
   if ( ref === void 0 ) ref = {};
@@ -928,8 +927,8 @@ var styles = { "form": "style_form__115ZV", "table": "style_table__2ELRL" };
 styleInject(css);
 
 var withSearch = (function (Component) {
-  return function (_React$Component) {
-    inherits(_class, _React$Component);
+  return function (_React$PureComponent) {
+    inherits(_class, _React$PureComponent);
 
     function _class(props) {
       classCallCheck(this, _class);
@@ -997,7 +996,7 @@ var withSearch = (function (Component) {
       }
     }]);
     return _class;
-  }(React__default.Component);
+  }(React__default.PureComponent);
 });
 
 var SuperForm = function (_Component) {

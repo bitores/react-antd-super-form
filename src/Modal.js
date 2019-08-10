@@ -1,16 +1,15 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Modal } from 'antd';
 import Form from './Form';
 
 
-export default class extends Component {
+export default class extends React.PureComponent {
 
   constructor() {
     super()
     this.state = {
       isVisible: false,
     }
-
   }
 
   componentWillMount() {
@@ -28,7 +27,6 @@ export default class extends Component {
   }
 
   getFieldsValue() {
-    // return this.refs.form.getFieldsValue();
     return this.form.getFieldsValue();
   }
 
@@ -52,19 +50,22 @@ export default class extends Component {
       visible,
       onCancel = () => { },
       afterClose = () => { },
-      onOk = () => { },
+      onOk = (e, form, show) => { },
+      footer = (cancel, ok) => { },
       search, form = {},
       ...pr
     } = this.props;
 
-
+    let _onCancel = () => this._onCancel(onCancel),
+      _onOk = (e) => { onOk(e, this.form, (f) => this.show(f)) };
 
     return (
       <Modal
         visible={isVisible}
-        onCancel={() => this._onCancel(onCancel)}
+        onCancel={_onCancel}
         afterClose={() => this._afterClose(afterClose)}
-        onOk={(e) => { onOk(e, this.form, (f) => this.show(f)) }}
+        onOk={_onOk}
+        footer={footer(_onCancel, _onOk)}
         {...pr}
       >
         <Form

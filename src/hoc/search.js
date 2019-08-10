@@ -3,7 +3,7 @@ import { filter } from '../utils';
 
 
 export default (Component) => {
-  return class extends React.Component {
+  return class extends React.PureComponent {
 
     constructor(props) {
       super(props);

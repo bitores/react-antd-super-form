@@ -63,6 +63,9 @@ export default (obj, form) => {
     case 'password': // Input.Number
     case 'textarea': // Input.TextArea
     case 'switch':
+    // case 'switch2':
+    // case 'wrapperinput':
+    // case 'func':
     case 'slider':
     case 'datepicker':
     case 'rangepicker':
@@ -100,6 +103,7 @@ export default (obj, form) => {
       break;
 
     case 'uploaddragger':
+    // case 'wrapperupload':
     case 'upload': {
       const { innerHTML, ...pr } = props;
 
@@ -131,12 +135,6 @@ export default (obj, form) => {
           );
         })}
       </Component>)
-    }
-      break;
-
-
-    case 'func': {
-      formElement = <Component {...props} />
     }
       break;
 

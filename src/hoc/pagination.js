@@ -15,7 +15,7 @@ export default (Component) => {
 
     // 在生命周期中 使用 props 时要注意其有效性
     _init(props) {
-      const { pagination = false, isInit = false, dataSource = [], total = 0 } = props;
+      const { pagination = false, isInit = false, dataSource, total = 0 } = props;
       const { current = 1, pageSize = 10, onShowSizeChange } = pagination;
       this.setState({
         _list: dataSource, // 初始化数据,可来自外部
@@ -43,7 +43,7 @@ export default (Component) => {
 
     // 好像没用到
     reset() {
-      const { current = 1, pageSize = 10, dataSource = [], total = 0 } = this.props;
+      const { current = 1, pageSize = 10, dataSource, total = 0 } = this.props;
       this.setState({
         _list: dataSource,
         _total: total,
@@ -113,7 +113,8 @@ export default (Component) => {
           showSizeChanger = true,
           onChange = () => { },
           showTotal = (total, range) => `${range[0]}-${range[1]} 条, 共 ${total} 条`,
-          onShowSizeChange = () => { }, ...config
+          onShowSizeChange = () => { },
+          ...config
         } = pagination;
         _pagination = {
           total: _total,
@@ -132,9 +133,7 @@ export default (Component) => {
           ...config
         }
       }
-      return (
-        <Component {...props} dataSource={_list} pagination={_pagination} />
-      )
+      return (<Component {...props} dataSource={_list || []} pagination={_pagination} />)
     }
   }
 }

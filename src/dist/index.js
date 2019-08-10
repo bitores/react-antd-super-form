@@ -4,8 +4,6 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
 
-var React = require('react');
-var React__default = _interopDefault(React);
 require('antd/es/upload/style');
 var _Upload = _interopDefault(require('antd/es/upload'));
 require('antd/es/steps/style');
@@ -38,6 +36,8 @@ require('antd/es/input-number/style');
 var _InputNumber = _interopDefault(require('antd/es/input-number'));
 require('antd/es/input/style');
 var _Input = _interopDefault(require('antd/es/input'));
+var React = require('react');
+var React__default = _interopDefault(React);
 require('antd/es/form/style');
 var _Form2 = _interopDefault(require('antd/es/form'));
 require('antd/es/table/style');
@@ -156,38 +156,10 @@ var injectEvent = (function (obj, form) {
   return newObj;
 });
 
-var _class = function (_Component) {
-  inherits(_class, _Component);
-
-  function _class() {
-    var _ref;
-
-    var _temp, _this, _ret;
-
-    classCallCheck(this, _class);
-
-    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-      args[_key] = arguments[_key];
-    }
-
-    return _ret = (_temp = (_this = possibleConstructorReturn(this, (_ref = _class.__proto__ || Object.getPrototypeOf(_class)).call.apply(_ref, [this].concat(args))), _this), _this.value = function () {
-      return 'xxx';
-    }, _this.onChange = function () {
-      console.log('set value');
-      _this.setState({
-        value: 'xxx'
-      });
-    }, _temp), possibleConstructorReturn(_this, _ret);
-  }
-
-  createClass(_class, [{
-    key: 'render',
-    value: function render() {
-      return React__default.createElement('div', { style: { display: 'none' } });
-    }
-  }]);
-  return _class;
-}(React.Component);
+// import Func from './Func';
+// import WrapperInput from './WrapperInput';
+// import WrapperSwitch from './WrapperSwitch';
+// import WrapperUpload from './WrapperUpload';
 
 var AntdElements = {
   // 类一
@@ -223,10 +195,13 @@ var AntdElements = {
 
   // 类四
   upload: _Upload,
-  uploaddragger: _Upload.Dragger,
+  uploaddragger: _Upload.Dragger
 
   // 自定义
-  func: _class
+  // func: Func,
+  // switch2: WrapperSwitch,
+  // wrapperinput: WrapperInput,
+  // wrapperupload: WrapperUpload,
 };
 
 var toString = Object.prototype.toString;
@@ -289,6 +264,9 @@ var createFormItem = (function (obj, form) {
     case 'password': // Input.Number
     case 'textarea': // Input.TextArea
     case 'switch':
+    // case 'switch2':
+    // case 'wrapperinput':
+    // case 'func':
     case 'slider':
     case 'datepicker':
     case 'rangepicker':
@@ -338,6 +316,7 @@ var createFormItem = (function (obj, form) {
       break;
 
     case 'uploaddragger':
+    // case 'wrapperupload':
     case 'upload':
       {
         var innerHTML = props.innerHTML,
@@ -384,12 +363,6 @@ var createFormItem = (function (obj, form) {
             return React__default.createElement(Component.Step, _extends({ key: item.key || item.title }, item));
           })
         );
-      }
-      break;
-
-    case 'func':
-      {
-        formElement = React__default.createElement(Component, props);
       }
       break;
 
@@ -582,8 +555,7 @@ var withPagination = (function (Component) {
             pagination = _props$pagination === undefined ? false : _props$pagination,
             _props$isInit = props.isInit,
             isInit = _props$isInit === undefined ? false : _props$isInit,
-            _props$dataSource = props.dataSource,
-            dataSource = _props$dataSource === undefined ? [] : _props$dataSource,
+            dataSource = props.dataSource,
             _props$total = props.total,
             total = _props$total === undefined ? 0 : _props$total;
         var _pagination$current = pagination.current,
@@ -636,8 +608,7 @@ var withPagination = (function (Component) {
             current = _props$current === undefined ? 1 : _props$current,
             _props$pageSize = _props.pageSize,
             pageSize = _props$pageSize === undefined ? 10 : _props$pageSize,
-            _props$dataSource2 = _props.dataSource,
-            dataSource = _props$dataSource2 === undefined ? [] : _props$dataSource2,
+            dataSource = _props.dataSource,
             _props$total2 = _props.total,
             total = _props$total2 === undefined ? 0 : _props$total2;
 
@@ -777,7 +748,7 @@ var withPagination = (function (Component) {
             }
           }, config);
         }
-        return React__default.createElement(Component, _extends({}, props, { dataSource: _list, pagination: _pagination }));
+        return React__default.createElement(Component, _extends({}, props, { dataSource: _list || [], pagination: _pagination }));
       }
     }]);
     return _class;
@@ -788,7 +759,7 @@ var Table = withPagination(_Table);
 
 var List = withPagination(_List);
 
-var _class$1 = function (_React$PureComponent) {
+var _class = function (_React$PureComponent) {
   inherits(_class, _React$PureComponent);
 
   function _class() {
@@ -1056,6 +1027,6 @@ var index = withSearch(SuperForm);
 exports.Form = Form;
 exports.Table = Table;
 exports.List = List;
-exports.Modal = _class$1;
+exports.Modal = _class;
 exports.default = index;
 //# sourceMappingURL=index.js.map

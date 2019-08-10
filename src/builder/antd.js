@@ -19,7 +19,10 @@ import {
   Steps
 } from 'antd';
 
-import Func from './Func';
+// import Func from './Func';
+// import WrapperInput from './WrapperInput';
+// import WrapperSwitch from './WrapperSwitch';
+// import WrapperUpload from './WrapperUpload';
 
 export default {
   // 类一
@@ -58,5 +61,8 @@ export default {
   uploaddragger: Upload.Dragger,
 
   // 自定义
-  func: Func,
+  // func: Func,
+  // switch2: WrapperSwitch,
+  // wrapperinput: WrapperInput,
+  // wrapperupload: WrapperUpload,
 }

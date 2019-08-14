@@ -147,7 +147,7 @@ type="list|table"
 columns={columns}
 rowKey={"id"}
 pagination={{
-
+// 配置同 antd
 }}
 // 扩展属性
 // 是否开始时进行 action 进行调用
@@ -158,7 +158,7 @@ action={func}
 valueMap = {(res) => {
   return {
     status: res.status,
-    dataSource: res.entry,
+    dataSource: res.entry||[],
     total: res.totalRecordSize
   }
 }}

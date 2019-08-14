@@ -1,6 +1,6 @@
 {
   "name": "react-antd-super-form",
-  "version": "1.0.21",
+  "version": "1.0.23",
   "description": "Super Form  Creator , base on React & Antd",
   "main": "./dist/index.js",
   "module": "./dist/es/index.js",
@@ -12,6 +12,12 @@
     "react": "^16.4.1",
     "react-dom": "^16.4.1"
   },
+  "log": [
+    {
+      "version": "1.0.23",
+      "desc": "修改bug: table 数据初始化请求时拿不到 搜索条件"
+    }
+  ],
   "Keywords": [
     "react",
     "antd",

@@ -233,12 +233,12 @@ var createFormItem = (function (obj, form) {
         if (autoSearchEvent) {
           if (props.onClick) {
             var old = props.onClick;
-            pr.onClick = function (e, form) {
+            pr.onClick = function (e) {
               old(e, form);
               autoSearchEvent(form);
             };
           } else {
-            pr.onClick = function () {
+            pr.onClick = function (e) {
               autoSearchEvent(form);
             };
           }
@@ -388,9 +388,18 @@ var filter = function filter(fieldsValue) {
 var _Form = function (_React$PureComponent) {
   inherits(_Form, _React$PureComponent);
 
-  function _Form() {
+  function _Form(props) {
     classCallCheck(this, _Form);
-    return possibleConstructorReturn(this, (_Form.__proto__ || Object.getPrototypeOf(_Form)).apply(this, arguments));
+
+    var _this = possibleConstructorReturn(this, (_Form.__proto__ || Object.getPrototypeOf(_Form)).call(this, props));
+
+    var _this$props = _this.props,
+        form = _this$props.form,
+        _this$props$_bindForm = _this$props._bindForm,
+        _bindForm = _this$props$_bindForm === undefined ? function () {} : _this$props$_bindForm;
+
+    _bindForm(form);
+    return _this;
   }
 
   createClass(_Form, [{
@@ -637,7 +646,7 @@ var withPagination = (function (Component$$1) {
             _props2$valueMap = _props2.valueMap,
             valueMap = _props2$valueMap === undefined ? function (res) {
           return {
-            status: true,
+            status: res.status,
             dataSource: res.entry,
             total: res.totalRecordSize
           };
@@ -655,7 +664,7 @@ var withPagination = (function (Component$$1) {
           return {};
         } : _props2$extraParams;
 
-        var values = _extends({}, params(), extraParams(), (_babelHelpers$extends = {}, defineProperty(_babelHelpers$extends, pageName, _current), defineProperty(_babelHelpers$extends, pageSizeName, _pageSize), _babelHelpers$extends));
+        var values = _extends({}, extraParams(), params(), (_babelHelpers$extends = {}, defineProperty(_babelHelpers$extends, pageName, _current), defineProperty(_babelHelpers$extends, pageSizeName, _pageSize), _babelHelpers$extends));
 
         var request = null;
         if (action) {
@@ -904,22 +913,24 @@ var withSearch = (function (Component$$1) {
       };
 
       _this.hoc = React.createRef();
+      _this.form = null;
       return _this;
     }
 
     createClass(_class, [{
       key: '_search',
       value: function _search(fieldsValue) {
-        var _this2 = this;
+        // let formValues = filter(fieldsValue);
 
-        var formValues = filter(fieldsValue);
+        // this.setState({
+        //   formValues
+        // }, () => {
+        //   // 待实现的接口 : 模拟 interface or 
+        //   this.refresh();
+        // })
 
-        this.setState({
-          formValues: formValues
-        }, function () {
-          // 待实现的接口 : 模拟 interface or 
-          _this2.refresh();
-        });
+        // 待实现的接口 : 模拟 interface or 
+        this.refresh();
       }
       // 由子类进行实现或重写
 
@@ -932,27 +943,31 @@ var withSearch = (function (Component$$1) {
       key: 'resetFields',
       value: function resetFields() {
         this.props.form.resetFields();
-        this.setState({
-          formValues: {}
-        });
+        // this.setState({
+        //   formValues: {},
+        // })
       }
     }, {
       key: '_getSearchParams',
       value: function _getSearchParams() {
-        return this.state.formValues;
+        // return this.state.formValues;
+        return filter(this.form.getFieldsValue());
       }
     }, {
       key: 'render',
       value: function render() {
-        var _this3 = this;
+        var _this2 = this;
 
         var props = _extends({}, this.props, {
           // 新增了 两个函数, 一个是获取参数数据, 一个是进行请求
           params: function params() {
-            return _this3._getSearchParams();
+            return _this2._getSearchParams();
           },
-          autoSearchEvent: function autoSearchEvent(form) {
-            return _this3._search(form.getFieldsValue());
+          autoSearchEvent: function autoSearchEvent() {
+            return _this2.refresh();
+          },
+          _bindForm: function _bindForm(form) {
+            _this2.form = form;
           }
         });
 
@@ -972,6 +987,7 @@ var SuperForm = function (_Component) {
     var _this = possibleConstructorReturn(this, (SuperForm.__proto__ || Object.getPrototypeOf(SuperForm)).call(this, props));
 
     _this.list = React.createRef();
+    _this.form = React.createRef();
     return _this;
   }
 
@@ -988,13 +1004,13 @@ var SuperForm = function (_Component) {
           type = _props$type === undefined ? 'table' : _props$type,
           search = _props.search,
           autoSearchEvent = _props.autoSearchEvent,
+          _bindForm = _props._bindForm,
           table = _props.table,
           _props$formStyle = _props.formStyle,
           formStyle = _props$formStyle === undefined ? {} : _props$formStyle,
           _props$tableStyle = _props.tableStyle,
           tableStyle = _props$tableStyle === undefined ? {} : _props$tableStyle,
-          props = objectWithoutProperties(_props, ['type', 'search', 'autoSearchEvent', 'table', 'formStyle', 'tableStyle']);
-
+          props = objectWithoutProperties(_props, ['type', 'search', 'autoSearchEvent', '_bindForm', 'table', 'formStyle', 'tableStyle']);
 
       return React.createElement(
         'div',
@@ -1002,7 +1018,7 @@ var SuperForm = function (_Component) {
         React.createElement(
           'div',
           { className: styles.form, style: formStyle },
-          React.createElement(Form, _extends({}, search, { autoSearchEvent: autoSearchEvent }))
+          React.createElement(Form, _extends({ ref: this.form }, search, { autoSearchEvent: autoSearchEvent, _bindForm: _bindForm }))
         ),
         React.createElement(
           'div',

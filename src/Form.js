@@ -5,6 +5,11 @@ import { filter } from './utils';
 
 
 class _Form extends React.PureComponent {
+  constructor(props) {
+    super(props)
+    const { form, _bindForm = () => { } } = this.props;
+    _bindForm(form);
+  }
 
   getFieldsValue() {
     const { form } = this.props;

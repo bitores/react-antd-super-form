@@ -43,12 +43,12 @@ export default (obj, form) => {
       if (autoSearchEvent) {
         if (props.onClick) {
           let old = props.onClick;
-          pr.onClick = (e, form) => {
+          pr.onClick = (e) => {
             old(e, form)
             autoSearchEvent(form);
           }
         } else {
-          pr.onClick = () => {
+          pr.onClick = (e) => {
             autoSearchEvent(form);
           }
         }

@@ -63,7 +63,7 @@ export default (Component) => {
       const { action, pageName = "page", pageSizeName = "pageSize",
         valueMap = (res) => {
           return {
-            status: true,
+            status: res.status,
             dataSource: res.entry,
             total: res.totalRecordSize
           }
@@ -73,8 +73,10 @@ export default (Component) => {
         extraParams = () => { return {} }
       } = this.props;
       const values = {
-        ...params(),
+        // 获取外部搜索参数
         ...extraParams(),
+        // 获取内部搜索参数,
+        ...params(),
         [pageName]: _current,
         [pageSizeName]: _pageSize
       }

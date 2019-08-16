@@ -49,6 +49,12 @@ class Example extends Component {
 ### 基本结构
 ```jsx
 <SuperForm
+formStyle={{
+  // 搜索区样式
+}}
+tableStyle={{
+  // 数据区样式
+}}
 type="table|list" //default table
 search={
   {

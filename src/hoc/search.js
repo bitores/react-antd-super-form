@@ -7,41 +7,25 @@ export default (Component) => {
 
     constructor(props) {
       super(props);
-      this.state = {
-        formValues: {},
-      }
 
       this.hoc = React.createRef();
       this.form = null;
     }
 
-    _search(fieldsValue) {
-      // let formValues = filter(fieldsValue);
-
-      // this.setState({
-      //   formValues
-      // }, () => {
-      //   // 待实现的接口 : 模拟 interface or 
-      //   this.refresh();
-      // })
-
-      // 待实现的接口 : 模拟 interface or 
-      this.refresh();
+    reset(needLoad = true) {
+      this.hoc.current.reset(needLoad)
     }
+
     // 由子类进行实现或重写
     refresh() {
       this.hoc.current.refresh()
     }
 
-    resetFields() {
-      this.props.form.resetFields();
-      // this.setState({
-      //   formValues: {},
-      // })
-    }
+    // resetFields() {
+    //   this.props.form.resetFields();
+    // }
 
     _getSearchParams() {
-      // return this.state.formValues;
       return filter(this.form.getFieldsValue())
     }
 
@@ -51,7 +35,9 @@ export default (Component) => {
         ...this.props,
         // 新增了 两个函数, 一个是获取参数数据, 一个是进行请求
         params: () => this._getSearchParams(),
-        autoSearchEvent: () => this.refresh(),
+        // 每次点击, 都是重置数据
+        autoSearchEvent: () => this.reset(),
+        // 获取 form 实例
         _bindForm: (form) => { this.form = form }
       }
 

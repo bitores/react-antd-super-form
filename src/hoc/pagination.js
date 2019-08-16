@@ -14,9 +14,9 @@ export default (Component) => {
     }
 
     // 在生命周期中 使用 props 时要注意其有效性
-    _init(props) {
-      const { pagination = false, isInit = false, dataSource, total = 0 } = props;
-      const { current = 1, pageSize = 10, onShowSizeChange } = pagination;
+    _init(props, isInit = false) {
+      const { pagination = false, dataSource, total = 0 } = props;
+      const { current = 1, pageSize = 10 } = pagination;
       this.setState({
         _list: dataSource, // 初始化数据,可来自外部
         _total: total,
@@ -28,10 +28,33 @@ export default (Component) => {
       })
     }
 
+    // 同步初始化数据
     componentWillMount() {
-      this._init(this.props)
+      this._init(this.props, this.props.isInit)
     }
 
+    // 处理异步传入的props, 只设置状态不进行数据加载
+    // 避免由于父组件状态更新引起 数据重新获取
+    // 不能要, 父组件更新, 状态回到初始值, 也不好
+    // 但要解决异步 props 问题
+    // componentWillReceiveProps(nextProps) {
+    //   this._init(nextProps, false);
+    // }
+
+    // 重新触发按钮搜索时
+    // 重置 状态回到初始并加载数据
+    // 有时只是要求重置状态, 并不要求进行数据加载
+    // 可以在异步 props 时进行手动调用, 不在 WillReceiveProps 中进行处理
+    reset(needLoad = true) {
+      this._init(this.props, needLoad)
+    }
+
+    // 刷新 当前状态下进行数据加载
+    refresh() {
+      this._loadData();
+    }
+
+    // 换页 改变状态下进行数据加载
     _pageChange(_current = 1, _pageSize = 10) {
       this.setState({
         _current,
@@ -39,23 +62,6 @@ export default (Component) => {
       }, () => {
         this._loadData();
       })
-    }
-
-    // 好像没用到
-    reset() {
-      const { current = 1, pageSize = 10, dataSource, total = 0 } = this.props;
-      this.setState({
-        _list: dataSource,
-        _total: total,
-        _current: current,
-        _pageSize: pageSize
-      }, () => {
-        this._loadData();
-      })
-    }
-
-    refresh() {
-      this._loadData();
     }
 
     _loadData() {
@@ -69,8 +75,8 @@ export default (Component) => {
           }
         },
         actionError = (msg) => console.error(msg),
-        params = () => { return {} },
-        extraParams = () => { return {} }
+        params = () => ({}),
+        extraParams = () => ({})
       } = this.props;
       const values = {
         // 获取外部搜索参数
@@ -81,10 +87,10 @@ export default (Component) => {
         [pageSizeName]: _pageSize
       }
 
+      // return;
       let request = null;
       if (action) {
         request = action(values);
-
       } else {
         throw new Error('need action filed')
       }
@@ -103,7 +109,7 @@ export default (Component) => {
     }
 
     render() {
-      const { _list = [], _total, _current, _pageSize } = this.state;
+      const { _list, _total, _current, _pageSize } = this.state;
       const { pagination = true, action, params, extraParams, pageName, pageSizeName, valueMap, actionError, isInit, ...props } = this.props;
       // 追加 pagination 配置
       let _pagination = null;
@@ -113,13 +119,13 @@ export default (Component) => {
         const {
           total, current, pageSize,
           showSizeChanger = true,
-          onChange = () => { },
+          onChange = () => null,
           showTotal = (total, range) => `${range[0]}-${range[1]} 条, 共 ${total} 条`,
-          onShowSizeChange = () => { },
+          onShowSizeChange = () => null,
           ...config
         } = pagination;
         _pagination = {
-          total: _total,
+          total: _total || this.props.total,
           current: _current,
           pageSize: _pageSize,
           onChange: (...pr) => {
@@ -135,6 +141,7 @@ export default (Component) => {
           ...config
         }
       }
+
       return (<Component {...props} dataSource={_list || []} pagination={_pagination} />)
     }
   }

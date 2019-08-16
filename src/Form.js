@@ -86,7 +86,9 @@ class _Form extends React.PureComponent {
           type,
           ...props
         }
-        if (bindSearch) _item.autoSearchEvent = autoSearchEvent;
+        if (bindSearch) {
+          _item.autoSearchEvent = autoSearchEvent;
+        }
         let renderItem = createFormItem(_item, form);
         ret = type === 'button' ? renderItem : getFieldDecorator(key, this._transFuncToObj(config, form, this))(renderItem)
       }

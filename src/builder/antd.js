@@ -61,8 +61,4 @@ export default {
   uploaddragger: Upload.Dragger,
 
   // 自定义
-  // func: Func,
-  // switch2: WrapperSwitch,
-  // wrapperinput: WrapperInput,
-  // wrapperupload: WrapperUpload,
 }

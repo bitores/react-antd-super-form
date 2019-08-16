@@ -1,30 +1,7 @@
 import React from 'react';
 import injectEvent from './inject-event';
 import AntdElements from './antd';
-
-
-const toString = Object.prototype.toString;
-const transToArray = (obj) => {
-  if (toString.call(obj) === '[object Object]') {
-    return Object.keys(obj).map(key => {
-      return { label: obj[key], value: key }
-    })
-  } else if (toString.call(obj) === '[object Array]') {
-    return obj;
-  }
-
-  throw new Error('need obj or array')
-}
-
-const uploadStyle = {
-  width: 100,
-  height: 100,
-  display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'center',
-  alignItems: 'center',
-  border: '1px dashed darkgray'
-};
+import { transToArray } from '../utils';
 
 
 export default (obj, form) => {

@@ -1,6 +1,6 @@
 {
   "name": "react-antd-super-form",
-  "version": "1.0.23",
+  "version": "1.0.28",
   "description": "Super Form  Creator , base on React & Antd",
   "main": "./dist/index.js",
   "module": "./dist/es/index.js",
@@ -13,6 +13,26 @@
     "react-dom": "^16.4.1"
   },
   "log": [
+    {
+      "version": "1.0.28",
+      "desc": "优化: reset 处理函数 "
+    },
+    {
+      "version": "1.0.27",
+      "desc": "优化: 避免由于使用SuperForm 过程中, 页面组件状态更新引起数据重复加载"
+    },
+    {
+      "version": "1.0.26",
+      "desc": "优化代码"
+    },
+    {
+      "version": "1.0.25",
+      "desc": "优化: search 点击搜索按钮时, 重置页码"
+    },
+    {
+      "version": "1.0.24",
+      "desc": "修改bug: table 异步数据展示初始化时没有展示问题"
+    },
     {
       "version": "1.0.23",
       "desc": "修改bug: table 数据初始化请求时拿不到 搜索条件"

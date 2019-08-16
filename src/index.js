@@ -22,6 +22,10 @@ class SuperForm extends Component {
     this.form = React.createRef();
   }
 
+  reset() {
+    this.list.current.reset();
+  }
+
   refresh() {
     this.list.current.refresh();
   }
@@ -39,7 +43,7 @@ class SuperForm extends Component {
     return (
       <div>
         <div className={styles.form} style={formStyle}>
-          <Form ref={this.form} {...search} autoSearchEvent={autoSearchEvent} _bindForm={_bindForm} />
+          <Form  {...search} autoSearchEvent={autoSearchEvent} _bindForm={_bindForm} />
         </div>
         <div className={styles.table} style={tableStyle}>
           {

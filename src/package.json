@@ -1,6 +1,6 @@
 {
   "name": "react-antd-super-form",
-  "version": "1.0.28",
+  "version": "1.0.29",
   "description": "Super Form  Creator , base on React & Antd",
   "main": "./dist/index.js",
   "module": "./dist/es/index.js",
@@ -13,6 +13,10 @@
     "react-dom": "^16.4.1"
   },
   "log": [
+    {
+      "version": "1.0.29",
+      "desc": "功能: Modal 新增 action 等自动处理功能"
+    },
     {
       "version": "1.0.28",
       "desc": "优化: reset 处理函数 "

@@ -43,4 +43,4 @@ const transToArray = (obj) => {
 }
 
 
-export { filter, transToArray };
+export { filter, transToArray, toString };

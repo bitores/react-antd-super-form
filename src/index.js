@@ -22,8 +22,8 @@ class SuperForm extends Component {
     this.form = React.createRef();
   }
 
-  reset() {
-    this.list.current.reset();
+  reset(needLoad = true) {
+    this.list.current.reset(needLoad);
   }
 
   refresh() {

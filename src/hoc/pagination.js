@@ -1,4 +1,5 @@
 import React from 'react';
+import { toString } from '../utils';
 
 
 export default (Component) => {
@@ -78,9 +79,11 @@ export default (Component) => {
         params = () => ({}),
         extraParams = () => ({})
       } = this.props;
+
+      let _val = toString.call(extraParams) === "[object Function]" ? extraParams() : extraParams;
       const values = {
         // 获取外部搜索参数
-        ...extraParams(),
+        ..._val,
         // 获取内部搜索参数,
         ...params(),
         [pageName]: _current,

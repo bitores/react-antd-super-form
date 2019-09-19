@@ -1,6 +1,6 @@
 {
   "name": "react-antd-super-form",
-  "version": "1.0.29",
+  "version": "1.0.30",
   "description": "Super Form  Creator , base on React & Antd",
   "main": "./dist/index.js",
   "module": "./dist/es/index.js",
@@ -13,6 +13,10 @@
     "react-dom": "^16.4.1"
   },
   "log": [
+    {
+      "version": "1.0.30",
+      "desc": "功能:1. Modal 同antd 一样具有info,success, errro, confirm,warning 等功能; 2. 新增 divider 组件"
+    },
     {
       "version": "1.0.29",
       "desc": "功能: Modal 新增 action 等自动处理功能"

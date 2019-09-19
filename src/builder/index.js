@@ -35,6 +35,11 @@ export default (obj, form) => {
     }
 
       break;
+
+    case 'slider': {
+      const { sfType = 'horizontal', text, ...pr } = props;
+      formElement = <Component type={sfType} {...pr} >{text}</Component>
+    } break;
     case 'input':
     case 'inputnumber': // InputNumber
     case 'password': // Input.Number
@@ -43,7 +48,7 @@ export default (obj, form) => {
     // case 'switch2':
     // case 'wrapperinput':
     // case 'func':
-    case 'slider':
+    case 'divider':
     case 'datepicker':
     case 'rangepicker':
     case 'monthpicker':

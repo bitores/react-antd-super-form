@@ -115,6 +115,11 @@ class _Form extends React.PureComponent {
       {
         this._renderElement(form, getFieldDecorator, autoSearchEvent, this._transFuncToObj(data, form))
       }
+      {
+        React.Children.map(this.props.children, function (child) {
+          return child;
+        })
+      }
     </Form>)
   }
 }

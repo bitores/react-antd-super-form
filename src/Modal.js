@@ -4,13 +4,14 @@ import Form from './Form';
 import { toString, filter } from './utils';
 
 // 此 Modal 仅对于 form 来讲
-export default class extends React.PureComponent {
+export default class Dialog extends React.PureComponent {
   // 不接收动态属性变化
   constructor(props) {
     super(props)
     this.state = {
       isVisible: props.visible || false,
     }
+
   }
 
   show(isShow = true, callback) {
@@ -89,9 +90,18 @@ export default class extends React.PureComponent {
           wrappedComponentRef={(inst) => this.form = inst && inst.props.form}
           {...form}
         />
+        {
+          React.Children.map(this.props.children, function (child) {
+            return child;
+          })
+        }
       </Modal>
     )
   }
-
-
 }
+
+Dialog.info = Modal.info;
+Dialog.error = Modal.error;
+Dialog.warning = Modal.warning;
+Dialog.success = Modal.success;
+Dialog.confirm = Modal.confirm;

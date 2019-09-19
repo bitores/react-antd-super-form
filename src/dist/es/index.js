@@ -2,6 +2,8 @@ import 'antd/es/upload/style';
 import _Upload from 'antd/es/upload';
 import 'antd/es/steps/style';
 import _Steps from 'antd/es/steps';
+import 'antd/es/divider/style';
+import _Divider from 'antd/es/divider';
 import 'antd/es/checkbox/style';
 import _Checkbox from 'antd/es/checkbox';
 import 'antd/es/radio/style';
@@ -183,6 +185,8 @@ var AntdElements = {
   checkbox: _Checkbox.Group,
   checkboxgroup: _Checkbox.Group,
 
+  divider: _Divider,
+
   //
   steps: _Steps,
 
@@ -275,6 +279,20 @@ var createFormItem = (function (obj, form) {
       }
 
       break;
+
+    case 'slider':
+      {
+        var _props$sfType = props.sfType,
+            sfType = _props$sfType === undefined ? 'horizontal' : _props$sfType,
+            _text = props.text,
+            _pr = objectWithoutProperties(props, ['sfType', 'text']);
+
+        formElement = React.createElement(
+          Component$$1,
+          _extends({ type: sfType }, _pr),
+          _text
+        );
+      }break;
     case 'input':
     case 'inputnumber': // InputNumber
     case 'password': // Input.Number
@@ -283,7 +301,7 @@ var createFormItem = (function (obj, form) {
     // case 'switch2':
     // case 'wrapperinput':
     // case 'func':
-    case 'slider':
+    case 'divider':
     case 'datepicker':
     case 'rangepicker':
     case 'monthpicker':
@@ -304,9 +322,9 @@ var createFormItem = (function (obj, form) {
       {
         var _props$options = props.options,
             options = _props$options === undefined ? [] : _props$options,
-            _pr = objectWithoutProperties(props, ['options']);
+            _pr2 = objectWithoutProperties(props, ['options']);
 
-        formElement = React.createElement(Component$$1, _extends({ options: transToArray(options) }, _pr));
+        formElement = React.createElement(Component$$1, _extends({ options: transToArray(options) }, _pr2));
       }
       break;
 
@@ -315,11 +333,11 @@ var createFormItem = (function (obj, form) {
       {
         var _props$options2 = props.options,
             _options = _props$options2 === undefined ? [] : _props$options2,
-            _pr2 = objectWithoutProperties(props, ['options']);
+            _pr3 = objectWithoutProperties(props, ['options']);
 
         formElement = React.createElement(
           Component$$1,
-          _pr2,
+          _pr3,
           transToArray(_options).map(function (item) {
             return React.createElement(
               Component$$1.Option,
@@ -336,11 +354,11 @@ var createFormItem = (function (obj, form) {
     case 'upload':
       {
         var innerHTML = props.innerHTML,
-            _pr3 = objectWithoutProperties(props, ['innerHTML']);
+            _pr4 = objectWithoutProperties(props, ['innerHTML']);
 
         formElement = React.createElement(
           Component$$1,
-          _pr3,
+          _pr4,
           innerHTML && innerHTML()
         );
       }
@@ -350,11 +368,11 @@ var createFormItem = (function (obj, form) {
       {
         var _props$options3 = props.options,
             _options2 = _props$options3 === undefined ? [] : _props$options3,
-            _pr4 = objectWithoutProperties(props, ['options']);
+            _pr5 = objectWithoutProperties(props, ['options']);
 
         formElement = React.createElement(
           Component$$1.Group,
-          _pr4,
+          _pr5,
           transToArray(_options2).map(function (item) {
             return React.createElement(
               Component$$1.Button,
@@ -370,11 +388,11 @@ var createFormItem = (function (obj, form) {
       {
         var _props$options4 = props.options,
             _options3 = _props$options4 === undefined ? [] : _props$options4,
-            _pr5 = objectWithoutProperties(props, ['options']);
+            _pr6 = objectWithoutProperties(props, ['options']);
 
         formElement = React.createElement(
           Component$$1,
-          _pr5,
+          _pr6,
           transToArray(_options3).map(function (item, ind) {
             return React.createElement(Component$$1.Step, _extends({ key: item.key || item.title }, item));
           })
@@ -524,7 +542,10 @@ var _Form = function (_React$PureComponent) {
       return React.createElement(
         _Form2,
         _extends({ layout: layout }, _formLayout),
-        this._renderElement(form, getFieldDecorator, autoSearchEvent, this._transFuncToObj(data, form))
+        this._renderElement(form, getFieldDecorator, autoSearchEvent, this._transFuncToObj(data, form)),
+        React.Children.map(this.props.children, function (child) {
+          return child;
+        })
       );
     }
   }]);
@@ -777,14 +798,14 @@ var List = withPagination(_List);
 
 // 此 Modal 仅对于 form 来讲
 
-var _class = function (_React$PureComponent) {
-  inherits(_class, _React$PureComponent);
+var Dialog = function (_React$PureComponent) {
+  inherits(Dialog, _React$PureComponent);
 
   // 不接收动态属性变化
-  function _class(props) {
-    classCallCheck(this, _class);
+  function Dialog(props) {
+    classCallCheck(this, Dialog);
 
-    var _this = possibleConstructorReturn(this, (_class.__proto__ || Object.getPrototypeOf(_class)).call(this, props));
+    var _this = possibleConstructorReturn(this, (Dialog.__proto__ || Object.getPrototypeOf(Dialog)).call(this, props));
 
     _this.autoHandleSubmit = function () {
       var _this$props = _this.props,
@@ -827,10 +848,11 @@ var _class = function (_React$PureComponent) {
     _this.state = {
       isVisible: props.visible || false
     };
+
     return _this;
   }
 
-  createClass(_class, [{
+  createClass(Dialog, [{
     key: 'show',
     value: function show() {
       var isShow = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
@@ -914,12 +936,22 @@ var _class = function (_React$PureComponent) {
           wrappedComponentRef: function wrappedComponentRef(inst) {
             return _this2.form = inst && inst.props.form;
           }
-        }, form))
+        }, form)),
+        React.Children.map(this.props.children, function (child) {
+          return child;
+        })
       );
     }
   }]);
-  return _class;
+  return Dialog;
 }(React.PureComponent);
+
+
+Dialog.info = _Modal.info;
+Dialog.error = _Modal.error;
+Dialog.warning = _Modal.warning;
+Dialog.success = _Modal.success;
+Dialog.confirm = _Modal.confirm;
 
 function styleInject(css, ref) {
   if ( ref === void 0 ) ref = {};
@@ -1081,5 +1113,5 @@ var SuperForm = function (_Component) {
 var index = withSearch(SuperForm);
 
 export default index;
-export { Form, Table, List, _class as Modal };
+export { Form, Table, List, Dialog as Modal };
 //# sourceMappingURL=index.js.map

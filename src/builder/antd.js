@@ -16,7 +16,8 @@ import {
   DatePicker,
   TimePicker,
   AutoComplete,
-  Steps
+  Steps,
+  Divider
 } from 'antd';
 
 // import Func from './Func';
@@ -52,6 +53,8 @@ export default {
   radiobutton: Radio,
   checkbox: Checkbox.Group,
   checkboxgroup: Checkbox.Group,
+
+  divider: Divider,
 
   //
   steps: Steps,

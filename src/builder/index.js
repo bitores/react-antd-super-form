@@ -36,7 +36,7 @@ export default (obj, form) => {
 
       break;
 
-    case 'slider': {
+    case 'divider': {
       const { sfType = 'horizontal', text, ...pr } = props;
       formElement = <Component type={sfType} {...pr} >{text}</Component>
     } break;
@@ -48,7 +48,7 @@ export default (obj, form) => {
     // case 'switch2':
     // case 'wrapperinput':
     // case 'func':
-    case 'divider':
+    case 'slider':
     case 'datepicker':
     case 'rangepicker':
     case 'monthpicker':

@@ -280,7 +280,7 @@ var createFormItem = (function (obj, form) {
 
       break;
 
-    case 'slider':
+    case 'divider':
       {
         var _props$sfType = props.sfType,
             sfType = _props$sfType === undefined ? 'horizontal' : _props$sfType,
@@ -301,7 +301,7 @@ var createFormItem = (function (obj, form) {
     // case 'switch2':
     // case 'wrapperinput':
     // case 'func':
-    case 'divider':
+    case 'slider':
     case 'datepicker':
     case 'rangepicker':
     case 'monthpicker':

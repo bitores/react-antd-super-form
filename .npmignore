@@ -13,10 +13,4 @@ builder
 docs
 examples
 hoc
-./index.js
-./Form.js
-./List.js
-./Table.js
-./Modal.js
-./utils.js
-./style.less
+src

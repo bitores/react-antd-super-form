@@ -1,13 +1,9 @@
 {
-  "name": "rollup-demo",
-  "version": "1.0.0",
-  "description": "",
-  "author": "bitores",
-  "license": "MIT",
-  "repository": "bitores/rollup-demo",
-  "main": "dist/index.js",
-  "module": "dist/index.es.js",
-  "jsnext:main": "dist/index.es.js",
+  "name": "react-antd-super-form",
+  "version": "1.0.31",
+  "description": "Super Form  Creator , base on React & Antd",
+  "main": "./dist/index.js",
+  "module": "./dist/es/index.js",
   "engines": {
     "node": ">=8",
     "npm": ">=5"
@@ -20,10 +16,9 @@
     "deploy": "gh-pages -d example/build"
   },
   "peerDependencies": {
-    "antd": "^3.20.3",
-    "prop-types": "^15.5.4",
-    "react": "^15.0.0 || ^16.0.0",
-    "react-dom": "^15.0.0 || ^16.0.0"
+    "antd": "^3.19.1",
+    "react": "^16.4.1",
+    "react-dom": "^16.4.1"
   },
   "devDependencies": {
     "@svgr/rollup": "^2.4.1",
@@ -57,7 +52,60 @@
     "rollup-plugin-postcss": "^1.6.2",
     "rollup-plugin-url": "^1.4.0"
   },
+  "log": [
+    {
+      "version": "1.0.30",
+      "desc": "功能:1. Modal 同antd 一样具有info,success, errro, confirm,warning 等功能; 2. 新增 divider 组件"
+    },
+    {
+      "version": "1.0.29",
+      "desc": "功能: Modal 新增 action 等自动处理功能"
+    },
+    {
+      "version": "1.0.28",
+      "desc": "优化: reset 处理函数 "
+    },
+    {
+      "version": "1.0.27",
+      "desc": "优化: 避免由于使用SuperForm 过程中, 页面组件状态更新引起数据重复加载"
+    },
+    {
+      "version": "1.0.26",
+      "desc": "优化代码"
+    },
+    {
+      "version": "1.0.25",
+      "desc": "优化: search 点击搜索按钮时, 重置页码"
+    },
+    {
+      "version": "1.0.24",
+      "desc": "修改bug: table 异步数据展示初始化时没有展示问题"
+    },
+    {
+      "version": "1.0.23",
+      "desc": "修改bug: table 数据初始化请求时拿不到 搜索条件"
+    }
+  ],
+  "Keywords": [
+    "react",
+    "antd",
+    "form",
+    "super-form",
+    "react-antd",
+    "antd-react"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bitores/react-antd-super-form.git"
+  },
   "files": [
     "dist"
-  ]
+  ],
+  "author": "bitores",
+  "email": "huangzhengjie@dingtalk.com",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bitores/react-antd-super-form/issues"
+  },
+  "homepage": "https://github.com/bitores/react-antd-super-form#readme"
 }

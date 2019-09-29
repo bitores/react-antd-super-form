@@ -32,6 +32,7 @@ import 'antd/es/input-number/style';
 import _InputNumber from 'antd/es/input-number';
 import 'antd/es/input/style';
 import _Input from 'antd/es/input';
+import SuperUpload from 'react-antd-super-upload';
 import React, { Component } from 'react';
 import 'antd/es/form/style';
 import _Form2 from 'antd/es/form';
@@ -160,8 +161,8 @@ var AntdElements = {
   // 类一
   input: _Input,
   inputnumber: _InputNumber,
-  'textarea': _Input.TextArea,
-  'password': _Input.Password,
+  textarea: _Input.TextArea,
+  password: _Input.Password,
   cascader: _Cascader,
   autocomplete: _AutoComplete,
   rate: _Rate,
@@ -192,9 +193,10 @@ var AntdElements = {
 
   // 类四
   upload: _Upload,
-  uploaddragger: _Upload.Dragger
+  uploaddragger: _Upload.Dragger,
 
   // 自定义
+  sfupload: SuperUpload
 };
 
 var toString = Object.prototype.toString;
@@ -292,15 +294,14 @@ var createFormItem = (function (obj, form) {
           _extends({ type: sfType }, _pr),
           _text
         );
-      }break;
+      }
+      break;
+
     case 'input':
     case 'inputnumber': // InputNumber
     case 'password': // Input.Number
     case 'textarea': // Input.TextArea
     case 'switch':
-    // case 'switch2':
-    // case 'wrapperinput':
-    // case 'func':
     case 'slider':
     case 'datepicker':
     case 'rangepicker':
@@ -350,7 +351,7 @@ var createFormItem = (function (obj, form) {
       break;
 
     case 'uploaddragger':
-    // case 'wrapperupload':
+    case 'sfupload':
     case 'upload':
       {
         var innerHTML = props.innerHTML,

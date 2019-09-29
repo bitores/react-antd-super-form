@@ -1,4 +1,5 @@
 import React from 'react';
+import { Divider } from 'antd';
 import injectEvent from './inject-event';
 import AntdElements from './antd';
 import { transToArray } from '../utils';
@@ -38,16 +39,15 @@ export default (obj, form) => {
 
     case 'divider': {
       const { sfType = 'horizontal', text, ...pr } = props;
-      formElement = <Component type={sfType} {...pr} >{text}</Component>
-    } break;
+      formElement = <Component type={sfType} {...pr} >{text}</Component>;
+    }
+      break;
+
     case 'input':
     case 'inputnumber': // InputNumber
     case 'password': // Input.Number
     case 'textarea': // Input.TextArea
     case 'switch':
-    // case 'switch2':
-    // case 'wrapperinput':
-    // case 'func':
     case 'slider':
     case 'datepicker':
     case 'rangepicker':
@@ -85,10 +85,9 @@ export default (obj, form) => {
       break;
 
     case 'uploaddragger':
-    // case 'wrapperupload':
+    case 'sfupload':
     case 'upload': {
       const { innerHTML, ...pr } = props;
-
       formElement = <Component {...pr}>{innerHTML && innerHTML()}</Component>
     }
       break;

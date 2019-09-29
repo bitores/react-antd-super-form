@@ -20,6 +20,8 @@ import {
   Divider
 } from 'antd';
 
+import SuperUpload from 'react-antd-super-upload';
+
 // import Func from './Func';
 // import WrapperInput from './WrapperInput';
 // import WrapperSwitch from './WrapperSwitch';
@@ -29,8 +31,8 @@ export default {
   // 类一
   input: Input,
   inputnumber: InputNumber,
-  'textarea': Input.TextArea,
-  'password': Input.Password,
+  textarea: Input.TextArea,
+  password: Input.Password,
   cascader: Cascader,
   autocomplete: AutoComplete,
   rate: Rate,
@@ -64,4 +66,5 @@ export default {
   uploaddragger: Upload.Dragger,
 
   // 自定义
+  sfupload: SuperUpload
 }

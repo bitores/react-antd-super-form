@@ -38,6 +38,7 @@ require('antd/es/input-number/style');
 var _InputNumber = _interopDefault(require('antd/es/input-number'));
 require('antd/es/input/style');
 var _Input = _interopDefault(require('antd/es/input'));
+var SuperUpload = _interopDefault(require('react-antd-super-upload'));
 var React = require('react');
 var React__default = _interopDefault(React);
 require('antd/es/form/style');
@@ -167,8 +168,8 @@ var AntdElements = {
   // 类一
   input: _Input,
   inputnumber: _InputNumber,
-  'textarea': _Input.TextArea,
-  'password': _Input.Password,
+  textarea: _Input.TextArea,
+  password: _Input.Password,
   cascader: _Cascader,
   autocomplete: _AutoComplete,
   rate: _Rate,
@@ -199,9 +200,10 @@ var AntdElements = {
 
   // 类四
   upload: _Upload,
-  uploaddragger: _Upload.Dragger
+  uploaddragger: _Upload.Dragger,
 
   // 自定义
+  sfupload: SuperUpload
 };
 
 var toString = Object.prototype.toString;
@@ -299,15 +301,14 @@ var createFormItem = (function (obj, form) {
           _extends({ type: sfType }, _pr),
           _text
         );
-      }break;
+      }
+      break;
+
     case 'input':
     case 'inputnumber': // InputNumber
     case 'password': // Input.Number
     case 'textarea': // Input.TextArea
     case 'switch':
-    // case 'switch2':
-    // case 'wrapperinput':
-    // case 'func':
     case 'slider':
     case 'datepicker':
     case 'rangepicker':
@@ -357,7 +358,7 @@ var createFormItem = (function (obj, form) {
       break;
 
     case 'uploaddragger':
-    // case 'wrapperupload':
+    case 'sfupload':
     case 'upload':
       {
         var innerHTML = props.innerHTML,

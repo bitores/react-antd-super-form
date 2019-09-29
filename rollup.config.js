@@ -7,7 +7,7 @@ import less from 'rollup-plugin-less';
 import url from 'rollup-plugin-url'
 import svgr from '@svgr/rollup'
 
-import pkg from './src/package.json'
+import pkg from './package.json'
 
 export default {
   input: 'src/index.js',

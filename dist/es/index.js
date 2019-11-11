@@ -871,7 +871,7 @@ var Dialog = function (_React$PureComponent) {
   }, {
     key: '_afterClose',
     value: function _afterClose(callback) {
-      this.form.resetFields();
+      this.form && this.form.resetFields();
       callback && callback();
     }
   }, {

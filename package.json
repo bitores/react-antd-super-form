@@ -1,6 +1,6 @@
 {
   "name": "react-antd-super-form",
-  "version": "1.0.33",
+  "version": "1.0.35",
   "description": "Super Form  Creator , base on React & Antd",
   "main": "./dist/index.js",
   "module": "./dist/es/index.js",

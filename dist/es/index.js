@@ -1086,11 +1086,12 @@ var SuperForm = function (_Component) {
           autoSearchEvent = _props.autoSearchEvent,
           _bindForm = _props._bindForm,
           table = _props.table,
+          extra = _props.extra,
           _props$formStyle = _props.formStyle,
           formStyle = _props$formStyle === undefined ? {} : _props$formStyle,
           _props$tableStyle = _props.tableStyle,
           tableStyle = _props$tableStyle === undefined ? {} : _props$tableStyle,
-          props = objectWithoutProperties(_props, ['type', 'search', 'autoSearchEvent', '_bindForm', 'table', 'formStyle', 'tableStyle']);
+          props = objectWithoutProperties(_props, ['type', 'search', 'autoSearchEvent', '_bindForm', 'table', 'extra', 'formStyle', 'tableStyle']);
 
       return React.createElement(
         'div',
@@ -1100,6 +1101,7 @@ var SuperForm = function (_Component) {
           { className: styles.form, style: formStyle },
           React.createElement(Form, _extends({}, search, { autoSearchEvent: autoSearchEvent, _bindForm: _bindForm }))
         ),
+        extra,
         React.createElement(
           'div',
           { className: styles.table, style: tableStyle },

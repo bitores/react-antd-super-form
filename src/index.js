@@ -35,6 +35,7 @@ class SuperForm extends Component {
       type = 'table',   // 类型
       search, autoSearchEvent, _bindForm, // search form 配置, onSearch 为自动传入事件
       table,  // table or list 配置
+      extra,
       // 样式
       formStyle = {},
       tableStyle = {},
@@ -45,6 +46,7 @@ class SuperForm extends Component {
         <div className={styles.form} style={formStyle}>
           <Form  {...search} autoSearchEvent={autoSearchEvent} _bindForm={_bindForm} />
         </div>
+        {extra}
         <div className={styles.table} style={tableStyle}>
           {
             type === 'table' ? <Table ref={this.list} {...table} {...props} /> : <List ref={this.list} {...table} {...props} />

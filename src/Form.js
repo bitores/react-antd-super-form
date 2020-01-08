@@ -90,7 +90,7 @@ class _Form extends React.PureComponent {
           _item.autoSearchEvent = autoSearchEvent;
         }
         let renderItem = createFormItem(_item, form);
-        ret = type === 'button' ? renderItem : getFieldDecorator(key, this._transFuncToObj(config, form, this))(renderItem)
+        ret = (type === 'button' || unbind === true) ? renderItem : getFieldDecorator(key, this._transFuncToObj(config, form, this))(renderItem)
       }
 
       return (<Form.Item label={label} key={index} extra={extra} hasFeedback={hasFeedback} {...formItemLayout}>

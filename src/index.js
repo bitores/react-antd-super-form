@@ -39,7 +39,7 @@ class SuperForm extends Component {
       // 样式
       formStyle = {},
       tableStyle = {},
-      ...props,
+      ...props
     } = this.props;
     return (
       <div>

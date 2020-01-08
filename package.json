@@ -1,6 +1,6 @@
 {
   "name": "react-antd-super-form",
-  "version": "1.0.35",
+  "version": "1.0.36",
   "description": "Super Form  Creator , base on React & Antd",
   "main": "./dist/index.js",
   "module": "./dist/es/index.js",
@@ -26,6 +26,10 @@
     "react-dom": "^16.4.1"
   },
   "log": [
+    {
+      "version": "1.0.36",
+      "desc": "处理 divider function component ref & unbind 问题"
+    },
     {
       "version": "1.0.30",
       "desc": "功能:1. Modal 同antd 一样具有info,success, errro, confirm,warning 等功能; 2. 新增 divider 组件"

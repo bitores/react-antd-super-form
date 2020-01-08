@@ -518,7 +518,7 @@ var _Form = function (_React$PureComponent) {
             _item.autoSearchEvent = autoSearchEvent;
           }
           var _renderItem = createFormItem(_item, form);
-          ret = type === 'button' ? _renderItem : getFieldDecorator(key, _this2._transFuncToObj(config, form, _this2))(_renderItem);
+          ret = type === 'button' || unbind === true ? _renderItem : getFieldDecorator(key, _this2._transFuncToObj(config, form, _this2))(_renderItem);
         }
 
         return React__default.createElement(

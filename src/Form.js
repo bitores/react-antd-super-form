@@ -1,26 +1,29 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { message, Form } from 'antd';
 import createFormItem from './builder';
 import { filter } from './utils';
 
+export default (props, ref) => {
+  const [initialValues, setInitialValues] = useState({});
+  const [form] = Form.useForm();
+  const { _bindForm = () => { }, formLayout, layout = "horizontal", data = [], autoSearchEvent } = props;
 
-class _Form extends React.PureComponent {
-  constructor(props) {
-    super(props)
-    const { form, _bindForm = () => { } } = this.props;
-    _bindForm(form);
+
+  let _formLayout = formLayout || (layout === 'horizontal' ? {
+    labelCol: { span: 6 },
+    wrapperCol: { span: 14 },
+  } : {});
+
+  _bindForm(form);
+
+  function getFieldsValue() {
+    const fieldsValue = form.getFieldsValue();
+
+    return filter(fieldsValue);
+
   }
 
-  getFieldsValue() {
-    const { form } = this.props;
-    let fieldsValue = form.getFieldsValue();
-
-    let formValues = filter(fieldsValue);
-
-    return formValues;
-  }
-
-  _transFuncToObj(func = {}, form) {
+  const _transFuncToObj = (func = {}) => {
     if (Object.prototype.toString.call(func) === '[object Function]') {
       return func(form, this)
     } else {
@@ -28,7 +31,11 @@ class _Form extends React.PureComponent {
     }
   }
 
-  _renderElement(form, getFieldDecorator, autoSearchEvent, data = []) {
+  function _transConfig({ initialValue, ...config }) {
+    return config;
+  }
+
+  const renderElement = (autoSearchEvent, data = [], initialValues = {}) => {
     return data.map((item, index) => {
       const {
         // 组件是否渲染
@@ -58,28 +65,53 @@ class _Form extends React.PureComponent {
         // 组件固有属性
         ...props
       } = item;
+
+      if (config.hasOwnProperty('initialValue')) {
+        // console.log(config, item.key, initialValues)
+        initialValues[item.key] = config.initialValue;
+        // delete config.initialValue;
+        // setInitialValues(initialValues);
+      } else {
+        console.log('no config', item.key)
+      }
+
+
       let ret = null;
       if (visible === false) {
         return;
       } else if (type === 'br') {
-        return <br key={index} />
+        return <p key={index} style={{
+          // flex: 1,
+          display: 'block',
+          width: '100%',
+          height: 0,
+          margin: 0,
+          padding: 0
+        }
+        } ></p>
       } else if (type === 'span') {
         return <span key={index} {...props} >{label}</span>
       } else if (type === 'hidden') {
-        return (<Form.Item key={index} style={{ display: 'none' }}>
+        return (<Form.Item key={index} style={{ display: 'none' }} name={key} {..._transConfig(config)}>
           {
-            getFieldDecorator(key, this._transFuncToObj(config, form))(createFormItem({
+            createFormItem({
               type: 'input',
               hidden: true,
-            }, form))
+            }, form)
 
           }
         </Form.Item>)
       } else if (type === 'group') {
-        ret = this._renderElement(form, getFieldDecorator, autoSearchEvent, item.children)
+        return (<Form.Item label={label} key={index} extra={extra} hasFeedback={hasFeedback} {...formItemLayout}>
+          {
+            renderElement(autoSearchEvent, item.children)
+          }
+        </Form.Item>)
+
       } else if (render) {
         let renderItem = render(form, Form.Item) || <input placeholder="default: render need return"></input>;
-        ret = unbind === true ? renderItem : getFieldDecorator(key, this._transFuncToObj(config, form))(renderItem)
+        ret = unbind === true ? renderItem : renderIte;
+
       } else {
 
         let _item = {
@@ -90,10 +122,10 @@ class _Form extends React.PureComponent {
           _item.autoSearchEvent = autoSearchEvent;
         }
         let renderItem = createFormItem(_item, form);
-        ret = (type === 'button' || unbind === true) ? renderItem : getFieldDecorator(key, this._transFuncToObj(config, form, this))(renderItem)
+        ret = (type === 'button' || unbind === true) ? renderItem : renderItem;
       }
 
-      return (<Form.Item label={label} key={index} extra={extra} hasFeedback={hasFeedback} {...formItemLayout}>
+      return (<Form.Item label={label} key={index} extra={extra} hasFeedback={hasFeedback} {...formItemLayout} name={key} {..._transConfig(config)}>
         {
           renderFix ? renderFix(ret) : ret
         }
@@ -102,25 +134,15 @@ class _Form extends React.PureComponent {
     })
   }
 
-  render() {
-    const { form, formLayout, layout = "horizontal", data = [], autoSearchEvent } = this.props;
-    const { getFieldDecorator } = form;
-
-    let _formLayout = formLayout || (layout === 'horizontal' ? {
-      labelCol: { span: 6 },
-      wrapperCol: { span: 14 },
-    } : {})
-
-    return (<Form layout={layout} {..._formLayout}>
-      {
-        this._renderElement(form, getFieldDecorator, autoSearchEvent, this._transFuncToObj(data, form))
-      }
-      {
-        React.Children.map(this.props.children, function (child) {
-          return child;
-        })
-      }
-    </Form>)
-  }
+  return (<Form layout={layout} {..._formLayout} form={form} initialValues={initialValues}>
+    {
+      renderElement(autoSearchEvent, _transFuncToObj(data), initialValues)
+    }
+    {
+      React.Children.map(props.children, function (child) {
+        return child;
+      })
+    }
+  </Form>)
 }
-export default Form.create()(_Form) 
+// export default Form.create()(_Form)

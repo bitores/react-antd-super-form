@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useImperativeHandle, forwardRef, useRef } from 'react';
 
 import Form from './Form';
 import Table from './Table';
@@ -15,47 +15,45 @@ export {
   Modal,
 }
 
-class SuperForm extends Component {
-  constructor(props) {
-    super(props)
-    this.list = React.createRef();
-    this.form = React.createRef();
-  }
+const SuperForm = (props, ref) => {
 
-  reset(needLoad = true) {
-    this.list.current.reset(needLoad);
-  }
+  const list = useRef();
+  const form = useRef();
 
-  refresh() {
-    this.list.current.refresh();
-  }
+  useImperativeHandle(ref, () => ({
+    reset: (needLoad = true) => {
+      list.current.reset(needLoad);
+    },
+    refresh: () => {
+      list.current.refresh();
+    }
+  }))
 
-  render() {
-    const {
-      type = 'table',   // 类型
-      search, autoSearchEvent, _bindForm, // search form 配置, onSearch 为自动传入事件
-      table,  // table or list 配置
-      extra,
-      // 样式
-      formStyle = {},
-      tableStyle = {},
-      ...props
-    } = this.props;
-    return (
-      <div>
-        <div className={styles.form} style={formStyle}>
-          <Form  {...search} autoSearchEvent={autoSearchEvent} _bindForm={_bindForm} />
-        </div>
-        {extra}
-        <div className={styles.table} style={tableStyle}>
-          {
-            type === 'table' ? <Table ref={this.list} {...table} {...props} /> : <List ref={this.list} {...table} {...props} />
-          }
-        </div>
-
+  const {
+    type = 'table',   // 类型
+    search, autoSearchEvent, _bindForm, // search form 配置, onSearch 为自动传入事件
+    table,  // table or list 配置
+    extra,
+    // 样式
+    formStyle = {},
+    tableStyle = {},
+    ...pr
+  } = props;
+  return (
+    <div>
+      <div className={styles.form} style={formStyle}>
+        <Form  {...search} autoSearchEvent={autoSearchEvent} _bindForm={_bindForm} />
       </div>
-    )
-  }
+      {extra}
+      <div className={styles.table} style={tableStyle}>
+        {
+          type === 'table' ? <Table ref={list} {...table} {...pr} /> : <List ref={list} {...table} {...pr} />
+        }
+      </div>
+
+    </div>
+  )
+
 }
 
-export default withSearch(SuperForm) 
+export default withSearch(forwardRef(SuperForm)) 

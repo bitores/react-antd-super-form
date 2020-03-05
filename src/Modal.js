@@ -1,54 +1,67 @@
-import React from 'react';
-import { Modal, message } from 'antd';
+import React, { useState, useRef, useImperativeHandle, forwardRef, memo } from 'react';
+import { Modal, Form as AntdForm, message } from 'antd';
 import Form from './Form';
 import { toString, filter } from './utils';
 
 // 此 Modal 仅对于 form 来讲
-export default class Dialog extends React.PureComponent {
+const Dialog = (props, ref) => {
   // 不接收动态属性变化
-  constructor(props) {
-    super(props)
-    this.state = {
-      isVisible: props.visible || false,
-    }
+  const [isVisible, setIsVisible] = useState(props.visible || false);
+  // const form = AntdForm.useForm()
+  const formRef = useRef();
 
+  const {
+    children,
+    visible,
+    onCancel = () => { },
+    afterClose = () => { },
+    onOk = (e, form, show) => { },
+    footer = (cancel, ok) => { },
+    search, form: formData = {},
+    //
+    action = false, extraParams, actionError, actionSuccess,
+    //
+    ...pr
+  } = props;
+
+  useImperativeHandle(ref, () => ({
+    show
+  }))
+
+  function show(isShow = true, callback) {
+    setIsVisible(isShow);
+    callback && callback();
   }
 
-  show(isShow = true, callback) {
-    this.setState({
-      isVisible: isShow,
-    }, callback)
+  const _onCancel = (callback) => {
+    show(false, callback)
   }
 
-  _onCancel(callback) {
-    this.show(false, callback)
-  }
-
-  _afterClose(callback) {
-    this.form && this.form.resetFields()
+  const _afterClose = (callback) => {
+    formRef.current && formRef.current.resetFields()
     callback && callback()
   }
 
-  _getSearchParams() {
-    return filter(this.form.getFieldsValue())
+  const _getSearchParams = () => {
+    return filter(form.getFieldsValue())
   }
 
   // 处理 自动 action start
-  autoHandleSubmit = () => {
+  const autoHandleSubmit = () => {
     const { action, extraParams = {}, actionError = (res) => { console.log(res) }, actionSuccess = (res) => { console.log(res) }, valueMap = (res) => {
       return {
         status: res.status
       }
-    }, } = this.props;
+    }, } = props;
     let _val = toString.call(extraParams) === "[object Function]" ? extraParams() : extraParams;
     let values = {
       ..._val,
-      ...this._getSearchParams()
+      ..._getSearchParams()
     }
     action(values).then(res => {
       const { status } = valueMap(res)
       if (status) {
-        this.show(false, () => actionSuccess('操作成功'))
+        show(false, () => actionSuccess('操作成功'))
       } else {
         actionError(res.message)
       }
@@ -56,48 +69,38 @@ export default class Dialog extends React.PureComponent {
       actionError(err.message)
     })
   }
+
+
+
   // 处理 自动 action end
 
-  render() {
-    const { isVisible } = this.state;
-    const {
-      children,
-      visible,
-      onCancel = () => { },
-      afterClose = () => { },
-      onOk = (e, form, show) => { },
-      footer = (cancel, ok) => { },
-      search, form = {},
-      //
-      action = false, extraParams, actionError, actionSuccess,
-      //
-      ...pr
-    } = this.props;
 
-    let _onCancel = () => this._onCancel(onCancel),
-      _onOk = action !== false ? this.autoHandleSubmit : (e) => { onOk(e, this.form, (f) => this.show(f)) };
+  let _onCancelDialog = () => { console.log('close'); _onCancel(onCancel) },
+    _onOk = action !== false ? autoHandleSubmit : (e) => { onOk(e, formRef.current, (f) => show(f)) };
 
-    return (
-      <Modal
-        visible={isVisible}
-        onCancel={_onCancel}
-        afterClose={() => this._afterClose(afterClose)}
-        onOk={_onOk}
-        footer={toString.call(footer) === "[object Array]" ? footer : footer(_onCancel, _onOk)}
-        {...pr}
-      >
-        <Form
-          wrappedComponentRef={(inst) => this.form = inst && inst.props.form}
-          {...form}
-        />
-        {
-          React.Children.map(this.props.children, function (child) {
-            return child;
-          })
-        }
-      </Modal>
-    )
-  }
+
+  return (
+    <Modal
+      visible={isVisible}
+      onCancel={_onCancelDialog}
+      afterClose={() => _afterClose(afterClose)}
+      onOk={_onOk}
+      footer={toString.call(footer) === "[object Array]" ? footer : footer(_onCancelDialog, _onOk)}
+      {...pr}
+    >
+      <Form
+        _bindForm={(form) => { console.log(formRef, form); formRef.current = form; }}
+        // wrappedComponentRef={(inst) => form = inst && inst.props.formData}
+        {...formData}
+      />
+      {
+        React.Children.map(props.children, function (child) {
+          return child;
+        })
+      }
+    </Modal>
+  )
+  // }
 }
 
 Dialog.info = Modal.info;
@@ -105,3 +108,5 @@ Dialog.error = Modal.error;
 Dialog.warning = Modal.warning;
 Dialog.success = Modal.success;
 Dialog.confirm = Modal.confirm;
+
+export default forwardRef(Dialog);

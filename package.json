@@ -20,10 +20,10 @@
     "react-antd-super-upload": "^1.0.5"
   },
   "peerDependencies": {
-    "antd": "^3.19.1",
-    "react": "^16.4.1",
+    "antd": "^4.0.0-rc.1",
+    "react": "^16.8.6",
     "react-antd-super-upload": "^1.0.2",
-    "react-dom": "^16.4.1"
+    "react-dom": "^16.8.6"
   },
   "log": [
     {

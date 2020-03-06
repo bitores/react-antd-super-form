@@ -63,11 +63,11 @@ export default (props, ref) => {
         // 组件类型
         type,
         // 组件固有属性
-        ...props
+        ...itemProps
       } = item;
 
       if (config.hasOwnProperty('initialValue')) {
-        // console.log(config, item.key, initialValues)
+        console.log(config, item.key, initialValues)
         initialValues[item.key] = config.initialValue;
         // delete config.initialValue;
         // setInitialValues(initialValues);
@@ -90,7 +90,7 @@ export default (props, ref) => {
         }
         } ></p>
       } else if (type === 'span') {
-        return <span key={index} {...props} >{label}</span>
+        return <span key={index} {...itemProps} >{label}</span>
       } else if (type === 'hidden') {
         return (<Form.Item key={index} style={{ display: 'none' }} name={key} {..._transConfig(config)}>
           {
@@ -104,19 +104,19 @@ export default (props, ref) => {
       } else if (type === 'group') {
         return (<Form.Item label={label} key={index} extra={extra} hasFeedback={hasFeedback} {...formItemLayout}>
           {
-            renderElement(autoSearchEvent, item.children)
+            renderElement(autoSearchEvent, item.children, initialValues)
           }
         </Form.Item>)
 
       } else if (render) {
         let renderItem = render(form, Form.Item) || <input placeholder="default: render need return"></input>;
-        ret = unbind === true ? renderItem : renderIte;
+        ret = unbind === true ? renderItem : renderItem;
 
       } else {
 
         let _item = {
           type,
-          ...props
+          ...itemProps
         }
         if (bindSearch) {
           _item.autoSearchEvent = autoSearchEvent;
@@ -134,9 +134,21 @@ export default (props, ref) => {
     })
   }
 
-  return (<Form layout={layout} {..._formLayout} form={form} initialValues={initialValues}>
+  const renderItems = renderElement(autoSearchEvent, _transFuncToObj(data), initialValues);
+
+
+  const values = Object.assign({}, initialValues);
+
+  form.setFieldsValue(values)
+
+  console.log('==========', values)
+
+  // setInitialValues(initialValues)
+
+
+  return (<Form layout={layout} {..._formLayout} form={form} initialValues={values}>
     {
-      renderElement(autoSearchEvent, _transFuncToObj(data), initialValues)
+      renderItems
     }
     {
       React.Children.map(props.children, function (child) {

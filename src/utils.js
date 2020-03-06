@@ -43,4 +43,21 @@ const transToArray = (obj) => {
 }
 
 
-export { filter, transToArray, toString };
+function diffObject(oldO = {}, newO = {}) {
+
+  return Object.keys(newO).reduce((diff, key) => {
+
+    if (JSON.stringify(oldO[key]) === JSON.stringify(newO[key])) return diff
+
+    return {
+
+      ...diff,
+
+      [key]: newO[key]
+
+    }
+
+  }, {})
+}
+
+export { filter, transToArray, toString, diffObject };

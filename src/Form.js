@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, memo, useEffect, useRef } from 'react';
 import { message, Form } from 'antd';
 import createFormItem from './builder';
-import { filter } from './utils';
+import { filter, diffObject } from './utils';
 
-export default (props, ref) => {
+export default memo((props, ref) => {
   const [initialValues, setInitialValues] = useState({});
   const [form] = Form.useForm();
   const { _bindForm = () => { }, formLayout, layout = "horizontal", data = [], autoSearchEvent } = props;
@@ -67,7 +67,7 @@ export default (props, ref) => {
       } = item;
 
       if (config.hasOwnProperty('initialValue')) {
-        console.log(config, item.key, initialValues)
+        // console.log(config, item.key, initialValues)
         initialValues[item.key] = config.initialValue;
         // delete config.initialValue;
         // setInitialValues(initialValues);
@@ -134,14 +134,34 @@ export default (props, ref) => {
     })
   }
 
+  // useEffect(()=>{
+
+  // },[])
+
+  // useEffect(() => {
   const renderItems = renderElement(autoSearchEvent, _transFuncToObj(data), initialValues);
 
 
   const values = Object.assign({}, initialValues);
 
-  form.setFieldsValue(values)
+  const valueRef = useRef({})
 
-  console.log('==========', values)
+
+  useEffect(() => {
+
+    console.log('')
+
+    form.setFieldsValue(diffObject(valueRef.current, values))
+    console.log('==========111', valueRef.current, values, diffObject(valueRef.current, values))
+    valueRef.current = values;
+  }, [values])
+
+
+  // }, [])
+
+
+
+
 
   // setInitialValues(initialValues)
 
@@ -156,5 +176,5 @@ export default (props, ref) => {
       })
     }
   </Form>)
-}
+})
 // export default Form.create()(_Form)

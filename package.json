@@ -22,7 +22,7 @@
   "peerDependencies": {
     "antd": "^4.0.0-rc.1",
     "react": "^16.8.6",
-    "react-antd-super-upload": "^1.0.2",
+    "react-antd-super-upload": "^1.0.5",
     "react-dom": "^16.8.6"
   },
   "log": [

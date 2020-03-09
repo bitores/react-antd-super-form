@@ -43,21 +43,63 @@ const transToArray = (obj) => {
 }
 
 
-function diffObject(oldO = {}, newO = {}) {
-
-  return Object.keys(newO).reduce((diff, key) => {
-
-    if (JSON.stringify(oldO[key]) === JSON.stringify(newO[key])) return diff
-
-    return {
-
-      ...diff,
-
-      [key]: newO[key]
-
+function diff(o, n) { // for Array & Object
+  // 如果类型不一样， n 为全新
+  const dType = toString.call(n);
+  if (dType !== toString.call(o)) return n;
+  let diffData = undefined;
+  switch (dType) {
+    case "[object Number]":
+    case "[object String]":
+    case "[object Boolean]": {
+      if (o !== n) diffData = n;
     }
+      ; break;
+    case "[object Array]": {
+      if (o.length !== n.length) diffData = n;
+      else {
+        let r = o.reduce((total, item, i) => {
+          let r = diff(item, n[i]);
+          if (r !== undefined) {
+            total.push(n[i])
+          };
+          return total;
+        }, [])
+        if (r.length > 0) diffData = n;
 
-  }, {})
+      }
+    }
+      ; break;
+    case "[object Object]": {
+      let keys = Object.keys(n);
+      if (keys.length !== Object.keys(o).length) diffData = n;
+      else {
+        let r = keys.reduce((total, key) => {
+          let r = diff(o[key], n[key]);
+          if (r !== undefined) {
+            return {
+
+              ...total,
+
+              [key]: n[key]
+
+            }
+          }
+
+          return total
+        }, undefined)
+
+
+
+        if (r !== undefined) { diffData = r; }
+      }
+
+
+    }; break;
+  }
+
+  return diffData
 }
 
-export { filter, transToArray, toString, diffObject };
+
+export { filter, transToArray, toString, diff, }

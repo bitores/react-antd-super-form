@@ -1,7 +1,7 @@
 import React, { useState, memo, useEffect, useRef } from 'react';
 import { message, Form } from 'antd';
 import createFormItem from './builder';
-import { filter, diffObject } from './utils';
+import { filter, diff } from './utils';
 
 export default memo((props, ref) => {
   const [initialValues, setInitialValues] = useState({});
@@ -134,36 +134,15 @@ export default memo((props, ref) => {
     })
   }
 
-  // useEffect(()=>{
-
-  // },[])
-
-  // useEffect(() => {
   const renderItems = renderElement(autoSearchEvent, _transFuncToObj(data), initialValues);
-
-
   const values = Object.assign({}, initialValues);
-
   const valueRef = useRef({})
-
 
   useEffect(() => {
 
-    console.log('')
-
-    form.setFieldsValue(diffObject(valueRef.current, values))
-    console.log('==========111', valueRef.current, values, diffObject(valueRef.current, values))
+    form.setFieldsValue(diff(valueRef.current, values) || {})
     valueRef.current = values;
   }, [values])
-
-
-  // }, [])
-
-
-
-
-
-  // setInitialValues(initialValues)
 
 
   return (<Form layout={layout} {..._formLayout} form={form} initialValues={values}>

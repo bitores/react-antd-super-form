@@ -4,45 +4,12 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
 
-require('antd/es/upload/style');
-var _Upload = _interopDefault(require('antd/es/upload'));
-require('antd/es/steps/style');
-var _Steps = _interopDefault(require('antd/es/steps'));
-require('antd/es/divider/style');
-var _Divider = _interopDefault(require('antd/es/divider'));
-require('antd/es/checkbox/style');
-var _Checkbox = _interopDefault(require('antd/es/checkbox'));
-require('antd/es/radio/style');
-var _Radio = _interopDefault(require('antd/es/radio'));
-require('antd/es/mentions/style');
-var _Mentions = _interopDefault(require('antd/es/mentions'));
-require('antd/es/select/style');
-var _Select = _interopDefault(require('antd/es/select'));
-require('antd/es/button/style');
-var _Button = _interopDefault(require('antd/es/button'));
-require('antd/es/time-picker/style');
-var _TimePicker = _interopDefault(require('antd/es/time-picker'));
-require('antd/es/date-picker/style');
-var _DatePicker = _interopDefault(require('antd/es/date-picker'));
-require('antd/es/switch/style');
-var _Switch = _interopDefault(require('antd/es/switch'));
-require('antd/es/slider/style');
-var _Slider = _interopDefault(require('antd/es/slider'));
-require('antd/es/rate/style');
-var _Rate = _interopDefault(require('antd/es/rate'));
-require('antd/es/auto-complete/style');
-var _AutoComplete = _interopDefault(require('antd/es/auto-complete'));
-require('antd/es/cascader/style');
-var _Cascader = _interopDefault(require('antd/es/cascader'));
-require('antd/es/input-number/style');
-var _InputNumber = _interopDefault(require('antd/es/input-number'));
 require('antd/es/input/style');
 var _Input = _interopDefault(require('antd/es/input'));
-var SuperUpload = _interopDefault(require('react-antd-super-upload'));
+require('antd/es/form/style');
+var _Form = _interopDefault(require('antd/es/form'));
 var React = require('react');
 var React__default = _interopDefault(React);
-require('antd/es/form/style');
-var _Form2 = _interopDefault(require('antd/es/form'));
 require('antd/es/table/style');
 var _Table = _interopDefault(require('antd/es/table'));
 require('antd/es/list/style');
@@ -139,72 +106,43 @@ var possibleConstructorReturn = function (self, call) {
   return call && (typeof call === "object" || typeof call === "function") ? call : self;
 };
 
-var events = ['onClick', 'onChange', 'onBlur', 'onFocus', 'onHoverChange', 'onKeyDown', 'onSelect', 'onOk', 'onPressEnter'];
+var slicedToArray = function () {
+  function sliceIterator(arr, i) {
+    var _arr = [];
+    var _n = true;
+    var _d = false;
+    var _e = undefined;
 
-var injectEvent = (function (obj, form) {
-  var newObj = _extends({}, obj);
+    try {
+      for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) {
+        _arr.push(_s.value);
 
-  events.forEach(function (item) {
-    if (obj[item]) {
-      newObj[item] = function () {
-        for (var _len = arguments.length, props = Array(_len), _key = 0; _key < _len; _key++) {
-          props[_key] = arguments[_key];
-        }
-
-        return obj[item].apply(obj, props.concat([form]));
-      };
+        if (i && _arr.length === i) break;
+      }
+    } catch (err) {
+      _d = true;
+      _e = err;
+    } finally {
+      try {
+        if (!_n && _i["return"]) _i["return"]();
+      } finally {
+        if (_d) throw _e;
+      }
     }
-  });
 
-  return newObj;
-});
+    return _arr;
+  }
 
-// import Func from './Func';
-// import WrapperInput from './WrapperInput';
-// import WrapperSwitch from './WrapperSwitch';
-// import WrapperUpload from './WrapperUpload';
-
-var AntdElements = {
-  // 类一
-  input: _Input,
-  inputnumber: _InputNumber,
-  textarea: _Input.TextArea,
-  password: _Input.Password,
-  cascader: _Cascader,
-  autocomplete: _AutoComplete,
-  rate: _Rate,
-  slider: _Slider,
-  switch: _Switch,
-  datepicker: _DatePicker,
-  rangepicker: _DatePicker.RangePicker,
-  monthpicker: _DatePicker.MonthPicker,
-  weekpicker: _DatePicker.WeekPicker,
-  timepicker: _TimePicker,
-
-  // 类二
-  button: _Button,
-
-  // 类三
-  select: _Select,
-  mentions: _Mentions,
-  radio: _Radio.Group,
-  radiogroup: _Radio.Group,
-  radiobutton: _Radio,
-  checkbox: _Checkbox.Group,
-  checkboxgroup: _Checkbox.Group,
-
-  divider: _Divider,
-
-  //
-  steps: _Steps,
-
-  // 类四
-  upload: _Upload,
-  uploaddragger: _Upload.Dragger,
-
-  // 自定义
-  sfupload: SuperUpload
-};
+  return function (arr, i) {
+    if (Array.isArray(arr)) {
+      return arr;
+    } else if (Symbol.iterator in Object(arr)) {
+      return sliceIterator(arr, i);
+    } else {
+      throw new TypeError("Invalid attempt to destructure non-iterable instance");
+    }
+  };
+}();
 
 var toString = Object.prototype.toString;
 
@@ -234,333 +172,254 @@ var filter = function filter(fieldsValue) {
   return ret;
 };
 
-var transToArray = function transToArray(obj) {
-  if (toString.call(obj) === '[object Object]') {
-    return Object.keys(obj).map(function (key) {
-      return { label: obj[key], value: key };
-    });
-  } else if (toString.call(obj) === '[object Array]') {
-    return obj;
-  }
-
-  throw new Error('need obj or array');
-};
-
-var createFormItem = (function (obj, form) {
-  var _obj$type = obj.type,
-      type = _obj$type === undefined ? 'defaultType' : _obj$type,
-      other = objectWithoutProperties(obj, ['type']);
-  // 事件参数注入
-
-  var props = injectEvent(other, form);
-
-  var t = type.toLocaleLowerCase();
-  var Component = AntdElements[t];
-
-  var formElement = null;
-  switch (t) {
-    case 'button':
+function diff(o, n) {
+  // for Array & Object
+  // 如果类型不一样， n 为全新
+  var dType = toString.call(n);
+  if (dType !== toString.call(o)) return n;
+  var diffData = undefined;
+  switch (dType) {
+    case "[object Number]":
+    case "[object String]":
+    case "[object Boolean]":
       {
-        var autoSearchEvent = props.autoSearchEvent,
-            buttonType = props.buttonType,
-            text = props.text,
-            pr = objectWithoutProperties(props, ['autoSearchEvent', 'buttonType', 'text']);
+        if (o !== n) diffData = n;
+      }
+break;
+    case "[object Array]":
+      {
+        if (o.length !== n.length) diffData = n;else {
+          var r = o.reduce(function (total, item, i) {
+            var r = diff(item, n[i]);
+            if (r !== undefined) {
+              total.push(n[i]);
+            }            return total;
+          }, []);
+          if (r.length > 0) diffData = n;
+        }
+      }
+break;
+    case "[object Object]":
+      {
+        var keys = Object.keys(n);
+        if (keys.length !== Object.keys(o).length) diffData = n;else {
+          var _r = keys.reduce(function (total, key) {
+            var r = diff(o[key], n[key]);
+            if (r !== undefined) {
+              return _extends({}, total, defineProperty({}, key, n[key]));
+            }
 
-        if (autoSearchEvent) {
-          if (props.onClick) {
-            var old = props.onClick;
-            pr.onClick = function (e) {
-              old(e, form);
-              autoSearchEvent(form);
-            };
-          } else {
-            pr.onClick = function (e) {
-              autoSearchEvent(form);
-            };
+            return total;
+          }, undefined);
+
+          if (_r !== undefined) {
+            diffData = _r;
           }
         }
-
-        formElement = React__default.createElement(
-          Component,
-          _extends({ type: buttonType }, pr),
-          text
-        );
-      }
-
-      break;
-
-    case 'divider':
-      {
-        var _props$sfType = props.sfType,
-            sfType = _props$sfType === undefined ? 'horizontal' : _props$sfType,
-            _text = props.text,
-            _pr = objectWithoutProperties(props, ['sfType', 'text']);
-
-        formElement = React__default.createElement(
-          Component,
-          _extends({ type: sfType }, _pr),
-          _text
-        );
-      }
-      break;
-
-    case 'input':
-    case 'inputnumber': // InputNumber
-    case 'password': // Input.Number
-    case 'textarea': // Input.TextArea
-    case 'switch':
-    case 'slider':
-    case 'datepicker':
-    case 'rangepicker':
-    case 'monthpicker':
-    case 'weekpicker':
-    case 'timepicker':
-    case 'cascader':
-    case 'autocomplete':
-    case 'rate':
-      {
-        formElement = React__default.createElement(Component, props);
-      }
-      break;
-
-    case 'checkbox':
-    case 'radio':
-    case 'checkboxgroup':
-    case 'radiogroup':
-      {
-        var _props$options = props.options,
-            options = _props$options === undefined ? [] : _props$options,
-            _pr2 = objectWithoutProperties(props, ['options']);
-
-        formElement = React__default.createElement(Component, _extends({ options: transToArray(options) }, _pr2));
-      }
-      break;
-
-    case 'select':
-    case 'mentions':
-      {
-        var _props$options2 = props.options,
-            _options = _props$options2 === undefined ? [] : _props$options2,
-            _pr3 = objectWithoutProperties(props, ['options']);
-
-        formElement = React__default.createElement(
-          Component,
-          _pr3,
-          transToArray(_options).map(function (item) {
-            return React__default.createElement(
-              Component.Option,
-              { key: item.key || item.value, value: item.value },
-              item.label
-            );
-          })
-        );
-      }
-      break;
-
-    case 'uploaddragger':
-    case 'sfupload':
-    case 'upload':
-      {
-        var innerHTML = props.innerHTML,
-            _pr4 = objectWithoutProperties(props, ['innerHTML']);
-
-        formElement = React__default.createElement(
-          Component,
-          _pr4,
-          innerHTML && innerHTML()
-        );
-      }
-      break;
-
-    case 'radiobutton':
-      {
-        var _props$options3 = props.options,
-            _options2 = _props$options3 === undefined ? [] : _props$options3,
-            _pr5 = objectWithoutProperties(props, ['options']);
-
-        formElement = React__default.createElement(
-          Component.Group,
-          _pr5,
-          transToArray(_options2).map(function (item) {
-            return React__default.createElement(
-              Component.Button,
-              { key: item.key || item.value, value: item.value },
-              item.label
-            );
-          })
-        );
-      }
-      break;
-
-    case 'steps':
-      {
-        var _props$options4 = props.options,
-            _options3 = _props$options4 === undefined ? [] : _props$options4,
-            _pr6 = objectWithoutProperties(props, ['options']);
-
-        formElement = React__default.createElement(
-          Component,
-          _pr6,
-          transToArray(_options3).map(function (item, ind) {
-            return React__default.createElement(Component.Step, _extends({ key: item.key || item.title }, item));
-          })
-        );
-      }
-      break;
-
-    default:
-      formElement = React__default.createElement('input', { placeholder: 'default element' });
+      }break;
   }
 
-  return formElement;
-});
+  return diffData;
+}
 
-var _Form = function (_React$PureComponent) {
-  inherits(_Form, _React$PureComponent);
+var _this = undefined;
 
-  function _Form(props) {
-    classCallCheck(this, _Form);
+function createFormItem(obj, form) {
+  // console.log(obj.cType.name)
+  var AntdComponent = obj.cType,
+      child = obj.child,
+      innerHTML = obj.innerHTML,
+      bindSearchEvent = obj.bindSearchEvent,
+      props = objectWithoutProperties(obj, ['cType', 'child', 'innerHTML', 'bindSearchEvent']);
+  // const AntdComponent = obj.cType;
 
-    var _this = possibleConstructorReturn(this, (_Form.__proto__ || Object.getPrototypeOf(_Form)).call(this, props));
-
-    var _this$props = _this.props,
-        form = _this$props.form,
-        _this$props$_bindForm = _this$props._bindForm,
-        _bindForm = _this$props$_bindForm === undefined ? function () {} : _this$props$_bindForm;
-
-    _bindForm(form);
-    return _this;
-  }
-
-  createClass(_Form, [{
-    key: 'getFieldsValue',
-    value: function getFieldsValue() {
-      var form = this.props.form;
-
-      var fieldsValue = form.getFieldsValue();
-
-      var formValues = filter(fieldsValue);
-
-      return formValues;
+  if (bindSearchEvent) {
+    if (obj.onClick) {
+      // const onClick = obj.onClick;
+      props.onClick = function (e) {
+        obj.onClick(e, form);
+        bindSearchEvent(form);
+      };
+    } else {
+      props.onClick = function () {
+        bindSearchEvent(form);
+      };
     }
-  }, {
-    key: '_transFuncToObj',
-    value: function _transFuncToObj() {
-      var func = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-      var form = arguments[1];
+  }
 
-      if (Object.prototype.toString.call(func) === '[object Function]') {
-        return func(form, this);
+  return React__default.createElement(
+    AntdComponent,
+    props,
+    child || innerHTML && innerHTML()
+  );
+}
+
+var Form = React.memo(function (props, ref) {
+  var _useState = React.useState({}),
+      _useState2 = slicedToArray(_useState, 1),
+      initialValues = _useState2[0];
+
+  var _Form$useForm = _Form.useForm(),
+      _Form$useForm2 = slicedToArray(_Form$useForm, 1),
+      form = _Form$useForm2[0];
+
+  var _props$_bindForm = props._bindForm,
+      _bindForm = _props$_bindForm === undefined ? function () {} : _props$_bindForm,
+      formLayout = props.formLayout,
+      _props$layout = props.layout,
+      layout = _props$layout === undefined ? "horizontal" : _props$layout,
+      _props$data = props.data,
+      data = _props$data === undefined ? [] : _props$data,
+      autoSearchEvent = props.autoSearchEvent;
+
+  var innerFormLayout = formLayout || (layout === 'horizontal' ? {
+    labelCol: { span: 6 },
+    wrapperCol: { span: 14 }
+  } : {});
+
+  _bindForm(form);
+
+  var transFuncToObj = function transFuncToObj() {
+    var func = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+    var ret = null;
+    if (Object.prototype.toString.call(func) === '[object Function]') {
+      ret = func(form, _this);
+    } else {
+      ret = func;
+    }
+
+    return ret;
+  };
+
+  function transConfig(_ref) {
+    var initialValue = _ref.initialValue,
+        config = objectWithoutProperties(_ref, ['initialValue']);
+
+    return config;
+  }
+
+  var renderElement = function renderElement(bindSearchEvent) {
+    var formData = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
+    var initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+
+    return formData.map(function (item, _) {
+      var _item$visible = item.visible,
+          visible = _item$visible === undefined ? true : _item$visible,
+          unbind = item.unbind,
+          _item$key = item.key,
+          key = _item$key === undefined ? 'random_key_' + Math.random() : _item$key,
+          _item$formItem = item.formItem,
+          formItem = _item$formItem === undefined ? {} : _item$formItem,
+          _item$config = item.config,
+          config = _item$config === undefined ? {} : _item$config,
+          label = item.label,
+          _item$extra = item.extra,
+          extra = _item$extra === undefined ? null : _item$extra,
+          _item$hasFeedback = item.hasFeedback,
+          hasFeedback = _item$hasFeedback === undefined ? false : _item$hasFeedback,
+          render = item.render,
+          renderFix = item.renderFix,
+          _item$bindSearch = item.bindSearch,
+          bindSearch = _item$bindSearch === undefined ? false : _item$bindSearch,
+          cType = item.cType,
+          itemProps = objectWithoutProperties(item, ['visible', 'unbind', 'key', 'formItem', 'config', 'label', 'extra', 'hasFeedback', 'render', 'renderFix', 'bindSearch', 'cType']);
+
+
+      var formItemProps = _extends({
+        name: key,
+        label: label,
+        extra: extra,
+        hasFeedback: hasFeedback
+      }, formItem, transConfig(config));
+
+      if (config.hasOwnProperty('initialValue')) {
+        initialValues[item.key] = config.initialValue;
       } else {
-        return func;
+        console.log('no config', item.key);
       }
-    }
-  }, {
-    key: '_renderElement',
-    value: function _renderElement(form, getFieldDecorator, autoSearchEvent) {
-      var _this2 = this;
 
-      var data = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : [];
-
-      return data.map(function (item, index) {
-        var _item$visible = item.visible,
-            visible = _item$visible === undefined ? true : _item$visible,
-            label = item.label,
-            _item$extra = item.extra,
-            extra = _item$extra === undefined ? null : _item$extra,
-            _item$hasFeedback = item.hasFeedback,
-            hasFeedback = _item$hasFeedback === undefined ? false : _item$hasFeedback,
-            _item$formItemLayout = item.formItemLayout,
-            formItemLayout = _item$formItemLayout === undefined ? {} : _item$formItemLayout,
-            unbind = item.unbind,
-            _item$key = item.key,
-            key = _item$key === undefined ? 'random_key_' + Math.random() : _item$key,
-            _item$config = item.config,
-            config = _item$config === undefined ? {} : _item$config,
-            render = item.render,
-            renderFix = item.renderFix,
-            _item$bindSearch = item.bindSearch,
-            bindSearch = _item$bindSearch === undefined ? false : _item$bindSearch,
-            type = item.type,
-            props = objectWithoutProperties(item, ['visible', 'label', 'extra', 'hasFeedback', 'formItemLayout', 'unbind', 'key', 'config', 'render', 'renderFix', 'bindSearch', 'type']);
-
-        var ret = null;
-        if (visible === false) {
-          return;
-        } else if (type === 'br') {
-          return React__default.createElement('br', { key: index });
-        } else if (type === 'span') {
-          return React__default.createElement(
+      var ret = null;
+      if (visible !== false) {
+        if (cType === 'br') {
+          ret = React__default.createElement('p', { style: {
+              display: 'block',
+              width: '100%',
+              height: 0,
+              margin: 0,
+              padding: 0
+            } });
+        } else if (cType === 'span') {
+          ret = React__default.createElement(
             'span',
-            _extends({ key: index }, props),
+            itemProps,
             label
           );
-        } else if (type === 'hidden') {
-          return React__default.createElement(
-            _Form2.Item,
-            { key: index, style: { display: 'none' } },
-            getFieldDecorator(key, _this2._transFuncToObj(config, form))(createFormItem({
-              type: 'input',
+        } else if (cType === 'hidden') {
+          ret = React__default.createElement(
+            _Form.Item,
+            _extends({ noStyle: true, key: key }, formItemProps),
+            createFormItem({
+              cType: _Input,
               hidden: true
-            }, form))
+            }, form)
           );
-        } else if (type === 'group') {
-          ret = _this2._renderElement(form, getFieldDecorator, autoSearchEvent, item.children);
+        } else if (cType === 'group') {
+          ret = React__default.createElement(
+            _Form.Item,
+            _extends({ key: key }, formItemProps),
+            renderElement(bindSearchEvent, item.children, initialValues)
+          );
         } else if (render) {
-          var renderItem = render(form, _Form2.Item) || React__default.createElement('input', { placeholder: 'default: render need return' });
-          ret = unbind === true ? renderItem : getFieldDecorator(key, _this2._transFuncToObj(config, form))(renderItem);
+          var renderItem = render(form, _Form.Item);
+          ret = React__default.createElement(
+            _Form.Item,
+            _extends({ key: key }, formItemProps),
+            renderFix ? renderFix(renderItem) : renderItem
+          );
         } else {
 
-          var _item = _extends({
-            type: type
-          }, props);
+          var eleConfig = _extends({
+            cType: cType
+          }, itemProps);
+
           if (bindSearch) {
-            _item.autoSearchEvent = autoSearchEvent;
+            eleConfig.bindSearchEvent = bindSearchEvent;
           }
-          var _renderItem = createFormItem(_item, form);
-          ret = type === 'button' || unbind === true ? _renderItem : getFieldDecorator(key, _this2._transFuncToObj(config, form, _this2))(_renderItem);
+
+          var _renderItem = createFormItem(eleConfig, form);
+
+          ret = React__default.createElement(
+            _Form.Item,
+            _extends({ key: key }, formItemProps),
+            renderFix ? renderFix(_renderItem) : _renderItem
+          );
         }
+      }
 
-        return React__default.createElement(
-          _Form2.Item,
-          _extends({ label: label, key: index, extra: extra, hasFeedback: hasFeedback }, formItemLayout),
-          renderFix ? renderFix(ret) : ret
-        );
-      });
-    }
-  }, {
-    key: 'render',
-    value: function render() {
-      var _props = this.props,
-          form = _props.form,
-          formLayout = _props.formLayout,
-          _props$layout = _props.layout,
-          layout = _props$layout === undefined ? "horizontal" : _props$layout,
-          _props$data = _props.data,
-          data = _props$data === undefined ? [] : _props$data,
-          autoSearchEvent = _props.autoSearchEvent;
-      var getFieldDecorator = form.getFieldDecorator;
+      return ret;
+    });
+  };
 
+  var renderItems = renderElement(autoSearchEvent, transFuncToObj(data), initialValues);
+  var values = Object.assign({}, initialValues);
+  var valueRef = React.useRef({});
 
-      var _formLayout = formLayout || (layout === 'horizontal' ? {
-        labelCol: { span: 6 },
-        wrapperCol: { span: 14 }
-      } : {});
+  React.useEffect(function () {
 
-      return React__default.createElement(
-        _Form2,
-        _extends({ layout: layout }, _formLayout),
-        this._renderElement(form, getFieldDecorator, autoSearchEvent, this._transFuncToObj(data, form)),
-        React__default.Children.map(this.props.children, function (child) {
-          return child;
-        })
-      );
-    }
-  }]);
-  return _Form;
-}(React__default.PureComponent);
+    form.setFieldsValue(diff(valueRef.current, values) || {});
+    valueRef.current = values;
+  }, [values]);
 
-var Form = _Form2.create()(_Form);
+  return React__default.createElement(
+    _Form,
+    _extends({ layout: layout }, innerFormLayout, { form: form, initialValues: values }),
+    renderItems,
+    React__default.Children.map(props.children, function (child) {
+      return child;
+    })
+  );
+});
 
 var withPagination = (function (Component) {
   return function (_React$PureComponent) {
@@ -805,155 +664,135 @@ var Table = withPagination(_Table);
 var List = withPagination(_List);
 
 // 此 Modal 仅对于 form 来讲
-
-var Dialog = function (_React$PureComponent) {
-  inherits(Dialog, _React$PureComponent);
-
+var Dialog = React.forwardRef(function (props, ref) {
   // 不接收动态属性变化
-  function Dialog(props) {
-    classCallCheck(this, Dialog);
+  var _useState = React.useState(props.visible || false),
+      _useState2 = slicedToArray(_useState, 2),
+      isVisible = _useState2[0],
+      setIsVisible = _useState2[1];
+  // const form = AntdForm.useForm()
 
-    var _this = possibleConstructorReturn(this, (Dialog.__proto__ || Object.getPrototypeOf(Dialog)).call(this, props));
 
-    _this.autoHandleSubmit = function () {
-      var _this$props = _this.props,
-          action = _this$props.action,
-          _this$props$extraPara = _this$props.extraParams,
-          extraParams = _this$props$extraPara === undefined ? {} : _this$props$extraPara,
-          _this$props$actionErr = _this$props.actionError,
-          actionError = _this$props$actionErr === undefined ? function (res) {
-        console.log(res);
-      } : _this$props$actionErr,
-          _this$props$actionSuc = _this$props.actionSuccess,
-          actionSuccess = _this$props$actionSuc === undefined ? function (res) {
-        console.log(res);
-      } : _this$props$actionSuc,
-          _this$props$valueMap = _this$props.valueMap,
-          valueMap = _this$props$valueMap === undefined ? function (res) {
-        return {
-          status: res.status
-        };
-      } : _this$props$valueMap;
+  var formRef = React.useRef();
 
-      var _val = toString.call(extraParams) === "[object Function]" ? extraParams() : extraParams;
-      var values = _extends({}, _val, _this._getSearchParams());
-      action(values).then(function (res) {
-        var _valueMap = valueMap(res),
-            status = _valueMap.status;
+  var children = props.children,
+      visible = props.visible,
+      _props$onCancel = props.onCancel,
+      onCancel = _props$onCancel === undefined ? function () {} : _props$onCancel,
+      _props$afterClose = props.afterClose,
+      _afterClose2 = _props$afterClose === undefined ? function () {} : _props$afterClose,
+      _props$onOk = props.onOk,
+      onOk = _props$onOk === undefined ? function (e, form, show) {} : _props$onOk,
+      _props$footer = props.footer,
+      footer = _props$footer === undefined ? function (cancel, ok) {} : _props$footer,
+      search = props.search,
+      _props$form = props.form,
+      formData = _props$form === undefined ? {} : _props$form,
+      _props$action = props.action,
+      action = _props$action === undefined ? false : _props$action,
+      extraParams = props.extraParams,
+      actionError = props.actionError,
+      actionSuccess = props.actionSuccess,
+      pr = objectWithoutProperties(props, ['children', 'visible', 'onCancel', 'afterClose', 'onOk', 'footer', 'search', 'form', 'action', 'extraParams', 'actionError', 'actionSuccess']);
 
-        if (status) {
-          _this.show(false, function () {
-            return actionSuccess('操作成功');
-          });
-        } else {
-          actionError(res.message);
-        }
-      }).catch(function (err) {
-        actionError(err.message);
-      });
+  React.useImperativeHandle(ref, function () {
+    return {
+      show: show
     };
+  });
 
-    _this.state = {
-      isVisible: props.visible || false
-    };
+  function show() {
+    var isShow = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
+    var callback = arguments[1];
 
-    return _this;
+    setIsVisible(isShow);
+    callback && callback();
   }
 
-  createClass(Dialog, [{
-    key: 'show',
-    value: function show() {
-      var isShow = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
-      var callback = arguments[1];
+  var _onCancel = function _onCancel(callback) {
+    show(false, callback);
+  };
 
-      this.setState({
-        isVisible: isShow
-      }, callback);
-    }
-  }, {
-    key: '_onCancel',
-    value: function _onCancel(callback) {
-      this.show(false, callback);
-    }
-  }, {
-    key: '_afterClose',
-    value: function _afterClose(callback) {
-      this.form && this.form.resetFields();
-      callback && callback();
-    }
-  }, {
-    key: '_getSearchParams',
-    value: function _getSearchParams() {
-      return filter(this.form.getFieldsValue());
-    }
+  var _afterClose = function _afterClose(callback) {
+    console.log('_afterClose', formRef.current);
+    formRef.current && formRef.current.resetFields();
+    callback && callback();
+  };
 
-    // 处理 自动 action start
+  var _getSearchParams = function _getSearchParams() {
+    return filter(form.getFieldsValue());
+  };
 
-  }, {
-    key: 'render',
-
-    // 处理 自动 action end
-
-    value: function render() {
-      var _this2 = this;
-
-      var isVisible = this.state.isVisible;
-
-      var _props = this.props,
-          children = _props.children,
-          visible = _props.visible,
-          _props$onCancel = _props.onCancel,
-          onCancel = _props$onCancel === undefined ? function () {} : _props$onCancel,
-          _props$afterClose = _props.afterClose,
-          _afterClose2 = _props$afterClose === undefined ? function () {} : _props$afterClose,
-          _props$onOk = _props.onOk,
-          onOk = _props$onOk === undefined ? function (e, form, show) {} : _props$onOk,
-          _props$footer = _props.footer,
-          footer = _props$footer === undefined ? function (cancel, ok) {} : _props$footer,
-          search = _props.search,
-          _props$form = _props.form,
-          form = _props$form === undefined ? {} : _props$form,
-          _props$action = _props.action,
-          action = _props$action === undefined ? false : _props$action,
-          extraParams = _props.extraParams,
-          actionError = _props.actionError,
-          actionSuccess = _props.actionSuccess,
-          pr = objectWithoutProperties(_props, ['children', 'visible', 'onCancel', 'afterClose', 'onOk', 'footer', 'search', 'form', 'action', 'extraParams', 'actionError', 'actionSuccess']);
-
-      var _onCancel = function _onCancel() {
-        return _this2._onCancel(onCancel);
-      },
-          _onOk = action !== false ? this.autoHandleSubmit : function (e) {
-        onOk(e, _this2.form, function (f) {
-          return _this2.show(f);
-        });
+  // 处理 自动 action start
+  var autoHandleSubmit = function autoHandleSubmit() {
+    var action = props.action,
+        _props$extraParams = props.extraParams,
+        extraParams = _props$extraParams === undefined ? {} : _props$extraParams,
+        _props$actionError = props.actionError,
+        actionError = _props$actionError === undefined ? function (res) {
+      console.log(res);
+    } : _props$actionError,
+        _props$actionSuccess = props.actionSuccess,
+        actionSuccess = _props$actionSuccess === undefined ? function (res) {
+      console.log(res);
+    } : _props$actionSuccess,
+        _props$valueMap = props.valueMap,
+        valueMap = _props$valueMap === undefined ? function (res) {
+      return {
+        status: res.status
       };
+    } : _props$valueMap;
 
-      return React__default.createElement(
-        _Modal,
-        _extends({
-          visible: isVisible,
-          onCancel: _onCancel,
-          afterClose: function afterClose() {
-            return _this2._afterClose(_afterClose2);
-          },
-          onOk: _onOk,
-          footer: toString.call(footer) === "[object Array]" ? footer : footer(_onCancel, _onOk)
-        }, pr),
-        React__default.createElement(Form, _extends({
-          wrappedComponentRef: function wrappedComponentRef(inst) {
-            return _this2.form = inst && inst.props.form;
-          }
-        }, form)),
-        React__default.Children.map(this.props.children, function (child) {
-          return child;
-        })
-      );
-    }
-  }]);
-  return Dialog;
-}(React__default.PureComponent);
+    var _val = toString.call(extraParams) === "[object Function]" ? extraParams() : extraParams;
+    var values = _extends({}, _val, _getSearchParams());
+    action(values).then(function (res) {
+      var _valueMap = valueMap(res),
+          status = _valueMap.status;
 
+      if (status) {
+        show(false, function () {
+          return actionSuccess('操作成功');
+        });
+      } else {
+        actionError(res.message);
+      }
+    }).catch(function (err) {
+      actionError(err.message);
+    });
+  };
+
+  // 处理 自动 action end
+
+
+  var _onCancelDialog = function _onCancelDialog() {
+    _onCancel(onCancel);
+  },
+      _onOk = action !== false ? autoHandleSubmit : function (e) {
+    onOk(e, formRef.current, function (f) {
+      return show(f);
+    });
+  };
+
+  return React__default.createElement(
+    _Modal,
+    _extends({
+      visible: isVisible,
+      onCancel: _onCancelDialog,
+      afterClose: function afterClose() {
+        return _afterClose(_afterClose2);
+      },
+      onOk: _onOk,
+      footer: toString.call(footer) === "[object Array]" ? footer : footer(_onCancelDialog, _onOk)
+    }, pr),
+    React__default.createElement(Form, _extends({ _bindForm: function _bindForm(form) {
+        formRef.current = form;
+      } }, formData)),
+    React__default.Children.map(props.children, function (child) {
+      return child;
+    })
+  );
+  // }
+});
 
 Dialog.info = _Modal.info;
 Dialog.error = _Modal.error;
@@ -1058,69 +897,55 @@ var withSearch = (function (Component) {
   }(React__default.PureComponent);
 });
 
-var SuperForm = function (_Component) {
-  inherits(SuperForm, _Component);
+var SuperForm = function SuperForm(props, ref) {
 
-  function SuperForm(props) {
-    classCallCheck(this, SuperForm);
+  var list = React.useRef();
+  var form = React.useRef();
 
-    var _this = possibleConstructorReturn(this, (SuperForm.__proto__ || Object.getPrototypeOf(SuperForm)).call(this, props));
+  React.useImperativeHandle(ref, function () {
+    return {
+      reset: function reset() {
+        var needLoad = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
 
-    _this.list = React__default.createRef();
-    _this.form = React__default.createRef();
-    return _this;
-  }
+        list.current.reset(needLoad);
+      },
+      refresh: function refresh() {
+        list.current.refresh();
+      }
+    };
+  });
 
-  createClass(SuperForm, [{
-    key: 'reset',
-    value: function reset() {
-      var needLoad = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
+  var _props$type = props.type,
+      type = _props$type === undefined ? 'table' : _props$type,
+      search = props.search,
+      autoSearchEvent = props.autoSearchEvent,
+      _bindForm = props._bindForm,
+      table = props.table,
+      extra = props.extra,
+      _props$formStyle = props.formStyle,
+      formStyle = _props$formStyle === undefined ? {} : _props$formStyle,
+      _props$tableStyle = props.tableStyle,
+      tableStyle = _props$tableStyle === undefined ? {} : _props$tableStyle,
+      pr = objectWithoutProperties(props, ['type', 'search', 'autoSearchEvent', '_bindForm', 'table', 'extra', 'formStyle', 'tableStyle']);
 
-      this.list.current.reset(needLoad);
-    }
-  }, {
-    key: 'refresh',
-    value: function refresh() {
-      this.list.current.refresh();
-    }
-  }, {
-    key: 'render',
-    value: function render() {
-      var _props = this.props,
-          _props$type = _props.type,
-          type = _props$type === undefined ? 'table' : _props$type,
-          search = _props.search,
-          autoSearchEvent = _props.autoSearchEvent,
-          _bindForm = _props._bindForm,
-          table = _props.table,
-          extra = _props.extra,
-          _props$formStyle = _props.formStyle,
-          formStyle = _props$formStyle === undefined ? {} : _props$formStyle,
-          _props$tableStyle = _props.tableStyle,
-          tableStyle = _props$tableStyle === undefined ? {} : _props$tableStyle,
-          props = objectWithoutProperties(_props, ['type', 'search', 'autoSearchEvent', '_bindForm', 'table', 'extra', 'formStyle', 'tableStyle']);
+  return React__default.createElement(
+    'div',
+    null,
+    React__default.createElement(
+      'div',
+      { className: styles.form, style: formStyle },
+      React__default.createElement(Form, _extends({}, search, { autoSearchEvent: autoSearchEvent, _bindForm: _bindForm }))
+    ),
+    extra,
+    React__default.createElement(
+      'div',
+      { className: styles.table, style: tableStyle },
+      type === 'table' ? React__default.createElement(Table, _extends({ ref: list }, table, pr)) : React__default.createElement(List, _extends({ ref: list }, table, pr))
+    )
+  );
+};
 
-      return React__default.createElement(
-        'div',
-        null,
-        React__default.createElement(
-          'div',
-          { className: styles.form, style: formStyle },
-          React__default.createElement(Form, _extends({}, search, { autoSearchEvent: autoSearchEvent, _bindForm: _bindForm }))
-        ),
-        extra,
-        React__default.createElement(
-          'div',
-          { className: styles.table, style: tableStyle },
-          type === 'table' ? React__default.createElement(Table, _extends({ ref: this.list }, table, props)) : React__default.createElement(List, _extends({ ref: this.list }, table, props))
-        )
-      );
-    }
-  }]);
-  return SuperForm;
-}(React.Component);
-
-var index = withSearch(SuperForm);
+var index = withSearch(React.forwardRef(SuperForm));
 
 exports.Form = Form;
 exports.Table = Table;

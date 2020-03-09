@@ -4,7 +4,7 @@ import Form from './Form';
 import { toString, filter } from './utils';
 
 // 此 Modal 仅对于 form 来讲
-const Dialog = (props, ref) => {
+const Dialog = forwardRef((props, ref) => {
   // 不接收动态属性变化
   const [isVisible, setIsVisible] = useState(props.visible || false);
   // const form = AntdForm.useForm()
@@ -38,6 +38,7 @@ const Dialog = (props, ref) => {
   }
 
   const _afterClose = (callback) => {
+    console.log('_afterClose', formRef.current)
     formRef.current && formRef.current.resetFields()
     callback && callback()
   }
@@ -75,7 +76,7 @@ const Dialog = (props, ref) => {
   // 处理 自动 action end
 
 
-  let _onCancelDialog = () => { console.log('close'); _onCancel(onCancel) },
+  let _onCancelDialog = () => { _onCancel(onCancel) },
     _onOk = action !== false ? autoHandleSubmit : (e) => { onOk(e, formRef.current, (f) => show(f)) };
 
 
@@ -88,20 +89,14 @@ const Dialog = (props, ref) => {
       footer={toString.call(footer) === "[object Array]" ? footer : footer(_onCancelDialog, _onOk)}
       {...pr}
     >
-      <Form
-        _bindForm={(form) => { console.log(formRef, form); formRef.current = form; }}
-        // wrappedComponentRef={(inst) => form = inst && inst.props.formData}
-        {...formData}
-      />
+      <Form _bindForm={(form) => { formRef.current = form; }} {...formData} />
       {
-        React.Children.map(props.children, function (child) {
-          return child;
-        })
+        React.Children.map(props.children, child => child)
       }
     </Modal>
   )
   // }
-}
+})
 
 Dialog.info = Modal.info;
 Dialog.error = Modal.error;
@@ -109,4 +104,4 @@ Dialog.warning = Modal.warning;
 Dialog.success = Modal.success;
 Dialog.confirm = Modal.confirm;
 
-export default forwardRef(Dialog);
+export default Dialog;

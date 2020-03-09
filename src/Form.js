@@ -1,15 +1,35 @@
 import React, { useState, memo, useEffect, useRef } from 'react';
-import { message, Form } from 'antd';
-import createFormItem from './builder';
+import { Form, Input } from 'antd';
 import { filter, diff } from './utils';
 
+function createFormItem(obj, form) {
+  // console.log(obj.cType.name)
+  const { cType: AntdComponent, child, innerHTML, bindSearchEvent, ...props } = obj;
+  // const AntdComponent = obj.cType;
+  if (bindSearchEvent) {
+    if (obj.onClick) {
+      // const onClick = obj.onClick;
+      props.onClick = e => {
+        obj.onClick(e, form)
+        bindSearchEvent(form);
+      }
+    } else {
+      props.onClick = () => {
+        bindSearchEvent(form);
+      }
+    }
+  }
+
+  return <AntdComponent {...props}>{child || (innerHTML && innerHTML())}</AntdComponent>
+}
+
 export default memo((props, ref) => {
-  const [initialValues, setInitialValues] = useState({});
+  const [initialValues] = useState({});
   const [form] = Form.useForm();
   const { _bindForm = () => { }, formLayout, layout = "horizontal", data = [], autoSearchEvent } = props;
 
 
-  let _formLayout = formLayout || (layout === 'horizontal' ? {
+  const innerFormLayout = formLayout || (layout === 'horizontal' ? {
     labelCol: { span: 6 },
     wrapperCol: { span: 14 },
   } : {});
@@ -23,118 +43,129 @@ export default memo((props, ref) => {
 
   }
 
-  const _transFuncToObj = (func = {}) => {
+  const transFuncToObj = (func = {}) => {
+    let ret = null;
     if (Object.prototype.toString.call(func) === '[object Function]') {
-      return func(form, this)
+      ret = func(form, this)
     } else {
-      return func;
+      ret = func;
     }
+
+    return ret;
   }
 
-  function _transConfig({ initialValue, ...config }) {
+  function transConfig({ initialValue, ...config }) {
     return config;
   }
 
-  const renderElement = (autoSearchEvent, data = [], initialValues = {}) => {
-    return data.map((item, index) => {
+  const renderElement = (bindSearchEvent, formData = [], initialValues = {}) => {
+    return formData.map((item, _) => {
       const {
         // 组件是否渲染
         visible = true,
 
         // Form.Item 属性
+        unbind,
+        key = `random_key_${Math.random()}`,
+        formItem = {}, // form item 属性
+        config = {}, // form item 验证配置
         label,
         extra = null,
         hasFeedback = false,
-        formItemLayout = {},
 
-        // getFieldDecorator 参数
-        unbind,
-        key = `random_key_${Math.random()}`,
-        config = {},
-
-        // 自定义组件渲染(即不包含在已有组件列表中)
+        // 完全自定义组件渲染(即不包含在已有组件列表中)
         render,
-        // 在一些特殊布局中使用
+        // 在原组件基本上修改组件
         renderFix,
 
         // button 是否绑定 搜索事件
         bindSearch = false,
 
         // 组件类型
-        type,
+        cType,
         // 组件固有属性
         ...itemProps
       } = item;
 
+      const formItemProps = {
+        name: key,
+        label,
+        extra,
+        hasFeedback,
+        ...formItem,
+        ...transConfig(config)
+      }
+
       if (config.hasOwnProperty('initialValue')) {
-        // console.log(config, item.key, initialValues)
         initialValues[item.key] = config.initialValue;
-        // delete config.initialValue;
-        // setInitialValues(initialValues);
       } else {
         console.log('no config', item.key)
       }
 
 
       let ret = null;
-      if (visible === false) {
-        return;
-      } else if (type === 'br') {
-        return <p key={index} style={{
-          // flex: 1,
-          display: 'block',
-          width: '100%',
-          height: 0,
-          margin: 0,
-          padding: 0
-        }
-        } ></p>
-      } else if (type === 'span') {
-        return <span key={index} {...itemProps} >{label}</span>
-      } else if (type === 'hidden') {
-        return (<Form.Item key={index} style={{ display: 'none' }} name={key} {..._transConfig(config)}>
-          {
-            createFormItem({
-              type: 'input',
-              hidden: true,
-            }, form)
+      if (visible !== false) {
+        if (cType === 'br') {
+          ret = <p style={{
+            display: 'block',
+            width: '100%',
+            height: 0,
+            margin: 0,
+            padding: 0
+          }} />
+        } else if (cType === 'span') {
+          ret = <span  {...itemProps} >{label}</span>
+        } else if (cType === 'hidden') {
+          ret = (<Form.Item noStyle key={key}  {...formItemProps}>
+            {
+              createFormItem({
+                cType: Input,
+                hidden: true,
+              }, form)
 
+            }
+          </Form.Item>)
+        } else if (cType === 'group') {
+          ret = (<Form.Item key={key} {...formItemProps}>
+            {
+              renderElement(bindSearchEvent, item.children, initialValues)
+            }
+          </Form.Item>)
+
+        } else if (render) {
+          const renderItem = render(form, Form.Item);
+          ret = (<Form.Item key={key} {...formItemProps}>
+            {
+              renderFix ? renderFix(renderItem) : renderItem
+            }
+          </Form.Item>)
+
+        } else {
+
+          const eleConfig = {
+            cType,
+            ...itemProps
           }
-        </Form.Item>)
-      } else if (type === 'group') {
-        return (<Form.Item label={label} key={index} extra={extra} hasFeedback={hasFeedback} {...formItemLayout}>
-          {
-            renderElement(autoSearchEvent, item.children, initialValues)
+
+          if (bindSearch) {
+            eleConfig.bindSearchEvent = bindSearchEvent
           }
-        </Form.Item>)
 
-      } else if (render) {
-        let renderItem = render(form, Form.Item) || <input placeholder="default: render need return"></input>;
-        ret = unbind === true ? renderItem : renderItem;
+          const renderItem = createFormItem(eleConfig, form);
 
-      } else {
-
-        let _item = {
-          type,
-          ...itemProps
+          ret = (<Form.Item key={key} {...formItemProps}>
+            {
+              renderFix ? renderFix(renderItem) : renderItem
+            }
+          </Form.Item>)
         }
-        if (bindSearch) {
-          _item.autoSearchEvent = autoSearchEvent;
-        }
-        let renderItem = createFormItem(_item, form);
-        ret = (type === 'button' || unbind === true) ? renderItem : renderItem;
       }
 
-      return (<Form.Item label={label} key={index} extra={extra} hasFeedback={hasFeedback} {...formItemLayout} name={key} {..._transConfig(config)}>
-        {
-          renderFix ? renderFix(ret) : ret
-        }
-      </Form.Item>)
-
+      return ret;
     })
   }
 
-  const renderItems = renderElement(autoSearchEvent, _transFuncToObj(data), initialValues);
+  const renderItems = renderElement(autoSearchEvent, transFuncToObj(data), initialValues);
   const values = Object.assign({}, initialValues);
   const valueRef = useRef({})
 
@@ -145,15 +176,12 @@ export default memo((props, ref) => {
   }, [values])
 
 
-  return (<Form layout={layout} {..._formLayout} form={form} initialValues={values}>
+  return (<Form layout={layout} {...innerFormLayout} form={form} initialValues={values}>
     {
       renderItems
     }
     {
-      React.Children.map(props.children, function (child) {
-        return child;
-      })
+      React.Children.map(props.children, child => child)
     }
   </Form>)
 })
-// export default Form.create()(_Form)

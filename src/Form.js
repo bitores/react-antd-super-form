@@ -127,7 +127,7 @@ export default memo((props, ref) => {
           </Form.Item>)
         } else if (cType === 'group') {
           const curCom = renderElement(bindSearchEvent, item.children, initialValues)
-          ret = (<Form.Item noStyle key={key} {...formItemProps}>
+          ret = (<Form.Item noStyle key={key} >
             {
               curCom
             }
@@ -143,14 +143,14 @@ export default memo((props, ref) => {
 
         } else if(cType === 'row'){
           const curCom = renderElement(bindSearchEvent, item.children, initialValues)
-          ret = (<Row {...itemProps}>
+          ret = (<Row key={key} {...itemProps}>
             {
               curCom
             }
           </Row>)
         } else if(cType === 'col'){
           const curCom = renderElement(bindSearchEvent, item.children, initialValues)
-          ret = (<Col {...itemProps}>
+          ret = (<Col key={key} {...itemProps}>
             {
               curCom
             }

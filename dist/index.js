@@ -4,6 +4,10 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
 
+require('antd/es/col/style');
+var _Col = _interopDefault(require('antd/es/col'));
+require('antd/es/row/style');
+var _Row = _interopDefault(require('antd/es/row'));
 require('antd/es/input/style');
 var _Input = _interopDefault(require('antd/es/input'));
 require('antd/es/form/style');
@@ -365,10 +369,11 @@ var Form = React.memo(function (props, ref) {
             }, form)
           );
         } else if (cType === 'group') {
+          var curCom = renderElement(bindSearchEvent, item.children, initialValues);
           ret = React__default.createElement(
             _Form.Item,
-            _extends({ key: key }, formItemProps),
-            renderElement(bindSearchEvent, item.children, initialValues)
+            _extends({ noStyle: true, key: key }, formItemProps),
+            curCom
           );
         } else if (render) {
           var renderItem = render(form, _Form.Item);
@@ -377,8 +382,21 @@ var Form = React.memo(function (props, ref) {
             _extends({ key: key }, formItemProps),
             renderFix ? renderFix(renderItem) : renderItem
           );
+        } else if (cType === 'row') {
+          var _curCom = renderElement(bindSearchEvent, item.children, initialValues);
+          ret = React__default.createElement(
+            _Row,
+            itemProps,
+            _curCom
+          );
+        } else if (cType === 'col') {
+          var _curCom2 = renderElement(bindSearchEvent, item.children, initialValues);
+          ret = React__default.createElement(
+            _Col,
+            itemProps,
+            _curCom2
+          );
         } else {
-
           var eleConfig = _extends({
             cType: cType
           }, itemProps);
@@ -389,10 +407,12 @@ var Form = React.memo(function (props, ref) {
 
           var _renderItem = createFormItem(eleConfig, form);
 
-          ret = React__default.createElement(
+          var _curCom3 = renderFix ? renderFix(_renderItem) : _renderItem;
+
+          ret = unbind ? _curCom3 : React__default.createElement(
             _Form.Item,
             _extends({ key: key }, formItemProps),
-            renderFix ? renderFix(_renderItem) : _renderItem
+            _curCom3
           );
         }
       }

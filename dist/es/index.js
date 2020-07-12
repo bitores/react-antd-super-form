@@ -1,3 +1,7 @@
+import 'antd/es/col/style';
+import _Col from 'antd/es/col';
+import 'antd/es/row/style';
+import _Row from 'antd/es/row';
 import 'antd/es/input/style';
 import _Input from 'antd/es/input';
 import 'antd/es/form/style';
@@ -358,10 +362,11 @@ var Form = memo(function (props, ref) {
             }, form)
           );
         } else if (cType === 'group') {
+          var curCom = renderElement(bindSearchEvent, item.children, initialValues);
           ret = React.createElement(
             _Form.Item,
-            _extends({ key: key }, formItemProps),
-            renderElement(bindSearchEvent, item.children, initialValues)
+            _extends({ noStyle: true, key: key }, formItemProps),
+            curCom
           );
         } else if (render) {
           var renderItem = render(form, _Form.Item);
@@ -370,8 +375,21 @@ var Form = memo(function (props, ref) {
             _extends({ key: key }, formItemProps),
             renderFix ? renderFix(renderItem) : renderItem
           );
+        } else if (cType === 'row') {
+          var _curCom = renderElement(bindSearchEvent, item.children, initialValues);
+          ret = React.createElement(
+            _Row,
+            itemProps,
+            _curCom
+          );
+        } else if (cType === 'col') {
+          var _curCom2 = renderElement(bindSearchEvent, item.children, initialValues);
+          ret = React.createElement(
+            _Col,
+            itemProps,
+            _curCom2
+          );
         } else {
-
           var eleConfig = _extends({
             cType: cType
           }, itemProps);
@@ -382,10 +400,12 @@ var Form = memo(function (props, ref) {
 
           var _renderItem = createFormItem(eleConfig, form);
 
-          ret = React.createElement(
+          var _curCom3 = renderFix ? renderFix(_renderItem) : _renderItem;
+
+          ret = unbind ? _curCom3 : React.createElement(
             _Form.Item,
             _extends({ key: key }, formItemProps),
-            renderFix ? renderFix(_renderItem) : _renderItem
+            _curCom3
           );
         }
       }

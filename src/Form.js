@@ -1,5 +1,5 @@
 import React, { useState, memo, useEffect, useRef } from 'react';
-import { Form, Input } from 'antd';
+import { Form, Input, Row, Col } from 'antd';
 import { filter, diff } from './utils';
 
 function createFormItem(obj, form) {
@@ -126,9 +126,10 @@ export default memo((props, ref) => {
             }
           </Form.Item>)
         } else if (cType === 'group') {
-          ret = (<Form.Item key={key} {...formItemProps}>
+          const curCom = renderElement(bindSearchEvent, item.children, initialValues)
+          ret = (<Form.Item noStyle key={key} {...formItemProps}>
             {
-              renderElement(bindSearchEvent, item.children, initialValues)
+              curCom
             }
           </Form.Item>)
 
@@ -140,8 +141,21 @@ export default memo((props, ref) => {
             }
           </Form.Item>)
 
+        } else if(cType === 'row'){
+          const curCom = renderElement(bindSearchEvent, item.children, initialValues)
+          ret = (<Row {...itemProps}>
+            {
+              curCom
+            }
+          </Row>)
+        } else if(cType === 'col'){
+          const curCom = renderElement(bindSearchEvent, item.children, initialValues)
+          ret = (<Col {...itemProps}>
+            {
+              curCom
+            }
+          </Col>)
         } else {
-
           const eleConfig = {
             cType,
             ...itemProps
@@ -153,9 +167,11 @@ export default memo((props, ref) => {
 
           const renderItem = createFormItem(eleConfig, form);
 
-          ret = (<Form.Item key={key} {...formItemProps}>
+          const curCom =renderFix ? renderFix(renderItem) : renderItem;
+
+          ret = unbind? curCom : (<Form.Item key={key} {...formItemProps}>
             {
-              renderFix ? renderFix(renderItem) : renderItem
+              curCom
             }
           </Form.Item>)
         }

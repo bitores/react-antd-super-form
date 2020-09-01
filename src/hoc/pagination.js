@@ -94,21 +94,23 @@ export default (Component) => {
       let request = null;
       if (action) {
         request = action(values);
+        request.then(res => {
+          const { dataSource, total, status } = valueMap(res);
+          if (status) {
+            this.setState({
+              _list: dataSource,
+              _total: total
+            })
+          } else {
+            actionError(res.message)
+          }
+        })
       } else {
-        throw new Error('need action filed')
+        // throw new Error('need action filed')
+        console.warn('!!!!!!!!!need action!!!!!!!!')
       }
 
-      request.then(res => {
-        const { dataSource, total, status } = valueMap(res);
-        if (status) {
-          this.setState({
-            _list: dataSource,
-            _total: total
-          })
-        } else {
-          actionError(res.message)
-        }
-      })
+      
     }
 
     render() {

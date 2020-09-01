@@ -4,6 +4,7 @@ import Form from './Form';
 import Table from './Table';
 import List from './List';
 import Modal from './Modal';
+import ModalTable from './ModalTable';
 
 import styles from './style.less';
 import withSearch from './hoc/search';
@@ -13,6 +14,7 @@ export {
   Table,
   List,
   Modal,
+  ModalTable
 }
 
 const SuperForm = (props, ref) => {

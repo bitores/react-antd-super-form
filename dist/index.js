@@ -372,7 +372,7 @@ var Form = React.memo(function (props, ref) {
           var curCom = renderElement(bindSearchEvent, item.children, initialValues);
           ret = React__default.createElement(
             _Form.Item,
-            _extends({ noStyle: true, key: key }, formItemProps),
+            { noStyle: true, key: key },
             curCom
           );
         } else if (render) {
@@ -386,14 +386,14 @@ var Form = React.memo(function (props, ref) {
           var _curCom = renderElement(bindSearchEvent, item.children, initialValues);
           ret = React__default.createElement(
             _Row,
-            itemProps,
+            _extends({ key: key }, itemProps),
             _curCom
           );
         } else if (cType === 'col') {
           var _curCom2 = renderElement(bindSearchEvent, item.children, initialValues);
           ret = React__default.createElement(
             _Col,
-            itemProps,
+            _extends({ key: key }, itemProps),
             _curCom2
           );
         } else {

@@ -1,6 +1,6 @@
 
 import React, { useState, useRef, useImperativeHandle, forwardRef, memo } from 'react';
-import { Modal, Form as AntdForm, message } from 'antd';
+import { Modal } from 'antd';
 import SuperTable from './index';
 import { toString, filter } from './utils';
 

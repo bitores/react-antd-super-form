@@ -67,7 +67,7 @@ export default (Component) => {
 
     _loadData() {
       const { _current, _pageSize } = this.state;
-      const { action, pageName = "page", pageSizeName = "pageSize",
+      const { action, pagination, pageName = "page", pageSizeName = "pageSize",
         valueMap = (res) => {
           return {
             status: res.status,
@@ -81,7 +81,12 @@ export default (Component) => {
       } = this.props;
 
       let _val = toString.call(extraParams) === "[object Function]" ? extraParams() : extraParams;
-      const values = {
+      const values = pagination===false?{
+        // 获取外部搜索参数
+        ..._val,
+        // 获取内部搜索参数,
+        ...params(),
+      }:{
         // 获取外部搜索参数
         ..._val,
         // 获取内部搜索参数,

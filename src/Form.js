@@ -84,8 +84,14 @@ export default memo((props, ref) => {
         // 组件类型
         cType,
         // 组件固有属性
+        cConfig,
         ...itemProps
       } = item;
+
+      if(cConfig) {
+        itemProps['config'] = cConfig;
+      }
+
 
       const formItemProps = {
         name: key,
@@ -127,7 +133,7 @@ export default memo((props, ref) => {
           </Form.Item>)
         } else if (cType === 'group') {
           const curCom = renderElement(bindSearchEvent, item.children, initialValues)
-          ret = (<Form.Item noStyle key={key} >
+          ret = unbind==true?curCom: (<Form.Item noStyle key={key} >
             {
               curCom
             }
@@ -135,26 +141,29 @@ export default memo((props, ref) => {
 
         } else if (render) {
           const renderItem = render(form, Form.Item);
-          ret = (<Form.Item key={key} {...formItemProps}>
+          const curCom = renderFix ? renderFix(renderItem) : renderItem;
+          ret = unbind===true? curCom:(<Form.Item key={key} {...formItemProps}>
             {
-              renderFix ? renderFix(renderItem) : renderItem
+              curCom
             }
           </Form.Item>)
 
-        } else if(cType === 'row'){
-          const curCom = renderElement(bindSearchEvent, item.children, initialValues)
-          ret = (<Row key={key} {...itemProps}>
+        } else if(cType === 'grid') {
+          const {
+            colProps,
+            ...rowProps
+          } = itemProps;
+
+          ret = (<Row key={key} {...rowProps}>
             {
-              curCom
+              item.children.map((gItem, ind)=>{
+                const curCom = renderElement(bindSearchEvent, [gItem], initialValues);
+                return <Col key={ind} {...colProps}>
+                  {curCom}
+                </Col>
+              })
             }
           </Row>)
-        } else if(cType === 'col'){
-          const curCom = renderElement(bindSearchEvent, item.children, initialValues)
-          ret = (<Col key={key} {...itemProps}>
-            {
-              curCom
-            }
-          </Col>)
         } else {
           const eleConfig = {
             cType,

@@ -1,7 +1,7 @@
-import 'antd/es/col/style';
-import _Col from 'antd/es/col';
 import 'antd/es/row/style';
 import _Row from 'antd/es/row';
+import 'antd/es/col/style';
+import _Col from 'antd/es/col';
 import 'antd/es/input/style';
 import _Input from 'antd/es/input';
 import 'antd/es/form/style';
@@ -320,8 +320,13 @@ var Form = memo(function (props, ref) {
           _item$bindSearch = item.bindSearch,
           bindSearch = _item$bindSearch === undefined ? false : _item$bindSearch,
           cType = item.cType,
-          itemProps = objectWithoutProperties(item, ['visible', 'unbind', 'key', 'formItem', 'config', 'label', 'extra', 'hasFeedback', 'render', 'renderFix', 'bindSearch', 'cType']);
+          cConfig = item.cConfig,
+          itemProps = objectWithoutProperties(item, ['visible', 'unbind', 'key', 'formItem', 'config', 'label', 'extra', 'hasFeedback', 'render', 'renderFix', 'bindSearch', 'cType', 'cConfig']);
 
+
+      if (cConfig) {
+        itemProps['config'] = cConfig;
+      }
 
       var formItemProps = _extends({
         name: key,
@@ -363,31 +368,35 @@ var Form = memo(function (props, ref) {
           );
         } else if (cType === 'group') {
           var curCom = renderElement(bindSearchEvent, item.children, initialValues);
-          ret = React.createElement(
+          ret = unbind == true ? curCom : React.createElement(
             _Form.Item,
             { noStyle: true, key: key },
             curCom
           );
         } else if (render) {
           var renderItem = render(form, _Form.Item);
-          ret = React.createElement(
+          var _curCom = renderFix ? renderFix(renderItem) : renderItem;
+          ret = unbind === true ? _curCom : React.createElement(
             _Form.Item,
             _extends({ key: key }, formItemProps),
-            renderFix ? renderFix(renderItem) : renderItem
-          );
-        } else if (cType === 'row') {
-          var _curCom = renderElement(bindSearchEvent, item.children, initialValues);
-          ret = React.createElement(
-            _Row,
-            _extends({ key: key }, itemProps),
             _curCom
           );
-        } else if (cType === 'col') {
-          var _curCom2 = renderElement(bindSearchEvent, item.children, initialValues);
+        } else if (cType === 'grid') {
+          var colProps = itemProps.colProps,
+              rowProps = objectWithoutProperties(itemProps, ['colProps']);
+
+
           ret = React.createElement(
-            _Col,
-            _extends({ key: key }, itemProps),
-            _curCom2
+            _Row,
+            _extends({ key: key }, rowProps),
+            item.children.map(function (gItem, ind) {
+              var curCom = renderElement(bindSearchEvent, [gItem], initialValues);
+              return React.createElement(
+                _Col,
+                _extends({ key: ind }, colProps),
+                curCom
+              );
+            })
           );
         } else {
           var eleConfig = _extends({
@@ -400,12 +409,12 @@ var Form = memo(function (props, ref) {
 
           var _renderItem = createFormItem(eleConfig, form);
 
-          var _curCom3 = renderFix ? renderFix(_renderItem) : _renderItem;
+          var _curCom2 = renderFix ? renderFix(_renderItem) : _renderItem;
 
-          ret = unbind ? _curCom3 : React.createElement(
+          ret = unbind ? _curCom2 : React.createElement(
             _Form.Item,
             _extends({ key: key }, formItemProps),
-            _curCom3
+            _curCom2
           );
         }
       }
@@ -548,6 +557,7 @@ var withPagination = (function (Component) {
             _pageSize = _state._pageSize;
         var _props = this.props,
             action = _props.action,
+            pagination = _props.pagination,
             _props$pageName = _props.pageName,
             pageName = _props$pageName === undefined ? "page" : _props$pageName,
             _props$pageSizeName = _props.pageSizeName,
@@ -575,31 +585,31 @@ var withPagination = (function (Component) {
 
 
         var _val = toString.call(extraParams) === "[object Function]" ? extraParams() : extraParams;
-        var values = _extends({}, _val, params(), (_babelHelpers$extends = {}, defineProperty(_babelHelpers$extends, pageName, _current), defineProperty(_babelHelpers$extends, pageSizeName, _pageSize), _babelHelpers$extends));
+        var values = pagination === false ? _extends({}, _val, params()) : _extends({}, _val, params(), (_babelHelpers$extends = {}, defineProperty(_babelHelpers$extends, pageName, _current), defineProperty(_babelHelpers$extends, pageSizeName, _pageSize), _babelHelpers$extends));
 
         // return;
         var request = null;
         if (action) {
           request = action(values);
+          request.then(function (res) {
+            var _valueMap = valueMap(res),
+                dataSource = _valueMap.dataSource,
+                total = _valueMap.total,
+                status = _valueMap.status;
+
+            if (status) {
+              _this4.setState({
+                _list: dataSource,
+                _total: total
+              });
+            } else {
+              actionError(res.message);
+            }
+          });
         } else {
-          throw new Error('need action filed');
+          // throw new Error('need action filed')
+          console.warn('!!!!!!!!!need action!!!!!!!!');
         }
-
-        request.then(function (res) {
-          var _valueMap = valueMap(res),
-              dataSource = _valueMap.dataSource,
-              total = _valueMap.total,
-              status = _valueMap.status;
-
-          if (status) {
-            _this4.setState({
-              _list: dataSource,
-              _total: total
-            });
-          } else {
-            actionError(res.message);
-          }
-        });
       }
     }, {
       key: 'render',
@@ -813,6 +823,151 @@ Dialog.warning = _Modal.warning;
 Dialog.success = _Modal.success;
 Dialog.confirm = _Modal.confirm;
 
+// 此 Modal 仅对于 form 来讲
+var Dialog$$1 = forwardRef(function (props, ref) {
+  // 不接收动态属性变化
+  var _useState = useState(props.visible || false),
+      _useState2 = slicedToArray(_useState, 2),
+      isVisible = _useState2[0],
+      setIsVisible = _useState2[1];
+  // const form = AntdForm.useForm()
+
+
+  var formRef = useRef();
+
+  var children = props.children,
+      visible = props.visible,
+      _props$onCancel = props.onCancel,
+      onCancel = _props$onCancel === undefined ? function () {} : _props$onCancel,
+      _props$afterClose = props.afterClose,
+      _afterClose2 = _props$afterClose === undefined ? function () {} : _props$afterClose,
+      _props$onOk = props.onOk,
+      onOk = _props$onOk === undefined ? function (e, form, show) {} : _props$onOk,
+      _props$footer = props.footer,
+      footer = _props$footer === undefined ? function (cancel, ok) {} : _props$footer,
+      search = props.search,
+      _props$form = props.form,
+      formData = _props$form === undefined ? {} : _props$form,
+      table = props.table,
+      formStyle = props.formStyle,
+      tableStyle = props.tableStyle,
+      tablePropos = props.tablePropos,
+      _props$action = props.action,
+      action = _props$action === undefined ? false : _props$action,
+      extraParams = props.extraParams,
+      actionError = props.actionError,
+      actionSuccess = props.actionSuccess,
+      pr = objectWithoutProperties(props, ['children', 'visible', 'onCancel', 'afterClose', 'onOk', 'footer', 'search', 'form', 'table', 'formStyle', 'tableStyle', 'tablePropos', 'action', 'extraParams', 'actionError', 'actionSuccess']);
+
+  useImperativeHandle(ref, function () {
+    return {
+      show: show
+    };
+  });
+
+  function show() {
+    var isShow = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
+    var callback = arguments[1];
+
+    setIsVisible(isShow);
+    callback && callback();
+  }
+
+  var _onCancel = function _onCancel(callback) {
+    show(false, callback);
+  };
+
+  var _afterClose = function _afterClose(callback) {
+    console.log('_afterClose', formRef.current);
+    formRef.current && formRef.current.resetFields();
+    callback && callback();
+  };
+
+  var _getSearchParams = function _getSearchParams() {
+    return filter(form.getFieldsValue());
+  };
+
+  // 处理 自动 action start
+  var autoHandleSubmit = function autoHandleSubmit() {
+    var action = props.action,
+        _props$extraParams = props.extraParams,
+        extraParams = _props$extraParams === undefined ? {} : _props$extraParams,
+        _props$actionError = props.actionError,
+        actionError = _props$actionError === undefined ? function (res) {
+      console.log(res);
+    } : _props$actionError,
+        _props$actionSuccess = props.actionSuccess,
+        actionSuccess = _props$actionSuccess === undefined ? function (res) {
+      console.log(res);
+    } : _props$actionSuccess,
+        _props$valueMap = props.valueMap,
+        valueMap = _props$valueMap === undefined ? function (res) {
+      return {
+        status: res.status
+      };
+    } : _props$valueMap;
+
+    var _val = toString.call(extraParams) === "[object Function]" ? extraParams() : extraParams;
+    var values = _extends({}, _val, _getSearchParams());
+    action(values).then(function (res) {
+      var _valueMap = valueMap(res),
+          status = _valueMap.status;
+
+      if (status) {
+        show(false, function () {
+          return actionSuccess('操作成功');
+        });
+      } else {
+        actionError(res.message);
+      }
+    }).catch(function (err) {
+      actionError(err.message);
+    });
+  };
+
+  // 处理 自动 action end
+
+
+  var _onCancelDialog = function _onCancelDialog() {
+    _onCancel(onCancel);
+  },
+      _onOk = action !== false ? autoHandleSubmit : function (e) {
+    onOk(e, formRef.current, function (f) {
+      return show(f);
+    });
+  };
+
+  return React.createElement(
+    _Modal,
+    _extends({
+      visible: isVisible,
+      onCancel: _onCancelDialog,
+      afterClose: function afterClose() {
+        return _afterClose(_afterClose2);
+      },
+      onOk: _onOk,
+      footer: toString.call(footer) === "[object Array]" ? footer : footer(_onCancelDialog, _onOk, formRef)
+    }, pr),
+    React.createElement(SuperTable, {
+      ref: formRef,
+      search: formData,
+      table: table,
+      formStyle: formStyle,
+      tableStyle: tableStyle
+    }),
+    React.Children.map(props.children, function (child) {
+      return child;
+    })
+  );
+  // }
+});
+
+Dialog$$1.info = _Modal.info;
+Dialog$$1.error = _Modal.error;
+Dialog$$1.warning = _Modal.warning;
+Dialog$$1.success = _Modal.success;
+Dialog$$1.confirm = _Modal.confirm;
+
 function styleInject(css, ref) {
   if ( ref === void 0 ) ref = {};
   var insertAt = ref.insertAt;
@@ -958,8 +1113,8 @@ var SuperForm = function SuperForm(props, ref) {
   );
 };
 
-var index = withSearch(forwardRef(SuperForm));
+var SuperTable = withSearch(forwardRef(SuperForm));
 
-export default index;
-export { Form, Table, List, Dialog as Modal };
+export default SuperTable;
+export { Form, Table, List, Dialog as Modal, Dialog$$1 as ModalTable };
 //# sourceMappingURL=index.js.map

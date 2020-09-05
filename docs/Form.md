@@ -35,10 +35,10 @@ import {Form} from 'react-antd-super-form';
   label,
   extra = null,
   hasFeedback = false,
-  formItemLayout = {},
+  formItem = {},  //3.x 是 formItemLayout 
 
   // getFieldDecorator 参数
-  unbind,
+  unbind, // 是否使用 Form.Item 包含，默认有
   key = `random_key_${Math.random()}`,
   config = {},  
   
@@ -50,18 +50,254 @@ import {Form} from 'react-antd-super-form';
   // button 是否绑定 搜索事件
   bindSearch = false,
 
-  // 组件类型 "br|span|hidden|group|button|input|inputnumber|select|radio|radiobutton|slider|textarea|checkbox|datepicker|rangepicker|monthpicker|timepicker|switch|upload|cascader|steps"
-  // br 可用来布局使用, 换行
-  // span 建议用来 分组组件中 控制 中间位置
-  // hidden 是input 隐藏域, 对样式做了处理,也可自行处理, type:input, hidden: true
-  // group 处理分组
-  type, 
+  offset = false|true, // 
+
+  // 组件类型 "br|span|hidden|space|group|grid|list" + AntdComponent
+  cType, // [string| AntdCompoent]
   // 组件固有属性
   ...props
 }
 ```
 
 ### 案例
+- for 4.x
+```js
+<Form 
+  data={form=>{
+
+    return [
+      {
+        label: 'E-mail',
+        cType: Input,
+        key: 'email',
+        config:{
+          rules:[
+            {
+              required: true,
+              message: '请输入'
+            }
+          ]
+        }
+      },
+      // {
+      //   label: 'Captcha',
+      //   cType: 'group',
+      //   children:[
+      //     // {
+      //     //   // label: 'Captcha',
+      //     //   key: 'captcha',
+      //     //   noStyle: true,
+      //     //   cType: Input,
+      //     // },
+      //     // {
+      //     //   unbind: true,
+      //     //   cType: Button,
+      //     //   // key: 'xx',
+      //     //   child: 'xxx',
+      //     // }
+      //   ]
+      // },
+      {
+        label: 'Captcha',
+        cType: 'grid',
+        gutter: 8,
+        children:[
+          {
+            // label: 'Captcha',
+            cType: Input,
+            key: 'ca2'
+          },
+          {
+            cType: Button,
+            child: 'Get captcha',
+          },
+          {
+            cType: Button,
+            child: 'Get captcha',
+          },
+          {
+            cType: Button,
+            child: 'Get captcha',
+          },
+        ]
+      },
+      {
+        offset: true,
+        cType: Checkbox,
+        key: 'agreement..',
+        child: <>I have read the <a href="">agreement</a></>,
+        config:{
+          initialValue: false,
+          valuePropName: 'checked',
+          rules:[
+            { validator:(_, value) => value ? Promise.resolve() : Promise.reject('Should accept agreement') },
+          ]
+        }
+      },
+      {
+        cType: 'grid',
+        offset: true,
+        children:[
+          {
+            cType: Checkbox,
+            key: 'xxx',
+            noStyle: true,
+            child: 'Remember me',
+            config:{
+              initialValue: true,
+              valuePropName: 'checked'
+            }
+          },
+          {
+            unbind: true,
+            render:(form, FormCom)=>{
+              console.log(form, FormCom)
+              return <a className="login-form-forgot" href="">
+              Forgot password
+            </a>
+            }
+          }
+        ]
+      },
+      {
+        label: 'BirthDate',
+        cType: 'group',
+        formItem:{
+          style: {
+            marginBottom: 0
+          }
+        },
+        children:[
+          {
+            key: 'year',
+            cType: Input,
+            formItem: {
+              style:{ 
+                display: 'inline-block', 
+                width: 'calc(50% - 8px)' 
+              }
+            },
+            placeholder: 'Input birth year'
+          },
+          {
+            key: 'month',
+            cType: Input,
+            formItem: {
+              style:{ 
+                display: 'inline-block', 
+                width: 'calc(50% - 8px)',
+                margin: '0 8px'
+              }
+            },
+            placeholder: 'Input birth month'
+          }
+        ]
+      },
+      {
+        label: 'xxx',
+        cType: 'space',
+        // offset: true,
+        size: 'large',
+        children:[
+          {
+            cType: Input,
+            key: 'a',
+            placeholder: 'a'
+          },
+          {
+            cType: Input,
+            key: 'b',
+            placeholder: 'b'
+          },
+          {
+            cType: Input,
+            key: 'c',
+            placeholder: 'c'
+          },
+          {
+            cType: Input,
+            key: 'd',
+            placeholder: 'd'
+          },
+        ]
+      },
+      {
+        label: '用户',
+        cType: 'list',
+        key: 'users',
+        config:{
+          rules:[
+            {
+              required: true,
+            }
+          ]
+        },
+        addRender:(FormItem, {fields,add})=>{
+          // return null;
+          return <FormItem key={11}>
+          <Button
+            type="dashed"
+            onClick={() => {
+              add();
+            }}
+            block
+          >
+            <PlusOutlined /> Add field
+          </Button>
+          </FormItem>
+        },
+        rowRender:(FormItem, {field,  add, remove, move})=>{
+          // return null;
+          return (<Space key={field.key} style={{ display: 'flex', marginBottom: 8 }} align="start">
+          <FormItem
+            {...field}
+            name={[field.name, 'first']}
+            fieldKey={[field.fieldKey, 'first']}
+            rules={[{ required: true, message: 'Missing first name' }]}
+          >
+            <Input placeholder="First Name" />
+          </FormItem>
+          <FormItem
+            {...field}
+            name={[field.name, 'last']}
+            fieldKey={[field.fieldKey, 'last']}
+            rules={[{ required: true, message: 'Missing last name' }]}
+          >
+            <Input placeholder="Last Name" />
+          </FormItem>              
+          <MinusCircleOutlined
+            onClick={() => {
+              remove(field.name);
+            }}
+          />
+          <ArrowUpOutlined
+            onClick={() => {
+              move(field.name, field.name-1);
+            }}
+          />
+          </Space>)
+        }
+      },
+      {
+        cType: Button,
+        child: 'Test',
+        offset: true,
+        onClick: async(e)=>{
+          try {
+            const values = await form.validateFields();
+            console.log('Success:', values);
+          } catch (errorInfo) {
+            console.log('Failed:', errorInfo);
+          }
+        }
+      }
+    ]
+  }}
+/>
+```
+
+
+- for 3.x
 ```jsx
 <Form
   formLayout={{

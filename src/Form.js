@@ -46,7 +46,15 @@ export default memo((props, ref) => {
   const transFuncToObj = (func = {}) => {
     let ret = null;
     if (Object.prototype.toString.call(func) === '[object Function]') {
-      ret = func(form, this)
+      ret = func(form, ()=>{
+        return new Promise((resolve, rej)=>{
+          form.validateFields().then(values=>{
+            resolve(filter(values))
+          }).catch(e=>{
+            rej(e)
+          })
+        })
+      })
     } else {
       ret = func;
     }

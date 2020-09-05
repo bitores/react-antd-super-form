@@ -221,8 +221,6 @@ break;
   return diffData;
 }
 
-var _this = undefined;
-
 function createFormItem(obj, form) {
   // console.log(obj.cType.name)
   var UIComponent = obj.cType,
@@ -283,7 +281,15 @@ var Form = memo(function (props, ref) {
 
     var ret = null;
     if (Object.prototype.toString.call(func) === '[object Function]') {
-      ret = func(form, _this);
+      ret = func(form, function () {
+        return new Promise(function (resolve, rej) {
+          form.validateFields().then(function (values) {
+            resolve(filter(values));
+          }).catch(function (e) {
+            rej(e);
+          });
+        });
+      });
     } else {
       ret = func;
     }

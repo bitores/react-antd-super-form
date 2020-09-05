@@ -111,7 +111,7 @@ data = [
     config: { // for 
       initialValue: 1
     },
-
+    offset: true|false, // 
     render: (form)=>{},
     renderFix: (item)=> item,
 

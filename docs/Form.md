@@ -63,7 +63,7 @@ import {Form} from 'react-antd-super-form';
 - for 4.x
 ```js
 <Form 
-  data={form=>{
+  data={(form, getValues)=>{ //form: FormInstance getValues: Promise
 
     return [
       {

@@ -2,6 +2,8 @@ import 'antd/es/row/style';
 import _Row from 'antd/es/row';
 import 'antd/es/col/style';
 import _Col from 'antd/es/col';
+import 'antd/es/space/style';
+import _Space from 'antd/es/space';
 import 'antd/es/input/style';
 import _Input from 'antd/es/input';
 import 'antd/es/form/style';
@@ -223,12 +225,12 @@ var _this = undefined;
 
 function createFormItem(obj, form) {
   // console.log(obj.cType.name)
-  var AntdComponent = obj.cType,
+  var UIComponent = obj.cType,
       child = obj.child,
       innerHTML = obj.innerHTML,
       bindSearchEvent = obj.bindSearchEvent,
       props = objectWithoutProperties(obj, ['cType', 'child', 'innerHTML', 'bindSearchEvent']);
-  // const AntdComponent = obj.cType;
+  // const UIComponent = obj.cType;
 
   if (bindSearchEvent) {
     if (obj.onClick) {
@@ -245,7 +247,7 @@ function createFormItem(obj, form) {
   }
 
   return React.createElement(
-    AntdComponent,
+    UIComponent,
     props,
     child || innerHTML && innerHTML()
   );
@@ -306,10 +308,14 @@ var Form = memo(function (props, ref) {
           unbind = item.unbind,
           _item$key = item.key,
           key = _item$key === undefined ? 'random_key_' + Math.random() : _item$key,
+          _item$noStyle = item.noStyle,
+          noStyle = _item$noStyle === undefined ? false : _item$noStyle,
           _item$formItem = item.formItem,
           formItem = _item$formItem === undefined ? {} : _item$formItem,
           _item$config = item.config,
           config = _item$config === undefined ? {} : _item$config,
+          _item$offset = item.offset,
+          offset = _item$offset === undefined ? false : _item$offset,
           label = item.label,
           _item$extra = item.extra,
           extra = _item$extra === undefined ? null : _item$extra,
@@ -321,7 +327,7 @@ var Form = memo(function (props, ref) {
           bindSearch = _item$bindSearch === undefined ? false : _item$bindSearch,
           cType = item.cType,
           cConfig = item.cConfig,
-          itemProps = objectWithoutProperties(item, ['visible', 'unbind', 'key', 'formItem', 'config', 'label', 'extra', 'hasFeedback', 'render', 'renderFix', 'bindSearch', 'cType', 'cConfig']);
+          itemProps = objectWithoutProperties(item, ['visible', 'unbind', 'key', 'noStyle', 'formItem', 'config', 'offset', 'label', 'extra', 'hasFeedback', 'render', 'renderFix', 'bindSearch', 'cType', 'cConfig']);
 
 
       if (cConfig) {
@@ -329,10 +335,13 @@ var Form = memo(function (props, ref) {
       }
 
       var formItemProps = _extends({
-        name: key,
+        // name: key,
+        key: key,
         label: label,
+        noStyle: noStyle,
         extra: extra,
-        hasFeedback: hasFeedback
+        hasFeedback: hasFeedback,
+        wrapperCol: offset ? { span: 14, offset: 6 } : null
       }, formItem, transConfig(config));
 
       if (config.hasOwnProperty('initialValue')) {
@@ -360,43 +369,88 @@ var Form = memo(function (props, ref) {
         } else if (cType === 'hidden') {
           ret = React.createElement(
             _Form.Item,
-            _extends({ noStyle: true, key: key }, formItemProps),
+            _extends({ noStyle: true, name: key }, formItemProps),
             createFormItem({
               cType: _Input,
               hidden: true
             }, form)
           );
-        } else if (cType === 'group') {
+        } else if (cType === 'space') {
+
           var curCom = renderElement(bindSearchEvent, item.children, initialValues);
           ret = unbind == true ? curCom : React.createElement(
             _Form.Item,
-            { noStyle: true, key: key },
-            curCom
+            formItemProps,
+            React.createElement(
+              _Space,
+              _extends({ key: key }, itemProps),
+              curCom
+            )
           );
-        } else if (render) {
-          var renderItem = render(form, _Form.Item);
-          var _curCom = renderFix ? renderFix(renderItem) : renderItem;
-          ret = unbind === true ? _curCom : React.createElement(
+        } else if (cType === 'group') {
+          var _curCom = renderElement(bindSearchEvent, item.children, initialValues);
+
+          ret = unbind == true ? _curCom : React.createElement(
             _Form.Item,
-            _extends({ key: key }, formItemProps),
+            formItemProps,
             _curCom
           );
         } else if (cType === 'grid') {
           var colProps = itemProps.colProps,
               rowProps = objectWithoutProperties(itemProps, ['colProps']);
 
-
-          ret = React.createElement(
+          var children = renderElement(bindSearchEvent, item.children, initialValues);
+          var _curCom2 = React.createElement(
             _Row,
             _extends({ key: key }, rowProps),
-            item.children.map(function (gItem, ind) {
-              var curCom = renderElement(bindSearchEvent, [gItem], initialValues);
+            children.map(function (gItem, ind) {
               return React.createElement(
                 _Col,
                 _extends({ key: ind }, colProps),
-                curCom
+                gItem,
+                ' '
               );
             })
+          );
+
+          ret = unbind === true ? _curCom2 : React.createElement(
+            _Form.Item,
+            formItemProps,
+            _curCom2
+          );
+        } else if (cType === 'list') {
+          // const children = renderElement(bindSearchEvent, item.children, initialValues);
+          var rowRender = itemProps.rowRender,
+              addRender = itemProps.addRender;
+
+          ret = React.createElement(
+            _Form.Item,
+            formItemProps,
+            React.createElement(
+              _Form.List,
+              { name: key },
+              function (fields, _ref2) {
+                var add = _ref2.add,
+                    remove = _ref2.remove,
+                    move = _ref2.move;
+                return React.createElement(
+                  'div',
+                  null,
+                  fields.map(function (field, ind) {
+                    return rowRender && rowRender(_Form.Item, { field: field, add: add, remove: remove, move: move });
+                  }),
+                  addRender && addRender(_Form.Item, { fields: fields, add: add, remove: remove, move: move })
+                );
+              }
+            )
+          );
+        } else if (render) {
+          var renderItem = render(form, _Form);
+          var _curCom3 = renderFix ? renderFix(renderItem) : renderItem;
+          ret = unbind === true ? _curCom3 : React.createElement(
+            _Form.Item,
+            _extends({ name: key }, formItemProps),
+            _curCom3
           );
         } else {
           var eleConfig = _extends({
@@ -409,12 +463,12 @@ var Form = memo(function (props, ref) {
 
           var _renderItem = createFormItem(eleConfig, form);
 
-          var _curCom2 = renderFix ? renderFix(_renderItem) : _renderItem;
+          var _curCom4 = renderFix ? renderFix(_renderItem) : _renderItem;
 
-          ret = unbind ? _curCom2 : React.createElement(
+          ret = unbind ? _curCom4 : React.createElement(
             _Form.Item,
-            _extends({ key: key }, formItemProps),
-            _curCom2
+            _extends({ name: key }, formItemProps),
+            _curCom4
           );
         }
       }

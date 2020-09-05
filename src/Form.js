@@ -1,11 +1,11 @@
 import React, { useState, memo, useEffect, useRef } from 'react';
-import { Form, Input, Row, Col } from 'antd';
+import { Form, Input, Row, Col, Space } from 'antd';
 import { filter, diff } from './utils';
 
 function createFormItem(obj, form) {
   // console.log(obj.cType.name)
-  const { cType: AntdComponent, child, innerHTML, bindSearchEvent, ...props } = obj;
-  // const AntdComponent = obj.cType;
+  const { cType: UIComponent, child, innerHTML, bindSearchEvent, ...props } = obj;
+  // const UIComponent = obj.cType;
   if (bindSearchEvent) {
     if (obj.onClick) {
       // const onClick = obj.onClick;
@@ -20,7 +20,7 @@ function createFormItem(obj, form) {
     }
   }
 
-  return <AntdComponent {...props}>{child || (innerHTML && innerHTML())}</AntdComponent>
+  return <UIComponent {...props}>{child || (innerHTML && innerHTML())}</UIComponent>
 }
 
 export default memo((props, ref) => {
@@ -67,8 +67,10 @@ export default memo((props, ref) => {
         // Form.Item 属性
         unbind,
         key = `random_key_${Math.random()}`,
+        noStyle = false,
         formItem = {}, // form item 属性
         config = {}, // form item 验证配置
+        offset = false,
         label,
         extra = null,
         hasFeedback = false,
@@ -92,14 +94,17 @@ export default memo((props, ref) => {
         itemProps['config'] = cConfig;
       }
 
-
       const formItemProps = {
-        name: key,
+        // name: key,
+        key,
         label,
+        noStyle,
         extra,
         hasFeedback,
-        ...formItem,
-        ...transConfig(config)
+        wrapperCol: offset?{ span: 14,offset: 6, }:null,
+        ...formItem, // 可覆盖 wrapperCol
+        ...transConfig(config),
+        
       }
 
       if (config.hasOwnProperty('initialValue')) {
@@ -122,7 +127,7 @@ export default memo((props, ref) => {
         } else if (cType === 'span') {
           ret = <span  {...itemProps} >{label}</span>
         } else if (cType === 'hidden') {
-          ret = (<Form.Item noStyle key={key}  {...formItemProps}>
+          ret = (<Form.Item noStyle name={key}  {...formItemProps}>
             {
               createFormItem({
                 cType: Input,
@@ -131,39 +136,82 @@ export default memo((props, ref) => {
 
             }
           </Form.Item>)
+        } else if (cType === 'space') {
+ 
+          const curCom = renderElement(bindSearchEvent, item.children, initialValues)
+          ret = unbind==true?curCom: (<Form.Item {...formItemProps}>
+            <Space key={key} {...itemProps}>
+            {
+              curCom
+            }
+            </Space>
+          </Form.Item>)
+
         } else if (cType === 'group') {
           const curCom = renderElement(bindSearchEvent, item.children, initialValues)
-          ret = unbind==true?curCom: (<Form.Item noStyle key={key} >
+
+
+          ret = unbind==true?curCom: (<Form.Item {...formItemProps}>
             {
               curCom
             }
           </Form.Item>)
 
-        } else if (render) {
-          const renderItem = render(form, Form.Item);
-          const curCom = renderFix ? renderFix(renderItem) : renderItem;
-          ret = unbind===true? curCom:(<Form.Item key={key} {...formItemProps}>
-            {
-              curCom
-            }
-          </Form.Item>)
-
+        
         } else if(cType === 'grid') {
           const {
             colProps,
             ...rowProps
           } = itemProps;
-
-          ret = (<Row key={key} {...rowProps}>
-            {
-              item.children.map((gItem, ind)=>{
-                const curCom = renderElement(bindSearchEvent, [gItem], initialValues);
-                return <Col key={ind} {...colProps}>
-                  {curCom}
-                </Col>
-              })
-            }
+          const children = renderElement(bindSearchEvent, item.children, initialValues);
+          const curCom = (<Row key={key} {...rowProps}>
+          {
+            children.map((gItem, ind)=>{
+              return <Col key={ind} {...colProps}>{
+                gItem
+              } </Col>
+            })
+          }
           </Row>)
+
+          ret = unbind === true ? curCom : (<Form.Item {...formItemProps}>
+            {
+              curCom
+            }
+          </Form.Item>)
+
+
+
+        } else if(cType === 'list') {
+          // const children = renderElement(bindSearchEvent, item.children, initialValues);
+          const {
+            rowRender,
+            addRender
+          } = itemProps;
+          ret = (<Form.Item {...formItemProps}>  
+            <Form.List name={key}>
+              {
+                (fields, {add, remove, move})=>(<div>
+                {
+                  fields.map((field, ind) => rowRender&&rowRender(Form.Item, {field,add, remove, move}))
+                }
+                {
+                  addRender&&addRender(Form.Item, {fields, add, remove, move})
+                }
+                </div>)
+              }
+            </Form.List>
+          </Form.Item>)
+
+        } else if (render) {
+          const renderItem = render(form, Form);
+          const curCom = renderFix ? renderFix(renderItem) : renderItem;
+          ret = unbind===true? curCom:(<Form.Item name={key} {...formItemProps}>
+            {
+              curCom
+            }
+          </Form.Item>)
+
         } else {
           const eleConfig = {
             cType,
@@ -178,7 +226,7 @@ export default memo((props, ref) => {
 
           const curCom =renderFix ? renderFix(renderItem) : renderItem;
 
-          ret = unbind? curCom : (<Form.Item key={key} {...formItemProps}>
+          ret = unbind? curCom : (<Form.Item name={key} {...formItemProps}>
             {
               curCom
             }

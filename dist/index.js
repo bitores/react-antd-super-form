@@ -866,7 +866,7 @@ var Dialog = React.forwardRef(function (props, ref) {
       _onOk = action !== false ? autoHandleSubmit : function (e) {
     onOk(e, formRef.current, function (f) {
       return show(f);
-    }), function () {
+    }, function () {
       return new Promise(function (resolve, rej) {
         formRef.current.validateFields().then(function (values) {
           resolve(filter(values));
@@ -874,7 +874,7 @@ var Dialog = React.forwardRef(function (props, ref) {
           rej(e);
         });
       });
-    };
+    });
   };
 
   return React__default.createElement(

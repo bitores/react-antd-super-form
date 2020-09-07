@@ -369,7 +369,7 @@ var Form = React.memo(function (props, ref) {
       var ret = null;
       if (visible !== false) {
         if (cType === 'br') {
-          ret = React__default.createElement('p', { style: {
+          ret = React__default.createElement('p', { key: key, style: {
               display: 'block',
               width: '100%',
               height: 0,
@@ -379,7 +379,7 @@ var Form = React.memo(function (props, ref) {
         } else if (cType === 'span') {
           ret = React__default.createElement(
             'span',
-            itemProps,
+            _extends({ key: key }, itemProps),
             label
           );
         } else if (cType === 'hidden') {

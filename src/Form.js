@@ -128,7 +128,7 @@ export default memo((props, ref) => {
       let ret = null;
       if (visible !== false) {
         if (cType === 'br') {
-          ret = <p style={{
+          ret = <p key={key} style={{
             display: 'block',
             width: '100%',
             height: 0,
@@ -136,7 +136,7 @@ export default memo((props, ref) => {
             padding: 0
           }} />
         } else if (cType === 'span') {
-          ret = <span  {...itemProps} >{label}</span>
+          ret = <span key={key}  {...itemProps} >{label}</span>
         } else if (cType === 'hidden') {
           ret = (<Form.Item noStyle name={key}  {...formItemProps}>
             {

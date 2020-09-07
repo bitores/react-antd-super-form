@@ -346,9 +346,12 @@ var Form = memo(function (props, ref) {
         label: label,
         noStyle: noStyle,
         extra: extra,
-        hasFeedback: hasFeedback,
-        wrapperCol: offset ? { span: 14, offset: 6 } : null
+        hasFeedback: hasFeedback
       }, formItem, transConfig(config));
+
+      if (offset) {
+        formItemProps["wrapperCol"] = { span: 14, offset: 6 };
+      }
 
       if (config.hasOwnProperty('initialValue')) {
         initialValues[item.key] = config.initialValue;
@@ -427,7 +430,9 @@ var Form = memo(function (props, ref) {
         } else if (cType === 'list') {
           // const children = renderElement(bindSearchEvent, item.children, initialValues);
           var rowRender = itemProps.rowRender,
-              addRender = itemProps.addRender;
+              addRender = itemProps.addRender,
+              _itemProps$addInTop = itemProps.addInTop,
+              addInTop = _itemProps$addInTop === undefined ? false : _itemProps$addInTop;
 
           ret = React.createElement(
             _Form.Item,
@@ -442,10 +447,11 @@ var Form = memo(function (props, ref) {
                 return React.createElement(
                   'div',
                   null,
+                  addInTop && addRender && addRender(_Form.Item, { fields: fields, add: add, remove: remove, move: move, formItemProps: formItemProps }),
                   fields.map(function (field, ind) {
-                    return rowRender && rowRender(_Form.Item, { field: field, add: add, remove: remove, move: move });
+                    return rowRender && rowRender(_Form.Item, { field: field, add: add, remove: remove, move: move, formItemProps: formItemProps });
                   }),
-                  addRender && addRender(_Form.Item, { fields: fields, add: add, remove: remove, move: move })
+                  addInTop === false && addRender && addRender(_Form.Item, { fields: fields, add: add, remove: remove, move: move, formItemProps: formItemProps })
                 );
               }
             )
@@ -853,7 +859,15 @@ var Dialog = forwardRef(function (props, ref) {
       _onOk = action !== false ? autoHandleSubmit : function (e) {
     onOk(e, formRef.current, function (f) {
       return show(f);
-    });
+    }), function () {
+      return new Promise(function (resolve, rej) {
+        formRef.current.validateFields().then(function (values) {
+          resolve(filter(values));
+        }).catch(function (e) {
+          rej(e);
+        });
+      });
+    };
   };
 
   return React.createElement(

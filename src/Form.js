@@ -109,10 +109,13 @@ export default memo((props, ref) => {
         noStyle,
         extra,
         hasFeedback,
-        wrapperCol: offset?{ span: 14,offset: 6, }:null,
         ...formItem, // 可覆盖 wrapperCol
         ...transConfig(config),
         
+      }
+
+      if(offset) {
+        formItemProps["wrapperCol"] = { span: 14,offset: 6, }
       }
 
       if (config.hasOwnProperty('initialValue')) {
@@ -194,17 +197,22 @@ export default memo((props, ref) => {
           // const children = renderElement(bindSearchEvent, item.children, initialValues);
           const {
             rowRender,
-            addRender
+            addRender,
+            addInTop = false,
+            block
           } = itemProps;
           ret = (<Form.Item {...formItemProps}>  
             <Form.List name={key}>
               {
                 (fields, {add, remove, move})=>(<div>
                 {
-                  fields.map((field, ind) => rowRender&&rowRender(Form.Item, {field,add, remove, move}))
+                  addInTop&&addRender&&addRender(Form.Item, {fields, add, remove, move, formItemProps})
                 }
                 {
-                  addRender&&addRender(Form.Item, {fields, add, remove, move})
+                  fields.map((field, ind) => rowRender&&rowRender(Form.Item, {field, add, remove, move, formItemProps}))
+                }
+                {
+                  addInTop===false&&addRender&&addRender(Form.Item, {fields, add, remove, move, formItemProps})
                 }
                 </div>)
               }

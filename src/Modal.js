@@ -77,7 +77,15 @@ const Dialog = forwardRef((props, ref) => {
 
 
   let _onCancelDialog = () => { _onCancel(onCancel) },
-    _onOk = action !== false ? autoHandleSubmit : (e) => { onOk(e, formRef.current, (f) => show(f)) };
+    _onOk = action !== false ? autoHandleSubmit : (e) => { onOk(e, formRef.current, (f) => show(f)), ()=>{
+      return new Promise((resolve, rej)=>{
+        formRef.current.validateFields().then(values=>{
+          resolve(filter(values))
+        }).catch(e=>{
+          rej(e)
+        })
+      })
+    } };
 
 
   return (

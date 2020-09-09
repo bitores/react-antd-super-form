@@ -111,7 +111,7 @@ export default memo((props, ref) => {
         hasFeedback,
         ...formItem, // 可覆盖 wrapperCol
         ...transConfig(config),
-        
+
       }
 
       if(offset) {
@@ -138,7 +138,7 @@ export default memo((props, ref) => {
         } else if (cType === 'span') {
           ret = <span key={key}  {...itemProps} >{label}</span>
         } else if (cType === 'hidden') {
-          ret = (<Form.Item noStyle name={key}  {...formItemProps}>
+          ret = (<Form.Item name={key}  {...formItemProps} noStyle>
             {
               createFormItem({
                 cType: Input,
@@ -148,7 +148,7 @@ export default memo((props, ref) => {
             }
           </Form.Item>)
         } else if (cType === 'space') {
- 
+
           const curCom = renderElement(bindSearchEvent, item.children, initialValues)
           ret = unbind==true?curCom: (<Form.Item {...formItemProps}>
             <Space key={key} {...itemProps}>
@@ -168,7 +168,7 @@ export default memo((props, ref) => {
             }
           </Form.Item>)
 
-        
+
         } else if(cType === 'grid') {
           const {
             colProps,
@@ -201,7 +201,7 @@ export default memo((props, ref) => {
             addInTop = false,
             block
           } = itemProps;
-          ret = (<Form.Item {...formItemProps}>  
+          ret = (<Form.Item {...formItemProps}>
             <Form.List name={key}>
               {
                 (fields, {add, remove, move})=>(<div>

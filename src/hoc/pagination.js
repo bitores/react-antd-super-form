@@ -107,7 +107,7 @@ export default (Component) => {
               _total: total
             })
           } else {
-            actionError(res.errorInfo.message);
+            actionError(res);
           }
         })
       } else {

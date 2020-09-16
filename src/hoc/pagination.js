@@ -107,7 +107,7 @@ export default (Component) => {
               _total: total
             })
           } else {
-            actionError(res.message)
+            actionError(res.errorInfo.message);
           }
         })
       } else {
@@ -115,7 +115,7 @@ export default (Component) => {
         console.warn('!!!!!!!!!need action!!!!!!!!')
       }
 
-      
+
     }
 
     render() {

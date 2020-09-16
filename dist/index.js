@@ -640,7 +640,8 @@ var withPagination = (function (Component) {
           return {
             status: res.status,
             dataSource: res.entry,
-            total: res.totalRecordSize
+            total: res.totalRecordSize,
+            message: res.message
           };
         } : _props$valueMap,
             _props$actionError = _props.actionError,
@@ -668,7 +669,8 @@ var withPagination = (function (Component) {
             var _valueMap = valueMap(res),
                 dataSource = _valueMap.dataSource,
                 total = _valueMap.total,
-                status = _valueMap.status;
+                status = _valueMap.status,
+                message = _valueMap.message;
 
             if (status) {
               _this4.setState({
@@ -676,7 +678,7 @@ var withPagination = (function (Component) {
                 _total: total
               });
             } else {
-              actionError(res.message);
+              actionError(message);
             }
           });
         } else {

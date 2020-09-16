@@ -385,7 +385,7 @@ var Form = React.memo(function (props, ref) {
         } else if (cType === 'hidden') {
           ret = React__default.createElement(
             _Form.Item,
-            _extends({ noStyle: true, name: key }, formItemProps),
+            _extends({ name: key }, formItemProps, { noStyle: true }),
             createFormItem({
               cType: _Input,
               hidden: true
@@ -942,7 +942,15 @@ var Dialog$$1 = React.forwardRef(function (props, ref) {
 
   React.useImperativeHandle(ref, function () {
     return {
-      show: show
+      show: show,
+      reset: function reset() {
+        var needLoad = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
+
+        formRef.current.reset(needLoad);
+      },
+      refresh: function refresh() {
+        formRef.current.refresh();
+      }
     };
   });
 

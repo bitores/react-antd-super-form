@@ -27,7 +27,13 @@ const Dialog = forwardRef((props, ref) => {
   } = props;
 
   useImperativeHandle(ref, () => ({
-    show
+    show,
+    reset: (needLoad = true) => {
+      formRef.current.reset(needLoad);
+    },
+    refresh: () => {
+      formRef.current.refresh();
+    }
   }))
 
   function show(isShow = true, callback) {

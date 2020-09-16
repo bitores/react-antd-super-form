@@ -72,7 +72,8 @@ export default (Component) => {
           return {
             status: res.status,
             dataSource: res.entry,
-            total: res.totalRecordSize
+            total: res.totalRecordSize,
+            message: res.message,
           }
         },
         actionError = (msg) => console.error(msg),
@@ -100,14 +101,14 @@ export default (Component) => {
       if (action) {
         request = action(values);
         request.then(res => {
-          const { dataSource, total, status } = valueMap(res);
+          const { dataSource, total, status, message } = valueMap(res);
           if (status) {
             this.setState({
               _list: dataSource,
               _total: total
             })
           } else {
-            actionError(res.message)
+            actionError(message);
           }
         })
       } else {
@@ -115,7 +116,7 @@ export default (Component) => {
         console.warn('!!!!!!!!!need action!!!!!!!!')
       }
 
-      
+
     }
 
     render() {

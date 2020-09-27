@@ -39,7 +39,7 @@ class Example extends Component {
 
 ### 封装原则
 0. 0 样式
-1. 尽量维持原 antd 组件属性命名,部分属性作变更(如, Button中type 因冲突变为 buttonType)
+1. 尽量维持原 antd 组件属性命名,部分属性作变更
 2. 增加其它 Form.Item 元素 相应属性配置
 3. 优先级: visible > br >  group > render > CType 
 4. 事件注入,所有列表中的事件中新增加一个 form 参数, 如 onClick(e) => onClick(e, form) 完成对表单的控制

@@ -60,7 +60,7 @@ import {Form} from 'react-antd-super-form';
 ```
 
 ### 案例
-- for 4.x
+- for antd 4.x
 ```js
 <Form 
   data={(form, getValues)=>{ //form: FormInstance getValues: Promise
@@ -194,6 +194,48 @@ import {Form} from 'react-antd-super-form';
         ]
       },
       {
+        label: '头像',
+        extra: '请添加您头像',
+        cType: Upload,
+        key: 'headImg',
+        name:"avatar",
+        listType:"picture-card",
+        className:"avatar-uploader avatar-uploader-fix",
+        showUploadList:false,
+        config:{
+          rules:[
+            {
+              required: true,
+              message: '请上传头像'
+            }
+          ]
+        },
+        beforeUpload:beforeUpload,
+        customRequest:async ({ onSuccess, onError, file, onProgress })=>{
+
+          const formData = new FormData();
+          formData.append('file', file);
+          console.log('custom request...')
+
+          const res = await api.uploadImg(formData)
+
+          if(res.status) {
+            let entry = res.entry||"";
+            setLoading(false)
+            setImageUrl(entry);
+          } else {
+            // onError(res.message)
+          }
+
+        },
+        child: imageUrl ? <img src={imageUrl} alt="avatar" style={{ width: '100%' }} /> : <div>
+          {loading ? <LoadingOutlined /> : <PlusOutlined style={{
+            fontSize: 80
+          }}/>}
+          {/* <div style={{ marginTop: 8 }}>Upload</div> */}
+        </div>
+      },
+      {
         label: 'xxx',
         cType: 'space',
         // offset: true,
@@ -297,7 +339,7 @@ import {Form} from 'react-antd-super-form';
 ```
 
 
-- for 3.x
+- for antd 3.x
 ```jsx
 <Form
   formLayout={{

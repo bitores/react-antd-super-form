@@ -7,6 +7,11 @@
 npm install --save react-antd-super-form
 ```
 
+- `1.x 的版本 适用于  antd 3.x`
+- `2.x 的版本 适用于  antd 4.x`
+
+
+
 ## Usage
 
 ```jsx
@@ -38,13 +43,11 @@ class Example extends Component {
 
 
 ### 封装原则
-0. 0 样式
-1. 尽量维持原 antd 组件属性命名,部分属性作变更
+1. 维持原 antd 组件属性及方法不变
+1. 为了更方便的使用，增加或改变原 antd 一些组件的使用 'br', 'hidden',  'group', 'grid', 'space','list'
 2. 增加其它 Form.Item 元素 相应属性配置
-3. 优先级: visible > br >  group > render > CType 
-4. 事件注入,所有列表中的事件中新增加一个 form 参数, 如 onClick(e) => onClick(e, form) 完成对表单的控制
-5. 通过设置 input hidden 隐藏域来新增属性
-6. 通过属性中添加 ',' 英文逗号来屏蔽 此属性
+3. 优先级: visible > ['br','hidden', 'group', 'grid', 'space','list'] > render > CType 
+
 
 
 ### 基本结构
@@ -104,7 +107,7 @@ data = [
   {
     visible: true, // 默认 true,  组件是否渲染
     label: 'xxx', // FormItem label 标签, 非必填
-    cType: 'xxxx', // ['br','span', 'group', 'grid', 'space','list'] + Antd Component
+    cType: 'xxxx', // ['br','hidden', 'group', 'grid', 'space','list'] + Antd Component
 
     unbind: false, // 非输入组件 建议必填, 
     key: 'xxx', // 输入组件必填, 非输入组件可不填, 建议必填: key 值中 如果包含有逗号则此参数在提交时会被过滤
@@ -128,17 +131,15 @@ data = [
   
     // For button
     text: '', // 按钮文案
-    tp: 'primary',
     bindSearch: true|false, // 自动绑定搜索事件
     onClick(event, form),
 
-    // for upload
-    children:()=>{
-      return <div>点我上传</div>
-    }
+    // 子元素
+    innerHTML:()=>{},
+    child:<a></a>,
 
     // for form item
-    formItemLayout:{
+    formItem:{
       labelCol: { span: 2 },
       wrapperCol: { span: 14 },
     }

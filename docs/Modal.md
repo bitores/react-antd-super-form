@@ -57,7 +57,7 @@ this.refs.testDialog.show(true|false)
     data: [
       {
         label: 'E-mail',
-        type: 'input',
+        cType: Input,
         key: 'email',
         config: {
           rules: [

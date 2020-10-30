@@ -57,7 +57,7 @@ table={
     data: [
       {
         label: '订单搜索',
-        type: 'select',
+        cType: Select,
         key: 'seartType',
         placeholder: '请选择',
         config: {
@@ -73,7 +73,7 @@ table={
         }
       },
       {
-        type: 'input',
+        cType: Input,
         key: 'searKey',
         placeholder: '请输入',
         style: {
@@ -81,11 +81,11 @@ table={
         }
       },
       {
-        type: 'br'
+        cType: 'br'
       },
       {
         label: '测试多选',
-        type: 'checkbox',
+        cType: CheckBox.Group,
         key: 'f',
         options:[
           {label: 'A', value: 1},
@@ -97,11 +97,12 @@ table={
         }
       },
       {
-        type: 'br'
+        cType: 'br'
       },
       {
         label: '测试单选',
-        type: 'radiobutton',
+        cType: Radio.Group,
+        optionType:"button",
         key: '44',
         options: [
           {label: 'A', value: 1},
@@ -110,11 +111,11 @@ table={
         ],
       },
       {
-        type: 'br'
+        cType: 'br'
       },
       {
         label: '测试单选',
-        type: 'radio',
+        cType: Radio.Group,
         options: [
           {label: 'A', value: 1},
           {label: 'B', value: 2},
@@ -122,11 +123,11 @@ table={
         ],
       },
       {
-        type: 'br'
+        cType: 'br'
       },
       {
         label: '测试Slider',
-        type: 'slider',
+        cType: Slider,
         marks: {
           0: 'A',
           20: 'B',
@@ -143,11 +144,11 @@ table={
         }
       },
       {
-        type: 'br'
+        cType: 'br'
       },
       {
         label: '下单时间',
-        type: 'rangepicker',
+        cType: DatePicker.RangerPicker,
         key: 'time',
         placeholder: ['开始时间', '结束时间'],
         suffixIcon: <Icon type="clock-circle" />,
@@ -157,7 +158,7 @@ table={
         }
       },
       {
-        type: 'button',
+        cType: Button,
         key: 'test',
         size:"small",
         text: '今',
@@ -188,11 +189,11 @@ table={
         }
       },
       {
-        type: 'br',
+        cType: 'br',
       },
       {
         label: '商品标题',
-        type: 'input',
+        cType: Input,
         key: 'productTitle',
         placeholder: '请输入',
         style: {
@@ -201,7 +202,7 @@ table={
       },
       {
         label: '订单类型',
-        type: 'select',
+        cType: Select,
         key: 'orderType',
         placeholder: '请选择',
         config: {
@@ -218,7 +219,7 @@ table={
       },
       {
         label: '订单来源',
-        type: 'select',
+        cType: Select,
         key: 'orderFrom',
         placeholder: '请选择',
         config: {
@@ -234,7 +235,7 @@ table={
         }
       }, 
       {
-        type: 'br'
+        cType: 'br'
       },
     ],
   }

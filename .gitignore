@@ -22,3 +22,5 @@ package-lock.json
 .history
 *.log
 .temp/**
+
+react-antd-super-form.wiki

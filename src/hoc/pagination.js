@@ -10,7 +10,8 @@ export default (Component) => {
         _list: [],
         _total: 0,
         _current: 1,
-        _pageSize: 10
+        _pageSize: 10,
+        _loading: false,
       }
     }
 
@@ -66,6 +67,7 @@ export default (Component) => {
     }
 
     _loadData() {
+      this.setState({_loading: true});
       const { _current, _pageSize } = this.state;
       const { action, pagination, pageName = "page", pageSizeName = "pageSize",
         valueMap = (res) => {
@@ -105,7 +107,8 @@ export default (Component) => {
           if (status) {
             this.setState({
               _list: dataSource,
-              _total: total
+              _total: total,
+              _loading: false,
             })
           } else {
             actionError(message);
@@ -120,7 +123,7 @@ export default (Component) => {
     }
 
     render() {
-      const { _list, _total, _current, _pageSize } = this.state;
+      const { _list, _total, _current, _pageSize, _loading } = this.state;
       const { pagination = true, action, params, extraParams, pageName, pageSizeName, valueMap, actionError, isInit, ...props } = this.props;
       // 追加 pagination 配置
       let _pagination = null;
@@ -153,7 +156,7 @@ export default (Component) => {
         }
       }
 
-      return (<Component {...props} dataSource={_list || []} pagination={_pagination} />)
+      return (<Component {...props} dataSource={_list || []} pagination={_pagination} loading={_loading} />)
     }
   }
 }

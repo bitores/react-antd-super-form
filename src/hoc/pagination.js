@@ -115,6 +115,7 @@ export default (Component) => {
           }
         })
       } else {
+        this.setState({_loading: false});
         // throw new Error('need action filed')
         console.warn('!!!!!!!!!need action!!!!!!!!')
       }

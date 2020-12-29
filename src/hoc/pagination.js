@@ -112,6 +112,7 @@ export default (Component) => {
             })
           } else {
             actionError(message);
+            this.setState({_loading: false});
           }
         })
       } else {
